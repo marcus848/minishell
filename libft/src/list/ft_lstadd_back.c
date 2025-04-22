@@ -1,19 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/16 20:45:28 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/16 20:49:23 by caide-so         ###   ########.fr       */
+/*   Created: 2024/10/21 21:01:20 by caide-so          #+#    #+#             */
+/*   Updated: 2024/10/25 18:55:39 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include "../../include/libft.h"
 
-int	main(void)
+void	ft_lstadd_back(t_list **lst, t_list *new_node)
 {
-	printf("oi\n");
-	return (0);
+	t_list	*last;
+
+	if (!*lst)
+		*lst = new_node;
+	else
+	{
+		last = ft_lstlast(*lst);
+		last->next = new_node;
+	}
 }

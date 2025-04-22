@@ -1,19 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_atol.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/16 20:45:28 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/16 20:49:23 by caide-so         ###   ########.fr       */
+/*   Created: 2025/02/05 20:33:00 by caide-so          #+#    #+#             */
+/*   Updated: 2025/02/05 20:33:31 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include "../../include/libft.h"
 
-int	main(void)
+long	ft_atol(const char *nptr)
 {
-	printf("oi\n");
-	return (0);
+	long	result;
+	int		sign;
+	int		i;
+
+	result = 0;
+	sign = 1;
+	i = 0;
+	while (ft_isspace(nptr[i]))
+		i++;
+	if (nptr[i] == '+' && nptr[i + 1] != '-')
+		i++;
+	if (nptr[i] == '-')
+	{
+		sign = -1;
+		i++;
+	}
+	while (nptr[i] != '\0' && nptr[i] >= '0' && nptr[i] <= '9')
+	{
+		result = (result * 10) + (nptr[i] - 48);
+		i++;
+	}
+	return (result * sign);
 }

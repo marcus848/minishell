@@ -1,19 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/16 20:45:28 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/16 20:49:23 by caide-so         ###   ########.fr       */
+/*   Created: 2024/10/21 15:18:11 by caide-so          #+#    #+#             */
+/*   Updated: 2024/10/25 18:55:40 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include "../../include/libft.h"
 
-int	main(void)
+int	ft_lstsize(t_list *lst)
 {
-	printf("oi\n");
-	return (0);
+	t_list	*curr;
+	int		count;
+
+	count = 0;
+	curr = lst;
+	while (curr != NULL)
+	{
+		count++;
+		curr = curr->next;
+	}
+	return (count);
 }

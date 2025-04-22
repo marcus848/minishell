@@ -1,19 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/16 20:45:28 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/16 20:49:23 by caide-so         ###   ########.fr       */
+/*   Created: 2024/10/07 19:15:11 by caide-so          #+#    #+#             */
+/*   Updated: 2024/12/26 01:30:45 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#ifndef LIBFT_H
+# define LIBFT_H
 
-int	main(void)
-{
-	printf("oi\n");
-	return (0);
-}
+# include "libs.h"
+# include "boolean.h"
+# include "ft_string.h"
+# include "io.h"
+# include "list.h"
+# include "mem.h"
+# include "get_next_line.h"
+# include "ft_printf.h"
+
+#endif
