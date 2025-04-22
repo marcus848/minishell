@@ -21,4 +21,4 @@ jobs:
         run: python -m pip install norminette
 
       - name: Run Norminette
-        run: norminette ./src
+        run: norminette
