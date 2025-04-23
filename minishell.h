@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/22 21:20:01 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/04/22 22:46:16 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,15 @@ typedef struct s_token_list
 	t_token	*tail;
 	int		size;
 }	t_token_list;
+
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
+
+// tokenizer
+void	tokenizer(char	*input);
 
 #endif
