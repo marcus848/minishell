@@ -29,8 +29,8 @@ ${LIBFT_LIB}:
 			@echo "Building libft..."
 			@make -C ${LIBFT_DIR} --no-print-directory
 
-leakfull:
-			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./${NAME}
+leak:
+			valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=readline.supp ./${NAME}
 
 clean:
 			@echo "Cleaning object files..."

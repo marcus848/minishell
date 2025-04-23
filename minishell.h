@@ -6,17 +6,24 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/22 19:32:28 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/04/22 21:20:01 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "libft/include/libft.h"
+
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
-# include "libft/include/libft.h"
+
+// to use readline
+# include <readline/readline.h>
+
+// to use add_history
+# include <readline/history.h>
 
 typedef struct s_simple_cmd
 {
@@ -38,7 +45,7 @@ typedef struct s_command
 	int				background;
 }	t_command;
 
-enum e_token_type
+typedef enum e_token_type
 {
 	TOKEN_WORD,
 	TOKEN_PIPE,
@@ -51,11 +58,11 @@ enum e_token_type
 	TOKEN_LOGICAL_OR,
 	TOKEN_PAREN_OPEN,
 	TOKEN_PAREN_CLOSE
-};
+}	t_token_type;
 
 typedef struct s_token
 {
-	e_token_type	type;
+	t_token_type	type;
 	char			*value;
 	struct s_token	*next;
 }	t_token;
