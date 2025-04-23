@@ -79,11 +79,11 @@ OBJS		= ${SRCS:${SRC_DIR}/%.c=${OBJ_DIR}/%.o}
 all:		${NAME}
 
 ${NAME}:	${OBJS}
-			ar rcs ${NAME} ${OBJS} 
+			@ar rcs ${NAME} ${OBJS} 
 
 ${OBJ_DIR}/%.o:	${SRC_DIR}/%.c
 			@mkdir -p ${@D}
-			${CC} ${CFLAGS} ${INCLUDE} -c $< -o $@
+			@${CC} ${CFLAGS} ${INCLUDE} -c $< -o $@
 
 clean:
 			${RM} ${OBJ_DIR}
