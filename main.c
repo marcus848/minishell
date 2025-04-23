@@ -15,23 +15,25 @@
 void	prompt(void);
 void	minishell(char *input);
 
+//TODO: inicializar structs
 int	main(int argc, char **argv, char **envp)
 {
-	//TODO: inicializar structs
 	prompt();
 	return (0);
 }
 
+// expansao de variavel
+// token
+// lexer
+// parser
+// executor
+// garbage collector (opcional)
 void	minishell(char *input)
 {
-	// expansao de variavel
-	// token
-	// lexer
-	// parser
-	// executor
-	// garbage collector (opcional)
 }
 
+//TODO: if (validar_input(input)) -- string vazia 
+//TODO: minishell(input);
 void	prompt(void)
 {
 	char	*input;
@@ -48,8 +50,6 @@ void	prompt(void)
 		else if (input != NULL)
 		{
 			add_history(input);
-			//TODO: if (validar_input(input)) -- string vazia 
-				//TODO: minishell(input);
 			free(input);
 		}
 		else
