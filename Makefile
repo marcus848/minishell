@@ -10,13 +10,19 @@ LIBFT_DIR	= libft/
 LIBFT_LIB	= ${LIBFT_DIR}libft.a
 
 SRCS		= $(SRC_DIR)main.c \
+		  ${SRC_DIR}init_env.c \
 
 OBJS		= ${SRCS:${SRC_DIR}%.c=${OBJ_DIR}%.o}
+
+# Colors
+GREEN	= \033[0;32m
+RESET	= \033[0m
 
 all:		${OBJ_DIR} ${NAME}
 
 ${NAME}:	${OBJS} ${LIBFT_LIB} ${MLX_LIB}
 			@${CC} ${CFLAGS} ${OBJS} ${LIBFT_LIB} ${INCLUDE} -o ${NAME}
+			@echo "$(GREEN)Done!$(RESET)"
 
 ${OBJ_DIR}:
 			@mkdir -p ${OBJ_DIR}
@@ -36,12 +42,12 @@ clean:
 			@echo "Cleaning object files..."
 			@${RM} ${OBJ_DIR}
 			@echo "Cleaning libft objects..."
-			@make clean -C ${LIBFT_DIR} --no-print-directory
+			@make -s -C ${LIBFT_DIR} clean --no-print-directory
 
 fclean:		clean
 			@echo "Removing binary and libraries..."
 			@${RM} ${NAME}
-			@make fclean -C ${LIBFT_DIR} --no-print-directory
+			@make -s -C ${LIBFT_DIR} fclean --no-print-directory
 
 re:		fclean all
 
