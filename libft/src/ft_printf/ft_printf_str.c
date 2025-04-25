@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 02:34:51 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/24 22:27:05 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/04/25 15:55:02 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ static void	set_str_padding_spaces(t_data *data, char *s)
 				data->format.padding_spaces = data->format.width_value - len;
 			else if (data->format.precision_value < len)
 			{
-				data->format.padding_spaces = data->format.width_value - \
-				data->format.precision_value;
+				data->format.padding_spaces = data->format.width_value
+					- data->format.precision_value;
 			}
 		}
 		else

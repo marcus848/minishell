@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 18:55:47 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/24 22:20:17 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/04/25 12:22:50 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	token_list_append(t_token_list *list, t_token *token)
 		list->head = token;
 	list->tail = token;
 	list->size++;
-	printf("type - %d, value - %s\n", token->type, token->value);
+	print_token(token);
 }
 
 void	token_list_free(t_token_list *list)

@@ -6,15 +6,13 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 22:42:04 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/24 22:54:07 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/04/25 15:57:21 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/include/ft_printf.h"
 #include "minishell.h"
 
 static int	handle_quotes(char *input, int *i, char type, t_token_list *tokens);
-static int	handle_operator(char *input, int *i, t_token_list *tokens);
 /*
 static int	handle_word(char *input, int *i, t_token_list *tokens);
 */
@@ -38,7 +36,7 @@ void	tokenizer(char *input)
 			continue ;
 		if (handle_quotes(input, &i, '\"', &tokens))
 			continue ;
-		if (handle_operator(input, &i, &tokens))
+		if (handle_operators(input, &i, &tokens))
 			continue ;
 		/*
 		// fallback: plain word
@@ -65,7 +63,7 @@ static int	handle_quotes(char *input, int *i, char type, t_token_list *tokens)
 	int		j;
 	int		start;
 	char	*value;
-	t_token	*tok;
+	t_token	*token;
 
 	start = *i;
 	if ((input[start]) != type)
@@ -78,24 +76,13 @@ static int	handle_quotes(char *input, int *i, char type, t_token_list *tokens)
 	value = ft_substr(input, start + 1, j - start -1);
 	if (!value)
 		exit_perror("ft_substr");
-	tok = new_token(TOKEN_WORD, value);
-	if (!tok)
+	token = new_token(TOKEN_WORD, value);
+	if (!token)
 	{
 		free(value);
 		exit_perror("new_token");
 	}
-	token_list_append(tokens, tok);
+	token_list_append(tokens, token);
 	*i = j + 1;
-	return (1);
-}
-
-static int	handle_operator(char *input, int *i, t_token_list *tokens)
-{
-	int	start;
-
-	start = *i;
-	(void)tokens;
-	if (!in("()&|<>*", input[start]))
-		return (0);
 	return (1);
 }
