@@ -28,14 +28,14 @@ int	main(int argc, char **argv, char **envp)
 }
 
 //TODO: tudo abaixo
-void	minishell(char *input)
-{
-	tokenizer(input);
 //	expansao de variavel
 // 	lexer
 // 	parser
 // 	executor
 // 	garbage collector
+void	minishell(char *input)
+{
+	tokenizer(input);
 }
 
 //TODO: if (validar_input(input)) -- string vazia 

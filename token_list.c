@@ -47,7 +47,6 @@ void	token_list_append(t_token_list *list, t_token *token)
 		list->head = token;
 	list->tail = token;
 	list->size++;
-	print_token(token);
 }
 
 void	token_list_free(t_token_list *list)
