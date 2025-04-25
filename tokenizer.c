@@ -6,15 +6,16 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 22:42:04 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/24 22:18:15 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/04/24 22:54:07 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft/include/ft_printf.h"
 #include "minishell.h"
 
 static int	handle_quotes(char *input, int *i, char type, t_token_list *tokens);
-/*
 static int	handle_operator(char *input, int *i, t_token_list *tokens);
+/*
 static int	handle_word(char *input, int *i, t_token_list *tokens);
 */
 // TODO: testar essa frase - joao-"e"-'maria'""''se-"'aman'"'"alem"'-do-infinito
@@ -37,9 +38,9 @@ void	tokenizer(char *input)
 			continue ;
 		if (handle_quotes(input, &i, '\"', &tokens))
 			continue ;
-		/*
 		if (handle_operator(input, &i, &tokens))
 			continue ;
+		/*
 		// fallback: plain word
 		handle_word(input, &i, &tokens);
 		*/
@@ -88,13 +89,13 @@ static int	handle_quotes(char *input, int *i, char type, t_token_list *tokens)
 	return (1);
 }
 
-/*
 static int	handle_operator(char *input, int *i, t_token_list *tokens)
 {
 	int	start;
 
 	start = *i;
-	if (input[start] != '&')
+	(void)tokens;
+	if (!in("()&|<>*", input[start]))
 		return (0);
+	return (1);
 }
-*/
