@@ -12,6 +12,11 @@ LIBFT_LIB	= ${LIBFT_DIR}libft.a
 SRCS		= $(SRC_DIR)main.c \
 		  ${SRC_DIR}init_env.c \
 		  ${SRC_DIR}clean.c \
+		  ${SRC_DIR}tokenizer.c \
+		  ${SRC_DIR}tokenizer_handle_operators.c \
+		  ${SRC_DIR}tokenizer_utils.c \
+		  ${SRC_DIR}token_list.c \
+		  ${SRC_DIR}debug_functions.c \
 
 OBJS		= ${SRCS:${SRC_DIR}%.c=${OBJ_DIR}%.o}
 

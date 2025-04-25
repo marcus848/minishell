@@ -32,3 +32,10 @@ void	env_free_all(t_env **head)
 		*head = next;
 	}
 }
+
+// Prints perror(msg) and exit with failure code
+void	exit_perror(const char *msg)
+{
+	perror(msg);
+	exit(EXIT_FAILURE);
+}

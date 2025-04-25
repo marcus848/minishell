@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/23 11:42:48 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/04/25 15:55:58 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,11 @@ typedef enum e_token_type
 	TOKEN_REDIR_OUT,
 	TOKEN_REDIR_APPEND,
 	TOKEN_HEREDOC,
-	TOKEN_AMPERSAND,
 	TOKEN_LOGICAL_AND,
 	TOKEN_LOGICAL_OR,
 	TOKEN_PAREN_OPEN,
-	TOKEN_PAREN_CLOSE
+	TOKEN_PAREN_CLOSE,
+	TOKEN_ASTERISK
 }	t_token_type;
 
 typedef struct s_token
@@ -83,6 +83,14 @@ typedef struct s_env
 
 // tokenizer
 void	tokenizer(char	*input);
+int		handle_operators(char *input, int *i, t_token_list *tokens);
+
+// token
+t_token	*new_token(t_token_type type, char *value);
+
+// token list
+void	token_list_init(t_token_list *list);
+void	token_list_append(t_token_list *list, t_token *token);
 
 // init env
 t_env	*init_env(char **envp);
@@ -90,5 +98,10 @@ t_env	*init_env(char **envp);
 // clean
 void	clean_all(t_env *env);
 void	env_free_all(t_env **head);
+void	exit_perror(const char *msg);
+
+// debug functions
+void	print_env(t_env *env);
+void	print_token(t_token *token);
 
 #endif
