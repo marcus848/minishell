@@ -21,4 +21,10 @@ jobs:
         run: python -m pip install norminette
 
       - name: Run Norminette
-        run: norminette
+      run: |
+# Run norminette and capture output
+      output=$(norminette)
+# Print the output (for visibility in logs)
+      echo "$output"
+# Check if "Error!" exists in the output - exit 1 if found
+      echo "$output" | grep -q "Error!" && exit 1 || exit 0
