@@ -9,9 +9,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4.1.4
 
-        #- name: Install dependencies
-        #run: sudo apt-get update && sudo apt-get install -y build-essential
-
       - name: Install Python for Norminette
         uses: actions/setup-python@5.1.0
         with:
@@ -21,10 +18,8 @@ jobs:
         run: python -m pip install norminette
 
       - name: Run Norminette
-      run: |
-# Run norminette and capture output
-      output=$(norminette)
-# Print the output (for visibility in logs)
-      echo "$output"
-# Check if "Error!" exists in the output - exit 1 if found
-      echo "$output" | grep -q "Error!" && exit 1 || exit 0
+        run: |
+          output=$(norminette)
+          echo "$output"
+          echo "$output" | grep -q "Error!" && exit 1 || exit 0
+
