@@ -14,7 +14,24 @@
 #include "libft/include/ft_string.h"
 #include "minishell.h"
 
-char	*expander(t_env *env, t_token *token)
+void	expander(char	***args, t_env *env)
+{
+	char	*expanded;
+	char	*temp;
+	int		i;
+	
+	i = 0;
+	while ((*args)[i])
+	{
+		expanded = expander_expand((*args)[i], env);
+		temp = (*args)[i];
+		(*args)[i] = expanded;
+		free(temp);
+		i++;
+	}
+}
+
+char	*expander_expand(char *input, t_env *env)
 {
 	char	*res;
 	char	*temp;
@@ -39,6 +56,31 @@ char	*expander(t_env *env, t_token *token)
 		i += get_expand_len(&input[i], state);
 	}
 	return (res);
+}
+
+void	actualize_state_quote(char *input, t_quote *state, int *i)
+{
+	while (input[*i] == '\'' || input[*i] == '\"')
+	{
+		if ((input[*i] == '\'' && *state == SINGLE_QUOTE)
+			|| (input[*i] == '\"' && *state == DOUBLE_QUOTE))
+		{
+			*state = NO_QUOTE;
+			(*i)++;
+		}
+		else if (input[*i] == '\'' && *state == NO_QUOTE)
+		{
+			*state = SINGLE_QUOTE;
+			(*i)++;
+		}
+		else if (input[*i] == '\"' && *state == NO_QUOTE)
+		{
+			*state = DOUBLE_QUOTE;
+			(*i)++;
+		}
+		else
+			break ;
+	}
 }
 
 char	*envp_expand(char *key, t_env *env)
