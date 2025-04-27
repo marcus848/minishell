@@ -60,6 +60,13 @@ typedef enum e_token_type
 	TOKEN_ASTERISK
 }	t_token_type;
 
+typedef enum e_quote
+{
+	NO_QUOTE,
+	SINGLE_QUOTE,
+	DOUBLE_QUOTE
+}	t_quote;
+
 typedef struct s_token
 {
 	t_token_type	type;
@@ -102,6 +109,7 @@ void	exit_perror(const char *msg);
 
 // debug functions
 void	print_env(t_env *env);
-void	print_token(t_token *token);
+void	print_tokens(t_token_list *tokens);
+void	print_token(char *str_type, t_token *token);
 
 #endif

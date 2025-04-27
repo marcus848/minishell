@@ -26,12 +26,21 @@ void	print_env(t_env *env)
 }
 
 // Print the token and its value
-/*
-void	print_token(t_token *token)
-{
-	char	*str_type;
 
-	str_type = NULL;
+void	print_tokens(t_token_list *tokens)
+{
+	t_token	*token;
+
+	token = tokens->head;
+	while (token)
+	{
+		print_token(NULL, token);
+		token = token->next;
+	}
+}
+
+void	print_token(char *str_type, t_token *token)
+{
 	if (token->type == 0)
 		str_type = "WORD";
 	else if (token->type == 1)
@@ -56,4 +65,3 @@ void	print_token(t_token *token)
 		str_type = "ASTERISK";
 	printf("type - %s, value - [%s]\n", str_type, token->value);
 }
-*/

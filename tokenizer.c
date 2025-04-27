@@ -12,8 +12,8 @@
 
 #include "minishell.h"
 
-static int	handle_quotes(char *input, int *i, char type, t_token_list *tokens);
 static int	handle_word(char *input, int *i, t_token_list *tokens);
+static void	handle_quotes(char *input, int *j);
 
 // TODO: testar essa frase - joao-"e"-'maria'""''se-"'aman'"'"alem"'-do-infinito
 
@@ -31,56 +31,11 @@ void	tokenizer(char *input)
 			i++;
 			continue ;
 		}
-		if (handle_quotes(input, &i, '\'', &tokens))
-			continue ;
-		if (handle_quotes(input, &i, '\"', &tokens))
-			continue ;
 		if (handle_operators(input, &i, &tokens))
 			continue ;
 		handle_word(input, &i, &tokens);
 	}
-}
-
-// Handles single and double quoted sections of the input
-// 1. Initialize start to the dereference of i.
-// 2. type parameter is ' or ".
-// Note: Must start with a quote.
-// 3. Scan ahead for matching quote.
-// Note: If no closer found, don't consume, it's not a "quoted token".
-// Note. From the MINISHELL SUBJECT:
-// "Your shell should:
-// - Not interpret unclosed quotes or special characters which are not
-// required by the subject such as \ (backslash) or ; (semicolon).
-// 4. Extract everything between the quotes.
-// 5. Build and append a new WORD token.
-// 6. Advance i past the closing quote
-static int	handle_quotes(char *input, int *i, char type, t_token_list *tokens)
-{
-	int		j;
-	int		start;
-	char	*value;
-	t_token	*token;
-
-	start = *i;
-	if ((input[start]) != type)
-		return (0);
-	j = start + 1;
-	while (input[j] && input[j] != type)
-		j++;
-	if (input[j] != type)
-		return (0);
-	value = ft_substr(input, start + 1, j - start - 1);
-	if (!value)
-		exit_perror("ft_substr");
-	token = new_token(TOKEN_WORD, value);
-	if (!token)
-	{
-		free(value);
-		exit_perror("new_token");
-	}
-	token_list_append(tokens, token);
-	*i = j + 1;
-	return (1);
+	print_tokens(&tokens);
 }
 
 static int	handle_word(char *input, int *i, t_token_list *tokens)
@@ -92,8 +47,10 @@ static int	handle_word(char *input, int *i, t_token_list *tokens)
 
 	start = *i;
 	j = start;
-	while (input[j] && !in("()&|<>*\'\"", input[j]) && !ft_isspace(input[j]))
-		j++;
+	while (input[j] && !in("()&|<>*", input[j]) && !ft_isspace(input[j]))
+		handle_quotes(input, &j);
+	if (j == start)
+		return (0);
 	value = ft_substr(input, start, j - start);
 	if (!value)
 		exit_perror("ft_substr");
@@ -106,4 +63,21 @@ static int	handle_word(char *input, int *i, t_token_list *tokens)
 	token_list_append(tokens, token);
 	*i = j + 1;
 	return (1);
+}
+
+static void	handle_quotes(char *input, int *j)
+{
+	char	type;
+
+	if (input[*j] == '\'' || input[*j] == '\"')
+	{
+		type = input[*j];
+		(*j)++;
+		while (input[*j] && input[*j] != type)
+			(*j)++;
+		if (input[*j] == type)
+			(*j)++;
+	}
+	else
+		(*j)++;
 }
