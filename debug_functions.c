@@ -34,16 +34,13 @@ void	print_tokens(t_token_list *tokens)
 	token = tokens->head;
 	while (token)
 	{
-		print_token(token);
+		print_token(NULL, token);
 		token = token->next;
 	}
 }
 
-void	print_token(t_token *token)
+void	print_token(char *str_type, t_token *token)
 {
-	char	*str_type;
-
-	str_type = NULL;
 	if (token->type == 0)
 		str_type = "WORD";
 	else if (token->type == 1)
