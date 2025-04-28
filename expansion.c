@@ -6,25 +6,25 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:43:01 by marcudos          #+#    #+#             */
-/*   Updated: 2025/04/28 17:01:11 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:28:48 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/include/ft_string.h"
 #include "minishell.h"
 
-void	expander(char	**args, t_env *env)
+void	expander(char	***args, t_env *env)
 {
 	char	*expanded;
 	char	*temp;
 	int		i;
-
+	
 	i = 0;
 	while ((*args)[i])
 	{
-		expanded = expander_expand(args[i], env);
-		temp = args[i];
-		args[i] = expanded;
+		expanded = expander_expand((*args)[i], env);
+		temp = (*args)[i];
+		(*args)[i] = expanded;
 		free(temp);
 		i++;
 	}
