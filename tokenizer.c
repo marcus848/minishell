@@ -61,7 +61,7 @@ static int	handle_word(char *input, int *i, t_token_list *tokens)
 		exit_perror("new_token");
 	}
 	token_list_append(tokens, token);
-	*i = j + 1;
+	*i = j;
 	return (1);
 }
 
