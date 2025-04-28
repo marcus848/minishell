@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:11:05 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/28 17:40:49 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:42:57 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	test_expander(t_env *env)
 	if (!args)
 		return ;
 	args[0] = ft_strdup("echo");
-	args[1] = ft_strdup("\"\"$HOME\"\'\"");
+	args[1] = ft_strdup("\"\'$HOME\'\"");
 	args[2] = NULL;
 
 	printf("Antes da expansão:\n");
