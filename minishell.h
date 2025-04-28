@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/25 15:55:58 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/04/28 16:52:51 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,9 +107,20 @@ void	clean_all(t_env *env);
 void	env_free_all(t_env **head);
 void	exit_perror(const char *msg);
 
+
+void	expander(char **args, t_env *env);
+char	*expander_expand(char *input, t_env *env);
+void	actualize_state_quote(char *input, t_quote *state, int *i);
+char	*envp_expand(char *key, t_env *env);
+char	*extract_key(char *input);
+int	get_expand_len(char *input, t_quote state);
+char	*expand_env(char *input, t_env *env);
+char	*expand_token(char *input, t_env *env, t_quote state);
+
 // debug functions
 void	print_env(t_env *env);
-void	print_token(t_token *token);
 void	print_tokens(t_token_list *tokens);
+void	print_token(char *str_type, t_token *token);
+void	test_expander(t_env *env);
 
 #endif

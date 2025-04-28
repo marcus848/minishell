@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:11:05 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/25 12:17:31 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/04/28 16:52:59 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,13 @@ void	print_tokens(t_token_list *tokens)
 	token = tokens->head;
 	while (token)
 	{
-		print_token(token);
+		print_token(NULL, token);
 		token = token->next;
 	}
 }
 
-void	print_token(t_token *token)
+void	print_token(char *str_type, t_token *token)
 {
-	char	*str_type;
-
-	str_type = NULL;
 	if (token->type == 0)
 		str_type = "WORD";
 	else if (token->type == 1)
@@ -68,3 +65,30 @@ void	print_token(t_token *token)
 		str_type = "ASTERISK";
 	printf("type - %s, value - [%s]\n", str_type, token->value);
 }
+
+void	test_expander(t_env *env)
+{
+	char	*args[3];
+	int		i;
+
+	args[0] = ft_strdup("echo");
+	args[1] = ft_strdup("$HOME");
+	args[2] = NULL;
+
+	expander(args, env);
+
+	i = 0;
+	while (args[i])
+	{
+		printf("args[%d] = [%s]\n", i, args[i]);
+		i++;
+	}
+
+	i = 0;
+	while (args[i])
+	{
+		free(args[i]);
+		i++;
+	}
+}
+
