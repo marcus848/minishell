@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/28 16:52:51 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:00:33 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,15 +107,19 @@ void	clean_all(t_env *env);
 void	env_free_all(t_env **head);
 void	exit_perror(const char *msg);
 
-
+// expansion
 void	expander(char **args, t_env *env);
 char	*expander_expand(char *input, t_env *env);
+char	*expand_token(char *input, t_env *env, t_quote state);
+
+// expansion_types
+char	*expand_env(char *input, t_env *env);
+
+// expansion_utils
 void	actualize_state_quote(char *input, t_quote *state, int *i);
 char	*envp_expand(char *key, t_env *env);
 char	*extract_key(char *input);
-int	get_expand_len(char *input, t_quote state);
-char	*expand_env(char *input, t_env *env);
-char	*expand_token(char *input, t_env *env, t_quote state);
+int		get_expand_len(char *input, t_quote state);
 
 // debug functions
 void	print_env(t_env *env);

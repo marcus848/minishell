@@ -19,6 +19,7 @@ SRCS		= $(SRC_DIR)main.c \
 		  ${SRC_DIR}debug_functions.c \
 		  ${SRC_DIR}expansion.c \
 		  ${SRC_DIR}expansion_utils.c \
+		  ${SRC_DIR}expansion_types.c \
 
 OBJS		= ${SRCS:${SRC_DIR}%.c=${OBJ_DIR}%.o}
 

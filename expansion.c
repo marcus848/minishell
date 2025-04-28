@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:43:01 by marcudos          #+#    #+#             */
-/*   Updated: 2025/04/28 16:52:40 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:01:11 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	expander(char	**args, t_env *env)
 	char	*expanded;
 	char	*temp;
 	int		i;
-	
+
 	i = 0;
 	while ((*args)[i])
 	{
@@ -63,25 +63,3 @@ char	*expand_token(char *input, t_env *env, t_quote state)
 		return (expand_env("HOME", env));
 	return (ft_substr(input, 0, 1));
 }
-
-char	*expand_env(char *input, t_env *env)
-{
-	char	*key;
-
-	key = extract_key(input);
-	if (!key)
-		return (ft_strdup(""));
-	while (env)
-	{
-		if (ft_strcmp(env->key, key) == 0)
-		{
-			free (key);
-			return (ft_strdup(env->value));
-		}
-		env = env->next;
-	}
-	free(key);
-	return (ft_strdup(""));
-}
-
-
