@@ -92,43 +92,43 @@ typedef struct s_env
 }	t_env;
 
 // tokenizer
-void	tokenizer(char	*input);
-int		handle_operators(char *input, int *i, t_token_list *tokens);
+t_token_list	*tokenizer(char *input);
+int				handle_operators(char *input, int *i, t_token_list *tokens);
 
 // token
-t_token	*new_token(t_token_type type, char *value);
+t_token			*new_token(t_token_type type, char *value);
 
 // token list
-void	token_list_init(t_token_list *list);
-void	token_list_append(t_token_list *list, t_token *token);
-void	token_list_free(t_token_list *list);
+void			token_list_init(t_token_list *list);
+void			token_list_append(t_token_list *list, t_token *token);
+void			token_list_free(t_token_list *list);
 
 // init env
-t_env	*init_env(char **envp);
+t_env			*init_env(char **envp);
 
 // clean
-void	clean_all(t_env *env);
-void	env_free_all(t_env **head);
-void	exit_perror(const char *msg);
-void	report_syntax_error(const char *msg);
+void			clean_all(t_env *env);
+void			env_free_all(t_env **head);
+void			exit_perror(const char *msg);
+void			report_syntax_error(const char *msg);
 
 // expansion
-void	expander(char ***args, t_env *env);
-char	*expander_expand(char *input, t_env *env);
-char	*expand_token(char *input, t_env *env, t_quote state);
+void			expander(char ***args, t_env *env);
+char			*expander_expand(char *input, t_env *env);
+char			*expand_token(char *input, t_env *env, t_quote state);
 
 // expansion_types
-char	*expand_env(char *key, t_env *env);
+char			*expand_env(char *key, t_env *env);
 
 // expansion_utils
-void	update_state_quote(char *input, t_quote *state, int *i);
-char	*extract_key(char *input);
-int		get_expand_len(char *input, t_quote state);
+void			update_state_quote(char *input, t_quote *state, int *i);
+char			*extract_key(char *input);
+int				get_expand_len(char *input, t_quote state);
 
 // debug functions
-void	print_env(t_env *env);
-void	print_tokens(t_token_list *tokens);
-void	print_token(char *str_type, t_token *token);
-void	test_expander(t_env *env);
+void			print_env(t_env *env);
+void			print_tokens(t_token_list *tokens);
+void			print_token(char *str_type, t_token *token);
+void			test_expander(t_env *env);
 
 #endif

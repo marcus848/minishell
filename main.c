@@ -35,7 +35,9 @@ int	main(int argc, char **argv, char **envp)
 // 	garbage collector
 void	minishell(char *input)
 {
-	tokenizer(input);
+	t_token_list	*tokens;
+
+	tokens = tokenizer(input);
 }
 
 //TODO: if (validar_input(input)) -- string vazia 

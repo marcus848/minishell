@@ -17,13 +17,14 @@ static int	handle_quotes(char *input, int *j, t_token_list *tokens);
 
 // TODO: testar essa frase - joao-"e"-'maria'""''se-"'aman'"'"alem"'-do-infinito
 
-void	tokenizer(char *input)
+t_token_list	*tokenizer(char *input)
 {
 	int				i;
-	t_token_list	tokens;
+	t_token_list	*tokens;
 
 	i = 0;
-	token_list_init(&tokens);
+	tokens = (t_token_list *)malloc(sizeof(t_token_list));
+	token_list_init(tokens);
 	while (input[i])
 	{
 		if (ft_isspace(input[i]))
@@ -31,13 +32,14 @@ void	tokenizer(char *input)
 			i++;
 			continue ;
 		}
-		if (handle_operators(input, &i, &tokens))
+		if (handle_operators(input, &i, tokens))
 			continue ;
-		if (!handle_word(input, &i, &tokens))
-			return ;
+		if (!handle_word(input, &i, tokens))
+			return (NULL);
 	}
-	print_tokens(&tokens);
-	token_list_free(&tokens);
+	print_tokens(tokens);
+	token_list_free(tokens);
+	return (tokens);
 }
 
 static int	handle_word(char *input, int *i, t_token_list *tokens)
