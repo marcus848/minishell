@@ -113,11 +113,10 @@ char	*expander_expand(char *input, t_env *env);
 char	*expand_token(char *input, t_env *env, t_quote state);
 
 // expansion_types
-char	*expand_env(char *input, t_env *env);
+char	*expand_env(char *key, t_env *env);
 
 // expansion_utils
-void	actualize_state_quote(char *input, t_quote *state, int *i);
-char	*envp_expand(char *key, t_env *env);
+void	update_state_quote(char *input, t_quote *state, int *i);
 char	*extract_key(char *input);
 int		get_expand_len(char *input, t_quote state);
 

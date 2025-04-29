@@ -12,22 +12,13 @@
 
 #include "minishell.h"
 
-char	*expand_env(char *input, t_env *env)
+char	*expand_env(char *key, t_env *env)
 {
-	char	*key;
-
-	key = extract_key(input);
-	if (!key)
-		return (ft_strdup(""));
 	while (env)
 	{
 		if (ft_strcmp(env->key, key) == 0)
-		{
-			free (key);
-			return (ft_strdup(env->value));
-		}
+			return (free(key), ft_strdup(env->value));
 		env = env->next;
 	}
-	free(key);
-	return (ft_strdup(""));
+	return (free(key), ft_strdup(""));
 }

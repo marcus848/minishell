@@ -10,9 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft/include/boolean.h"
 #include "minishell.h"
 
-void	actualize_state_quote(char *input, t_quote *state, int *i)
+void	update_state_quote(char *input, t_quote *state, int *i)
 {
 	while (input[*i] == '\'' || input[*i] == '\"')
 	{
@@ -37,17 +38,6 @@ void	actualize_state_quote(char *input, t_quote *state, int *i)
 	}
 }
 
-char	*envp_expand(char *key, t_env *env)
-{
-	while (env)
-	{
-		if (ft_strcmp(env->key, key) == 0)
-			return (ft_strdup(env->value));
-		env = env->next;
-	}
-	return (ft_strdup(""));
-}
-
 char	*extract_key(char *input)
 {
 	int	i;
@@ -60,13 +50,15 @@ char	*extract_key(char *input)
 
 int	get_expand_len(char *input, t_quote state)
 {
-	char	*key;
-	int		len;
+	int	len;
 
-	if (input[0] != '$' || state == SINGLE_QUOTE)
+	if (!input)
 		return (1);
-	key = extract_key(&input[1]);
-	len = 1 + ft_strlen(key);
-	free(key);
+	len = 1;
+	if (input[0] == '$' && state != SINGLE_QUOTE)
+	{
+		while (ft_isalnum(input[len]) || input[len] == '_')
+			len++;
+	}
 	return (len);
 }
