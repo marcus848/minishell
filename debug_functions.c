@@ -65,59 +65,60 @@ void	print_token(char *str_type, t_token *token)
 		str_type = "ASTERISK";
 	printf("type - %s, value - [%s]\n", str_type, token->value);
 }
+/*
+void	test_expander(t_env *env)
+{
+	char	**args;
+	int		i;
 
-// void	test_expander(t_env *env)
-// {
-// 	char	**args;
-// 	int		i;
-//
-// 	printf("\n========== TESTE 1 ==========\n");
-// 	args = malloc(sizeof(char *));
-// 	if (!args)
-// 		return ;
-// 	args[0] = ft_strdup("echo");
-// 	args[1] = ft_strdup("$HOME");
-// 	args[2] = NULL;
-//
-// 	printf("Antes da expansão:\n");
-// 	i = -1;
-// 	while (args[++i])
-// 		printf("args[%d] = [%s]\n", i, args[i]);
-//
-// 	expander(&args, env);
-//
-// 	printf("Depois da expansão:\n");
-// 	i = -1;
-// 	while (args[++i])
-// 		printf("args[%d] = [%s]\n", i, args[i]);
-//
-// 	i = 0;
-// 	while (args[i])
-// 		free(args[i++]);
-// 	free(args);
-//
-// 	printf("\n========== TESTE 2 ==========\n");
-// 	args = malloc(sizeof(char *));
-// 	if (!args)
-// 		return ;
-// 	args[0] = ft_strdup("echo");
-// 	args[1] = ft_strdup("\"\'$HOME\'\"");
-// 	args[2] = NULL;
-//
-// 	printf("Antes da expansão:\n");
-// 	i = -1;
-// 	while (args[++i])
-// 		printf("args[%d] = [%s]\n", i, args[i]);
-//
-// 	expander(&args, env);
-//
-// 	printf("Depois da expansão:\n");
-// 	i = -1;
-// 	while (args[++i])
-// 		printf("args[%d] = [%s]\n", i, args[i]);
-//
-// 	i = 0;
-// 	while (args[i])
-// 		free(args[i++]);
-// 	free(args);
-// }
+	printf("\n========== TESTE 1 ==========\n");
+	args = malloc(sizeof(char *));
+	if (!args)
+		return ;
+	args[0] = ft_strdup("echo");
+	args[1] = ft_strdup("\"$HOME\"-\'$USER\'");
+	args[2] = NULL;
+
+	printf("Antes da expansão:\n");
+	i = -1;
+	while (args[++i])
+		printf("args[%d] = [%s]\n", i, args[i]);
+
+	expander(&args, env);
+
+	printf("Depois da expansão:\n");
+	i = -1;
+	while (args[++i])
+		printf("args[%d] = [%s]\n", i, args[i]);
+
+	i = 0;
+	while (args[i])
+		free(args[i++]);
+	free(args);
+
+	printf("\n========== TESTE 2 ==========\n");
+	args = malloc(sizeof(char *));
+	if (!args)
+		return ;
+	args[0] = ft_strdup("echo");
+	args[1] = ft_strdup("\"\'$USER\'\"-\'$USER-\'-$USER-~-$USER");
+	args[2] = NULL;
+
+	printf("Antes da expansão:\n");
+	i = -1;
+	while (args[++i])
+		printf("args[%d] = [%s]\n", i, args[i]);
+
+	expander(&args, env);
+
+	printf("Depois da expansão:\n");
+	i = -1;
+	while (args[++i])
+		printf("args[%d] = [%s]\n", i, args[i]);
+
+	i = 0;
+	while (args[i])
+		free(args[i++]);
+	free(args);
+}
+*/
