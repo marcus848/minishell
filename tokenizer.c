@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 static int	handle_word(char *input, int *i, t_token_list *tokens);
-static void	handle_quotes(char *input, int *j);
+static int	handle_quotes(char *input, int *j, t_token_list *tokens);
 
 // TODO: testar essa frase - joao-"e"-'maria'""''se-"'aman'"'"alem"'-do-infinito
 
@@ -33,7 +33,8 @@ void	tokenizer(char *input)
 		}
 		if (handle_operators(input, &i, &tokens))
 			continue ;
-		handle_word(input, &i, &tokens);
+		if (!handle_word(input, &i, &tokens))
+			return ;
 	}
 	print_tokens(&tokens);
 	token_list_free(&tokens);
@@ -49,7 +50,8 @@ static int	handle_word(char *input, int *i, t_token_list *tokens)
 	start = *i;
 	j = start;
 	while (input[j] && !in("()&|<>", input[j]) && !ft_isspace(input[j]))
-		handle_quotes(input, &j);
+		if (!handle_quotes(input, &j, tokens))
+			return (0);
 	if (j == start)
 		return (0);
 	value = ft_substr(input, start, j - start);
@@ -66,7 +68,7 @@ static int	handle_word(char *input, int *i, t_token_list *tokens)
 	return (1);
 }
 
-static void	handle_quotes(char *input, int *j)
+static int	handle_quotes(char *input, int *j, t_token_list *tokens)
 {
 	char	type;
 
@@ -76,9 +78,16 @@ static void	handle_quotes(char *input, int *j)
 		(*j)++;
 		while (input[*j] && input[*j] != type)
 			(*j)++;
-		if (input[*j] == type)
+		if (input[*j] != type)
+		{
+			report_syntax_error(ERR_QUOTE);
+			token_list_free(tokens);
+			return (0);
+		}
+		else
 			(*j)++;
 	}
 	else
 		(*j)++;
+	return (1);
 }

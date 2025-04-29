@@ -39,3 +39,10 @@ void	exit_perror(const char *msg)
 	perror(msg);
 	exit(EXIT_FAILURE);
 }
+
+// Reports a syntax error
+void	report_syntax_error(const char *msg)
+{
+	write(2, msg, ft_strlen(msg));
+	write(2, "\n", 1);
+}
