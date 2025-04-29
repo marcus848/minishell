@@ -65,7 +65,7 @@ void	print_token(char *str_type, t_token *token)
 		str_type = "ASTERISK";
 	printf("type - %s, value - [%s]\n", str_type, token->value);
 }
-/*
+
 void	test_expander(t_env *env)
 {
 	char	**args;
@@ -101,7 +101,7 @@ void	test_expander(t_env *env)
 	if (!args)
 		return ;
 	args[0] = ft_strdup("echo");
-	args[1] = ft_strdup("\"\'$USER\'\"-\'$USER-\'-$USER-~-$USER");
+	args[1] = ft_strdup("\"\'$USER\'\"-\'$USER-\'-$ USER-~-$USER");
 	args[2] = NULL;
 
 	printf("Antes da expansão:\n");
@@ -121,4 +121,4 @@ void	test_expander(t_env *env)
 		free(args[i++]);
 	free(args);
 }
-*/
+

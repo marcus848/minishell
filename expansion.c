@@ -83,9 +83,12 @@ char	*expand_token(char *input, t_env *env, t_quote state)
 	if (state != SINGLE_QUOTE)
 	{
 		if (input[0] == '$')
-			return (expand_env(extract_key(&input[1]), env));
-		else if (input[0] == '~')
-			return (expand_env(ft_strdup("HOME"), env));
+		{
+			if (input[1] != ' ')
+				return (expand_env(extract_key(&input[1]), env));
+			else
+				return (ft_strdup("$"));
+		}
 	}
 	return (ft_substr(input, 0, 1));
 }
