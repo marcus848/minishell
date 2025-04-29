@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/25 15:55:58 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:28:20 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,9 +112,23 @@ void	env_free_all(t_env **head);
 void	exit_perror(const char *msg);
 void	report_syntax_error(const char *msg);
 
+// expansion
+void	expander(char ***args, t_env *env);
+char	*expander_expand(char *input, t_env *env);
+char	*expand_token(char *input, t_env *env, t_quote state);
+
+// expansion_types
+char	*expand_env(char *key, t_env *env);
+
+// expansion_utils
+void	update_state_quote(char *input, t_quote *state, int *i);
+char	*extract_key(char *input);
+int		get_expand_len(char *input, t_quote state);
+
 // debug functions
 void	print_env(t_env *env);
 void	print_tokens(t_token_list *tokens);
 void	print_token(char *str_type, t_token *token);
+void	test_expander(t_env *env);
 
 #endif

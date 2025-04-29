@@ -6,71 +6,89 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:43:01 by marcudos          #+#    #+#             */
-/*   Updated: 2025/04/24 17:33:12 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:52:00 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/include/boolean.h"
 #include "libft/include/ft_string.h"
 #include "minishell.h"
 
-char	*expander(t_env *env, t_token *token)
+void	expander(char	***args, t_env *env)
+{
+	char	*expanded;
+	char	*temp;
+	int		i;
+
+	i = 0;
+	while ((*args)[i])
+	{
+		expanded = expander_expand((*args)[i], env);
+		temp = (*args)[i];
+		(*args)[i] = expanded;
+		free(temp);
+		i++;
+	}
+}
+
+char	*expand_next_token(char *input, t_env *env, t_quote *state, int *i)
+{
+	char	*expanded;
+
+	update_state_quote(input, state, i);
+	if (input[*i] == '$' || input[*i] == '~')
+	{
+		expanded = expand_token(&input[*i], env, *state);
+		(*i) += get_expand_len(&input[*i], *state);
+		return (expanded);
+	}
+	else
+	{
+		expanded = ft_substr(input, *i, 1);
+		(*i)++;
+		return (expanded);
+	}
+}
+
+char	*expander_expand(char *input, t_env *env)
 {
 	char	*res;
 	char	*temp;
+	char	*next;
 	t_quote	state;
 	int		i;
 
 	if (!input)
 		return (NULL);
-	res = ft_strdup("");
 	i = 0;
 	state = NO_QUOTE;
+	res = NULL;
 	while (input[i])
 	{
-		actualize_state_quote(input, &state, &i);
-		temp = res;
-		if (input[i] == '$' && state != SINGLE_QUOTE)
-			res = ft_strjoin(temp, envp_expand(extract_key(&input[i + 1]),
-						env));
+		next = expand_next_token(input, env, &state, &i);
+		if (!res)
+			res = ft_strdup(next);
 		else
-			res = ft_strjoin(temp, ft_substr(&input[i], 0, 1));
-		free(temp);
-		i += get_expand_len(&input[i], state);
+		{
+			temp = res;
+			res = ft_strjoin(temp, next);
+			free(temp);
+		}
+		free(next);
 	}
 	return (res);
 }
 
-char	*envp_expand(char *key, t_env *env)
+char	*expand_token(char *input, t_env *env, t_quote state)
 {
-	while (env)
+	if (state != SINGLE_QUOTE)
 	{
-		if (ft_strcmp(env->key, key) == 0)
-			return (ft_strdup(env->value));
-		env = env->next;
+		if (input[0] == '$')
+		{
+			if (input[1] != ' ')
+				return (expand_env(extract_key(&input[1]), env));
+			else
+				return (ft_strdup("$"));
+		}
 	}
-	return (ft_strdup(""));
-}
-
-char	*extract_key(char *input)
-{
-	int	i;
-
-	i = 0;
-	while ((ft_isalnum(input[i]) || input[i] == '_') && input[i])
-		i++;
-	return (ft_substr(input, 0, i));
-}
-
-int	get_expand_len(char *input, t_quote state)
-{
-	char	*key;
-	int		len;
-
-	if (input[0] != '$' || state == SINGLE_QUOTE)
-		return (1);
-	key = extract_key(&input[1]);
-	len = 1 + ft_strlen(key);
-	free(key);
-	return (len);
+	return (ft_substr(input, 0, 1));
 }
