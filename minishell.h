@@ -25,6 +25,9 @@
 // to use add_history
 # include <readline/history.h>
 
+// MACRO FOR SYNTAX ERROR
+# define ERR_QUOTE "minishell: syntax error: expecting closing quote"
+
 typedef struct s_simple_cmd
 {
 	char	**args;
@@ -98,6 +101,7 @@ t_token	*new_token(t_token_type type, char *value);
 // token list
 void	token_list_init(t_token_list *list);
 void	token_list_append(t_token_list *list, t_token *token);
+void	token_list_free(t_token_list *list);
 
 // init env
 t_env	*init_env(char **envp);
@@ -106,6 +110,7 @@ t_env	*init_env(char **envp);
 void	clean_all(t_env *env);
 void	env_free_all(t_env **head);
 void	exit_perror(const char *msg);
+void	report_syntax_error(const char *msg);
 
 // expansion
 void	expander(char ***args, t_env *env);

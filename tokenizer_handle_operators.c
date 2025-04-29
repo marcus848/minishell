@@ -23,7 +23,7 @@ int	handle_operators(char *input, int *i, t_token_list *tokens)
 	t_token			*token;
 	t_token_type	type;
 
-	if (!in("()&|<>*", input[*i]))
+	if (!in("()&|<>", input[*i]))
 		return (0);
 	if (is_two_char_op(input + *i, &type, &len)
 		|| is_one_char_op_1(input[*i], &type, &len))
@@ -101,11 +101,6 @@ static int	is_one_char_op_2(char input, t_token_type *type)
 	else if (input == ')')
 	{
 		*type = TOKEN_PAREN_CLOSE;
-		return (1);
-	}
-	else if (input == '*')
-	{
-		*type = TOKEN_ASTERISK;
 		return (1);
 	}
 	return (0);
