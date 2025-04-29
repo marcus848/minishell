@@ -98,6 +98,7 @@ t_token	*new_token(t_token_type type, char *value);
 // token list
 void	token_list_init(t_token_list *list);
 void	token_list_append(t_token_list *list, t_token *token);
+void	token_list_free(t_token_list *list);
 
 // init env
 t_env	*init_env(char **envp);

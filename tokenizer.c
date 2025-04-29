@@ -36,6 +36,7 @@ void	tokenizer(char *input)
 		handle_word(input, &i, &tokens);
 	}
 	print_tokens(&tokens);
+	token_list_free(&tokens);
 }
 
 static int	handle_word(char *input, int *i, t_token_list *tokens)
@@ -47,7 +48,7 @@ static int	handle_word(char *input, int *i, t_token_list *tokens)
 
 	start = *i;
 	j = start;
-	while (input[j] && !in("()&|<>*", input[j]) && !ft_isspace(input[j]))
+	while (input[j] && !in("()&|<>", input[j]) && !ft_isspace(input[j]))
 		handle_quotes(input, &j);
 	if (j == start)
 		return (0);
