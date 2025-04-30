@@ -14,6 +14,7 @@
 
 void	prompt(void);
 void	minishell(char *input);
+void	parser(t_token_list *tokens);
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -28,8 +29,6 @@ int	main(int argc, char **argv, char **envp)
 }
 
 //TODO: tudo abaixo
-//	expansao de variavel
-// 	lexer
 // 	parser
 // 	executor
 // 	garbage collector
@@ -38,10 +37,18 @@ void	minishell(char *input)
 	t_token_list	*tokens;
 
 	tokens = tokenizer(input);
+	parser(tokens);
+	token_list_free(tokens);
 }
 
-//TODO: if (validar_input(input)) -- string vazia 
-//TODO: minishell(input);
+void	parser(t_token_list *tokens)
+{
+	(void)tokens;
+	//syntax_analysis(tokens);
+	//create_ast(tokens);
+	printf("oi eu sou o senhor parser\n");
+}
+
 void	prompt(void)
 {
 	char	*input;

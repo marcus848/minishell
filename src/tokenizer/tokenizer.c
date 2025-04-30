@@ -37,8 +37,6 @@ t_token_list	*tokenizer(char *input)
 		if (!handle_word(input, &i, tokens))
 			return (NULL);
 	}
-	print_tokens(tokens);
-	token_list_free(tokens);
 	return (tokens);
 }
 
