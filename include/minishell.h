@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/28 17:28:20 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/04/30 20:02:06 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,16 @@ typedef struct s_command
 
 typedef enum e_token_type
 {
-	TOKEN_WORD,
-	TOKEN_PIPE,
-	TOKEN_REDIR_IN,
-	TOKEN_REDIR_OUT,
-	TOKEN_REDIR_APPEND,
-	TOKEN_HEREDOC,
-	TOKEN_LOGICAL_AND,
-	TOKEN_LOGICAL_OR,
-	TOKEN_PAREN_OPEN,
-	TOKEN_PAREN_CLOSE,
-	TOKEN_ASTERISK
+	WORD,
+	PIPE,
+	REDIR_IN,
+	REDIR_OUT,
+	REDIR_APPEND,
+	HEREDOC,
+	LOGICAL_AND,
+	LOGICAL_OR,
+	PAREN_OPEN,
+	PAREN_CLOSE,
 }	t_token_type;
 
 typedef enum e_quote
@@ -130,5 +129,8 @@ void			print_env(t_env *env);
 void			print_tokens(t_token_list *tokens);
 void			print_token(char *str_type, t_token *token);
 void			test_expander(t_env *env);
+
+// syntax analysis
+int				syntax_analysis(t_token_list *tokens);
 
 #endif

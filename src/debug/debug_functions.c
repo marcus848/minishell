@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:11:05 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/30 19:36:25 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/04/30 20:02:39 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,25 +41,25 @@ void	print_tokens(t_token_list *tokens)
 
 void	print_token(char *str_type, t_token *token)
 {
-	if (token->type == TOKEN_WORD)
+	if (token->type == WORD)
 		str_type = "WORD";
-	else if (token->type == TOKEN_PIPE)
+	else if (token->type == PIPE)
 		str_type = "PIPE";
-	else if (token->type == TOKEN_REDIR_IN)
+	else if (token->type == REDIR_IN)
 		str_type = "REDIR_IN";
-	else if (token->type == TOKEN_REDIR_OUT)
+	else if (token->type == REDIR_OUT)
 		str_type = "REDIR_OUT";
-	else if (token->type == TOKEN_REDIR_APPEND)
+	else if (token->type == REDIR_APPEND)
 		str_type = "REDIR_APPEND";
-	else if (token->type == TOKEN_HEREDOC)
+	else if (token->type == HEREDOC)
 		str_type = "HEREDOC";
-	else if (token->type == TOKEN_LOGICAL_AND)
+	else if (token->type == LOGICAL_AND)
 		str_type = "LOGICAL_AND";
-	else if (token->type == TOKEN_LOGICAL_OR)
+	else if (token->type == LOGICAL_OR)
 		str_type = "LOGICAL_OR";
-	else if (token->type == TOKEN_PAREN_OPEN)
+	else if (token->type == PAREN_OPEN)
 		str_type = "PAREN_OPEN";
-	else if (token->type == TOKEN_PAREN_CLOSE)
+	else if (token->type == PAREN_CLOSE)
 		str_type = "PAREN_CLOSE";
 	printf("type - %s, value - [%s]\n", str_type, token->value);
 }
