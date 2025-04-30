@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/30 18:00:45 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/04/30 20:23:17 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,39 +28,32 @@
 // MACRO FOR SYNTAX ERROR
 # define ERR_QUOTE "minishell: syntax error: expecting closing quote"
 
-typedef struct s_simple_cmd
-{
-	char	**args;
-	int		arg_count;
-}	t_simple_cmd;
-
 typedef struct s_command
 {
-	t_simple_cmd	**simple_cmds;
-	int				cmd_count;
+	char			**args;
+	int				arg_count;
 	char			*infile;
 	char			*outfile;
-	char			*errfile;
-	int				append_out;
-	int				append_err;
+	char			*appendfile;
 	int				heredoc;
 	char			*delimiter;
-	int				background;
+	char			*heredoc_path;
+	int				is_builtin;
 }	t_command;
 
 typedef enum e_token_type
 {
-	TOKEN_WORD,
-	TOKEN_PIPE,
-	TOKEN_REDIR_IN,
-	TOKEN_REDIR_OUT,
-	TOKEN_REDIR_APPEND,
-	TOKEN_HEREDOC,
-	TOKEN_LOGICAL_AND,
-	TOKEN_LOGICAL_OR,
-	TOKEN_PAREN_OPEN,
-	TOKEN_PAREN_CLOSE,
-	TOKEN_ASTERISK
+	WORD,
+	PIPE,
+	REDIR_IN,
+	REDIR_OUT,
+	REDIR_APPEND,
+	HEREDOC,
+	LOGICAL_AND,
+	LOGICAL_OR,
+	PAREN_OPEN,
+	PAREN_CLOSE,
+	ASTERISK
 }	t_token_type;
 
 typedef enum e_quote
@@ -141,6 +134,15 @@ char			*expand_env(char *key, t_env *env);
 void			update_state_quote(char *input, t_quote *state, int *i);
 char			*extract_key(char *input);
 int				get_expand_len(char *input, t_quote state);
+
+// ast
+
+// commands
+t_command		*make_command(t_token **token);
+t_command		*init_command(void);
+char			**get_args(t_token **token, int size_args);
+int				get_size_args(t_token **token);
+
 
 // debug functions
 void			print_env(t_env *env);

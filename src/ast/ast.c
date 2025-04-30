@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 16:50:15 by marcudos          #+#    #+#             */
-/*   Updated: 2025/04/30 18:01:18 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/04/30 20:32:20 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_ast	*make_ast(t_token_list *tokens)
 
 	token = tokens->head;
 	top = start_ast(&token);
-	while (token && token->type == TOKEN_LOGICAL_AND)
+	while (token && token->type == LOGICAL_AND)
 	{
 		token = token->next;
 		new = malloc(sizeof(t_ast));
@@ -48,9 +48,9 @@ t_ast	*start_ast(t_token **token)
 	left = make_node_command(token);
 	if (!*token)
 		return (left);
-	if ((*token)->type != TOKEN_PIPE &&
-		(*token)->type != TOKEN_LOGICAL_OR &&
-		(*token)->type != TOKEN_LOGICAL_AND)
+	if ((*token)->type != PIPE &&
+		(*token)->type != LOGICAL_OR &&
+		(*token)->type != LOGICAL_AND)
 		return (left);
 	top = malloc(sizeof(t_ast));
 	if (!top)
@@ -58,11 +58,11 @@ t_ast	*start_ast(t_token **token)
 	top->left = left;
 	top->args = NULL;
 	top->right = NULL;
-	if ((*token)->type == TOKEN_PIPE)
+	if ((*token)->type == PIPE)
 		top->type = NODE_PIPE;
-	else if ((*token)->type == TOKEN_LOGICAL_OR)
+	else if ((*token)->type == LOGICAL_OR)
 		top->type = NODE_OR;
-	else if ((*token)->type == TOKEN_LOGICAL_AND)
+	else if ((*token)->type == LOGICAL_AND)
 		top->type = NODE_AND;
 	(*token) = (*token)->next;
 	top->right = make_node_command(token);
@@ -97,17 +97,3 @@ t_ast	*make_node_command(t_token **token)
 	return (new);
 }
 
-int	size_args(t_token **token)
-{
-	t_token	*t;
-	int	i;
-
-	i = 0;
-	t = (*token);
-	while (t && t->type == TOKEN_WORD)
-	{
-		i++;
-		t = t->next;
-	}
-	return (i);
-}
