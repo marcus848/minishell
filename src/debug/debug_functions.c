@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:11:05 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/28 17:42:57 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/04/30 18:31:43 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	print_token(char *str_type, t_token *token)
 		str_type = "ASTERISK";
 	printf("type - %s, value - [%s]\n", str_type, token->value);
 }
-/*
+
 void	test_expander(t_env *env)
 {
 	char	**args;
@@ -75,7 +75,7 @@ void	test_expander(t_env *env)
 	args = malloc(sizeof(char *));
 	if (!args)
 		return ;
-	args[0] = ft_strdup("echo");
+	args[0] = ft_strdup("c\'a\'t");
 	args[1] = ft_strdup("\"$HOME\"-\'$USER\'");
 	args[2] = NULL;
 
@@ -121,4 +121,4 @@ void	test_expander(t_env *env)
 		free(args[i++]);
 	free(args);
 }
-*/
+

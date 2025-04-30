@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/28 17:28:20 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/04/30 18:00:45 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,15 @@ typedef enum e_quote
 	DOUBLE_QUOTE
 }	t_quote;
 
+typedef enum s_node_type
+{
+	NODE_COMMAND,
+	NODE_PIPE,
+	NODE_AND,
+	NODE_OR,
+	NODE_SUBSHELL
+}	t_node_type;
+
 typedef struct s_token
 {
 	t_token_type	type;
@@ -90,6 +99,14 @@ typedef struct s_env
 	char			*value;
 	struct s_env	*next;
 }	t_env;
+
+typedef struct s_ast
+{
+	t_node_type	type;
+	struct s_ast	*left;
+	struct s_ast	*right;
+	char		**args;
+}	t_ast;
 
 // tokenizer
 t_token_list	*tokenizer(char *input);

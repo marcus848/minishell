@@ -6,20 +6,20 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 16:50:15 by marcudos          #+#    #+#             */
-/*   Updated: 2025/04/29 18:29:46 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/04/30 18:01:18 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 int	size_args(t_token **token);
-t_ast_node	*make_node_command(t_token **token);
-t_ast_node	*start_ast(t_token **token);
+t_ast	*make_node_command(t_token **token);
+t_ast	*start_ast(t_token **token);
 
-t_ast_node	*make_ast(t_token_list *tokens)
+t_ast	*make_ast(t_token_list *tokens)
 {
-	t_ast_node	*top;
-	t_ast_node	*new;
+	t_ast	*top;
+	t_ast	*new;
 	t_token		*token;
 
 	token = tokens->head;
@@ -27,7 +27,7 @@ t_ast_node	*make_ast(t_token_list *tokens)
 	while (token && token->type == TOKEN_LOGICAL_AND)
 	{
 		token = token->next;
-		new = malloc(sizeof(t_ast_node));
+		new = malloc(sizeof(t_ast));
 		if (!new)
 			return (NULL);
 		new->type = NODE_AND;
@@ -40,10 +40,10 @@ t_ast_node	*make_ast(t_token_list *tokens)
 }
 
 
-t_ast_node	*start_ast(t_token **token)
+t_ast	*start_ast(t_token **token)
 {
-	t_ast_node	*top;
-	t_ast_node	*left;
+	t_ast	*top;
+	t_ast	*left;
 
 	left = make_node_command(token);
 	if (!*token)
@@ -52,7 +52,7 @@ t_ast_node	*start_ast(t_token **token)
 		(*token)->type != TOKEN_LOGICAL_OR &&
 		(*token)->type != TOKEN_LOGICAL_AND)
 		return (left);
-	top = malloc(sizeof(t_ast_node));
+	top = malloc(sizeof(t_ast));
 	if (!top)
 		return (NULL);
 	top->left = left;
@@ -70,9 +70,9 @@ t_ast_node	*start_ast(t_token **token)
 }
 
 
-t_ast_node	*make_node_command(t_token **token)
+t_ast	*make_node_command(t_token **token)
 {
-	t_ast_node	*new;
+	t_ast	*new;
 	char		**args;
 	int			s_args;
 	int			i;
@@ -80,7 +80,7 @@ t_ast_node	*make_node_command(t_token **token)
 	i = 0;
 	s_args = size_args(token);
 	args = malloc(sizeof(char *) * (s_args + 1));
-	new = malloc(sizeof(t_ast_node));
+	new = malloc(sizeof(t_ast));
 	if (!args || !new)
 		return (NULL);
 	while (i < s_args)
