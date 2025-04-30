@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:11:05 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/28 17:42:57 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/04/30 19:36:25 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,28 +41,26 @@ void	print_tokens(t_token_list *tokens)
 
 void	print_token(char *str_type, t_token *token)
 {
-	if (token->type == 0)
+	if (token->type == TOKEN_WORD)
 		str_type = "WORD";
-	else if (token->type == 1)
+	else if (token->type == TOKEN_PIPE)
 		str_type = "PIPE";
-	else if (token->type == 2)
+	else if (token->type == TOKEN_REDIR_IN)
 		str_type = "REDIR_IN";
-	else if (token->type == 3)
+	else if (token->type == TOKEN_REDIR_OUT)
 		str_type = "REDIR_OUT";
-	else if (token->type == 4)
+	else if (token->type == TOKEN_REDIR_APPEND)
 		str_type = "REDIR_APPEND";
-	else if (token->type == 5)
+	else if (token->type == TOKEN_HEREDOC)
 		str_type = "HEREDOC";
-	else if (token->type == 6)
+	else if (token->type == TOKEN_LOGICAL_AND)
 		str_type = "LOGICAL_AND";
-	else if (token->type == 7)
+	else if (token->type == TOKEN_LOGICAL_OR)
 		str_type = "LOGICAL_OR";
-	else if (token->type == 8)
+	else if (token->type == TOKEN_PAREN_OPEN)
 		str_type = "PAREN_OPEN";
-	else if (token->type == 9)
+	else if (token->type == TOKEN_PAREN_CLOSE)
 		str_type = "PAREN_CLOSE";
-	else if (token->type == 10)
-		str_type = "ASTERISK";
 	printf("type - %s, value - [%s]\n", str_type, token->value);
 }
 /*
