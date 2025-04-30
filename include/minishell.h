@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/30 20:02:06 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/04/30 20:27:56 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 
 // MACRO FOR SYNTAX ERROR
 # define ERR_QUOTE "minishell: syntax error: expecting closing quote"
+# define ERR_PAREN "minishell: syntax error: near unexpected token"
 
 typedef struct s_simple_cmd
 {

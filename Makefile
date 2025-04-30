@@ -14,6 +14,7 @@ CLEAN_DIR	= ${SRC_DIR}/clean
 DEBUG_DIR	= ${SRC_DIR}/debug
 EXPANSION_DIR	= ${SRC_DIR}/expansion
 TOKENIZER_DIR	= ${SRC_DIR}/tokenizer
+SYNTAX_DIR	= ${SRC_DIR}/syntax
 
 SRCS		= $(SRC_DIR)/main.c \
 		  ${SRC_DIR}/init_env.c \
@@ -26,6 +27,7 @@ SRCS		= $(SRC_DIR)/main.c \
 		  ${EXPANSION_DIR}/expansion.c \
 		  ${EXPANSION_DIR}/expansion_utils.c \
 		  ${EXPANSION_DIR}/expansion_types.c \
+		  ${SYNTAX_DIR}/syntax_analysis.c \
 
 OBJS		= ${SRCS:${SRC_DIR}/%.c=${OBJ_DIR}/%.o}
 
