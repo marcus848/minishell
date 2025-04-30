@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
 static int		env_process(char *entry, t_env **head, t_env **tail);
 static t_env	*env_new(const char *key, const char *value);

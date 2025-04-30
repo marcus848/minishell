@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/include/ft_string.h"
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 void	expander(char	***args, t_env *env)
 {

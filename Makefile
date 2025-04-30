@@ -3,42 +3,45 @@ CC		= cc
 CFLAGS		= -Wall -Wextra -Werror
 RM		= rm -rf
 
-SRC_DIR		= ./
-OBJ_DIR		= obj/
-INCLUDE		= -I . -lreadline
-LIBFT_DIR	= libft/
-LIBFT_LIB	= ${LIBFT_DIR}libft.a
+SRC_DIR		= src
+OBJ_DIR		= obj
+INCLUDE		= -Iinclude
+LIBS		= -lreadline
+LIBFT_DIR	= libft
+LIBFT_LIB	= ${LIBFT_DIR}/libft.a
 
-SRCS		= $(SRC_DIR)main.c \
-		  ${SRC_DIR}init_env.c \
-		  ${SRC_DIR}clean.c \
-		  ${SRC_DIR}tokenizer.c \
-		  ${SRC_DIR}tokenizer_handle_operators.c \
-		  ${SRC_DIR}tokenizer_utils.c \
-		  ${SRC_DIR}token_list.c \
-		  ${SRC_DIR}debug_functions.c \
-		  ${SRC_DIR}expansion.c \
-		  ${SRC_DIR}expansion_utils.c \
-		  ${SRC_DIR}expansion_types.c \
+CLEAN_DIR	= ${SRC_DIR}/clean
+DEBUG_DIR	= ${SRC_DIR}/debug
+EXPANSION_DIR	= ${SRC_DIR}/expansion
+TOKENIZER_DIR	= ${SRC_DIR}/tokenizer
 
-OBJS		= ${SRCS:${SRC_DIR}%.c=${OBJ_DIR}%.o}
+SRCS		= $(SRC_DIR)/main.c \
+		  ${SRC_DIR}/init_env.c \
+		  ${CLEAN_DIR}/clean.c \
+		  ${TOKENIZER_DIR}/tokenizer.c \
+		  ${TOKENIZER_DIR}/tokenizer_handle_operators.c \
+		  ${TOKENIZER_DIR}/tokenizer_utils.c \
+		  ${TOKENIZER_DIR}/token_list.c \
+		  ${DEBUG_DIR}/debug_functions.c \
+		  ${EXPANSION_DIR}/expansion.c \
+		  ${EXPANSION_DIR}/expansion_utils.c \
+		  ${EXPANSION_DIR}/expansion_types.c \
+
+OBJS		= ${SRCS:${SRC_DIR}/%.c=${OBJ_DIR}/%.o}
 
 # Colors
 GREEN	= \033[0;32m
 RESET	= \033[0m
 
-all:		${OBJ_DIR} ${NAME}
+all:		${NAME}
 
-${NAME}:	${OBJS} ${LIBFT_LIB} ${MLX_LIB}
-			@${CC} ${CFLAGS} ${OBJS} ${LIBFT_LIB} ${INCLUDE} -o ${NAME}
+${NAME}:	${OBJS} ${LIBFT_LIB} 
+			@${CC} ${CFLAGS} ${OBJS} ${LIBFT_LIB} ${LIBS} -o ${NAME}
 			@echo "$(GREEN)Done!$(RESET)"
 
-${OBJ_DIR}:
-			@mkdir -p ${OBJ_DIR}
-
-${OBJ_DIR}%.o:	${SRC_DIR}%.c
-			@mkdir -p ${OBJ_DIR}
-			@${CC} ${CFLAGS} -I . -I ${LIBFT_DIR} -c $< -o $@
+${OBJ_DIR}/%.o:	${SRC_DIR}/%.c
+			@mkdir -p ${@D}
+			@${CC} ${CFLAGS} ${INCLUDE} -I ${LIBFT_DIR} -c $< -o $@
 
 ${LIBFT_LIB}:
 			@echo "Building libft..."

@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/include/boolean.h"
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 void	update_state_quote(char *input, t_quote *state, int *i)
 {

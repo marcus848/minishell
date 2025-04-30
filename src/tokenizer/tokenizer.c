@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 static int	handle_word(char *input, int *i, t_token_list *tokens);
 static int	handle_quotes(char *input, int *j, t_token_list *tokens);

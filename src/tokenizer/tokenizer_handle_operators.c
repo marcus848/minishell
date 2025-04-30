@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 static int	is_two_char_op(char *input, t_token_type *type, int *len);
 static int	is_one_char_op_1(char input, t_token_type *type, int *len);

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 // Future garbage collector, for now only cleans the t_env struct
 void	clean_all(t_env *env)
