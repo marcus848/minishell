@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdlib.h>
 
 t_command	*make_command(t_token **token)
 {
@@ -21,13 +20,36 @@ t_command	*make_command(t_token **token)
 	command = init_command();
 	command->arg_count = get_size_args(token);
 	command->args = get_args(token, command->arg_count);
-	while (t->type != LOGICAL_OR && t->type != LOGICAL_AND && t->type != PIPE
+	t = *token;
+	while (t && t->type != LOGICAL_OR && t->type != LOGICAL_AND && t->type != PIPE
 		&& t->type != PAREN_OPEN && t->type != PAREN_CLOSE)
 	{
 		if (t->type == REDIR_IN)
 		{
+			command->infile = ft_strdup(t->next->value);
+			t = t->next->next;
 		}
+		else if (t->type == REDIR_OUT)
+		{
+			command->outfile = ft_strdup(t->next->value);
+			t = t->next->next;
+		}
+		else if (t->type == REDIR_APPEND)
+		{
+			command->appendfile = ft_strdup(t->next->value);
+			t = t->next->next;
+		}
+		else if (t->type == HEREDOC)
+		{
+			command->heredoc = 1;
+			command->delimiter = ft_strdup(t->next->value);
+			command->heredoc_path = ft_strjoin("tmp/", command->delimiter);
+			t = t->next->next;
+		}
+		else
+			t = t->next;
 	}
+	(*token) = t;
 	return (command);
 }
 
