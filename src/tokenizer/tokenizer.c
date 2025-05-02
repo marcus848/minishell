@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 22:42:04 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/30 20:04:14 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/02 15:10:30 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static int	handle_quotes(char *input, int *j, t_token_list *tokens)
 			(*j)++;
 		if (input[*j] != type)
 		{
-			report_syntax_error(ERR_QUOTE);
+			report_unexpected_quotes((const char)type);
 			token_list_free(tokens);
 			return (0);
 		}

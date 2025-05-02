@@ -28,6 +28,8 @@ SRCS		= $(SRC_DIR)/main.c \
 		  ${EXPANSION_DIR}/expansion_utils.c \
 		  ${EXPANSION_DIR}/expansion_types.c \
 		  ${SYNTAX_DIR}/syntax_analysis.c \
+		  ${SYNTAX_DIR}/syntax_analysis_utils.c \
+		  ${SYNTAX_DIR}/syntax_errors.c \
 
 OBJS		= ${SRCS:${SRC_DIR}/%.c=${OBJ_DIR}/%.o}
 

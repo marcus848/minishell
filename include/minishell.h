@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/30 20:27:56 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/02 15:13:57 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,6 @@
 
 // to use add_history
 # include <readline/history.h>
-
-// MACRO FOR SYNTAX ERROR
-# define ERR_QUOTE "minishell: syntax error: expecting closing quote"
-# define ERR_PAREN "minishell: syntax error: near unexpected token"
 
 typedef struct s_simple_cmd
 {
@@ -110,7 +106,8 @@ t_env			*init_env(char **envp);
 void			clean_all(t_env *env);
 void			env_free_all(t_env **head);
 void			exit_perror(const char *msg);
-void			report_syntax_error(const char *msg);
+void			report_unexpected_quotes(const char token_value);
+int				report_unexpected(const char *token_value);
 
 // expansion
 void			expander(char ***args, t_env *env);
@@ -133,5 +130,10 @@ void			test_expander(t_env *env);
 
 // syntax analysis
 int				syntax_analysis(t_token_list *tokens);
+int				check_pipe(t_token *prev, t_token *next);
+int				check_redir(t_token *next);
+int				check_logical(t_token *prev, t_token *token, t_token *next);
+int				is_twochar(t_token *token);
+int				check_paren(t_token *p, t_token *t, t_token *n, int *depth);
 
 #endif

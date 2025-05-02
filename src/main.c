@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 20:45:28 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/30 19:44:43 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/02 15:03:12 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,19 @@ void	minishell(char *input)
 	t_token_list	*tokens;
 
 	tokens = tokenizer(input);
+	if (tokens == NULL)
+		return ;
 	parser(tokens);
-	token_list_free(tokens);
 }
 
 void	parser(t_token_list *tokens)
 {
-	syntax_analysis(tokens);
+	if (!syntax_analysis(tokens))
+		token_list_free(tokens);
+	else
+	{
+		token_list_free(tokens);
+	}
 }
 
 void	prompt(void)
