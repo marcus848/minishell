@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/30 20:23:17 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/03 19:01:37 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,10 @@ void			env_free_all(t_env **head);
 void			exit_perror(const char *msg);
 void			report_syntax_error(const char *msg);
 
+// clean_ast
+void			free_args(t_command *command);
+void			command_free(t_command *command);
+
 // expansion
 void			expander(char ***args, t_env *env);
 char			*expander_expand(char *input, t_env *env);
@@ -140,7 +144,13 @@ int				get_expand_len(char *input, t_quote state);
 // commands
 t_command		*make_command(t_token **token);
 t_command		*init_command(void);
+void			parse_redirect(t_token **token, t_command **command);
+void			parse_heredoc(t_token **token, t_command **command);
 char			**get_args(t_token **token, int size_args);
+
+// ast_utils
+int				is_pipe_or_logical(t_token *token);
+int				is_redirect(t_token *token);
 int				get_size_args(t_token **token);
 
 
@@ -149,5 +159,6 @@ void			print_env(t_env *env);
 void			print_tokens(t_token_list *tokens);
 void			print_token(char *str_type, t_token *token);
 void			test_expander(t_env *env);
+void			test_commands_from_tokens(t_token_list *tokens);
 
 #endif

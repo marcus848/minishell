@@ -14,18 +14,23 @@ CLEAN_DIR	= ${SRC_DIR}/clean
 DEBUG_DIR	= ${SRC_DIR}/debug
 EXPANSION_DIR	= ${SRC_DIR}/expansion
 TOKENIZER_DIR	= ${SRC_DIR}/tokenizer
+AST_DIR		= ${SRC_DIR}/ast
 
 SRCS		= $(SRC_DIR)/main.c \
 		  ${SRC_DIR}/init_env.c \
 		  ${CLEAN_DIR}/clean.c \
+		  ${CLEAN_DIR}/clean_ast.c \
 		  ${TOKENIZER_DIR}/tokenizer.c \
 		  ${TOKENIZER_DIR}/tokenizer_handle_operators.c \
 		  ${TOKENIZER_DIR}/tokenizer_utils.c \
 		  ${TOKENIZER_DIR}/token_list.c \
 		  ${DEBUG_DIR}/debug_functions.c \
+		  ${DEBUG_DIR}/debug_command.c \
 		  ${EXPANSION_DIR}/expansion.c \
 		  ${EXPANSION_DIR}/expansion_utils.c \
 		  ${EXPANSION_DIR}/expansion_types.c \
+		  ${AST_DIR}/ast_utils.c \
+		  ${AST_DIR}/commands.c \
 
 OBJS		= ${SRCS:${SRC_DIR}/%.c=${OBJ_DIR}/%.o}
 

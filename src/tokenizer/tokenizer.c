@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 22:42:04 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/25 15:57:21 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/03 18:29:10 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	handle_word(char *input, int *i, t_token_list *tokens)
 	value = ft_substr(input, start, j - start);
 	if (!value)
 		exit_perror("ft_substr");
-	token = new_token(TOKEN_WORD, value);
+	token = new_token(WORD, value);
 	if (!token)
 	{
 		free(value);

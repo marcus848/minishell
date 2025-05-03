@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 20:45:28 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/30 18:34:44 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/03 18:26:50 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	minishell(char *input)
 	t_token_list	*tokens;
 
 	tokens = tokenizer(input);
-	parser(tokens);
+	// parser(tokens);
+	test_commands_from_tokens(tokens);
 	token_list_free(tokens);
 }
 

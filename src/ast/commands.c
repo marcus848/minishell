@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 19:58:35 by marcudos          #+#    #+#             */
-/*   Updated: 2025/04/30 20:32:20 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/03 17:45:36 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,41 +16,69 @@ t_command	*make_command(t_token **token)
 {
 	t_command	*command;
 	t_token		*t;
+	int			arg;
 
 	command = init_command();
+	if (!command)
+		return (NULL);
 	command->arg_count = get_size_args(token);
-	command->args = get_args(token, command->arg_count);
+	command->args = (char **) malloc(sizeof(char *) * (command->arg_count + 1));
+	if (!command->args)
+		return (NULL);
 	t = *token;
-	while (t && t->type != LOGICAL_OR && t->type != LOGICAL_AND && t->type != PIPE
-		&& t->type != PAREN_OPEN && t->type != PAREN_CLOSE)
+	arg = 0;
+	while (t && !is_pipe_or_logical(t))
 	{
-		if (t->type == REDIR_IN)
+		if (t->type == WORD)
 		{
-			command->infile = ft_strdup(t->next->value);
-			t = t->next->next;
-		}
-		else if (t->type == REDIR_OUT)
-		{
-			command->outfile = ft_strdup(t->next->value);
-			t = t->next->next;
-		}
-		else if (t->type == REDIR_APPEND)
-		{
-			command->appendfile = ft_strdup(t->next->value);
-			t = t->next->next;
-		}
-		else if (t->type == HEREDOC)
-		{
-			command->heredoc = 1;
-			command->delimiter = ft_strdup(t->next->value);
-			command->heredoc_path = ft_strjoin("tmp/", command->delimiter);
-			t = t->next->next;
-		}
-		else
+			command->args[arg++] = ft_strdup(t->value);
 			t = t->next;
+		}
+		else if (is_redirect(t))
+			parse_redirect(&t, &command);
 	}
+	command->args[arg] = NULL;
 	(*token) = t;
 	return (command);
+}
+
+void	parse_redirect(t_token **token, t_command **command)
+{
+	if (!(*token)->next)
+	{
+		(*token) = (*token)->next;
+		return ;
+	}
+	if ((*token)->type == REDIR_IN)
+	{
+		(*command)->infile = ft_strdup((*token)->next->value);
+		(*token) = (*token)->next->next;
+	}
+	else if ((*token)->type == REDIR_OUT)
+	{
+		(*command)->outfile = ft_strdup((*token)->next->value);
+		(*token) = (*token)->next->next;
+	}
+	else if ((*token)->type == REDIR_APPEND)
+	{
+		(*command)->appendfile = ft_strdup((*token)->next->value);
+		(*token) = (*token)->next->next;
+	}
+	else if ((*token)->type == HEREDOC)
+		parse_heredoc(token, command);
+}
+
+void	parse_heredoc(t_token **token, t_command **command)
+{
+	if ((*command)->heredoc == 1)
+	{
+		free((*command)->delimiter);
+		free((*command)->heredoc_path);
+	}
+	(*command)->heredoc = 1;
+	(*command)->delimiter = ft_strdup((*token)->next->value);
+	(*command)->heredoc_path = ft_strjoin("tmp/", (*command)->delimiter);
+	(*token) = (*token)->next->next;
 }
 
 t_command	*init_command(void)
@@ -58,6 +86,8 @@ t_command	*init_command(void)
 	t_command	*command;
 
 	command = (t_command *) malloc(sizeof(t_command));
+	if (!command)
+		return (NULL);
 	command->args = NULL;
 	command->arg_count = 0;
 	command->infile = NULL;
@@ -69,37 +99,22 @@ t_command	*init_command(void)
 	command->is_builtin = 0;
 	return (command);
 }
-
-char	**get_args(t_token **token, int size_args)
-{
-	char	**args;
-	int		i;
-
-	args = (char **) malloc(sizeof(char *) * (size_args + 1));
-	i = 0;
-	if (!args)
-		return (NULL);
-	while (i < size_args)
-	{
-		args[i] = ft_strdup((*token)->value);
-		(*token) = (*token)->next;
-		i++;
-	}
-	args[i] = NULL;
-	return (args);
-}
-
-int	get_size_args(t_token **token)
-{
-	t_token	*t;
-	int	i;
-
-	i = 0;
-	t = (*token);
-	while (t && t->type == WORD)
-	{
-		i++;
-		t = t->next;
-	}
-	return (i);
-}
+//
+// char	**get_args(t_token **token, int size_args)
+// {
+// 	char	**args;
+// 	int		i;
+//
+// 	args = (char **) malloc(sizeof(char *) * (size_args + 1));
+// 	i = 0;
+// 	if (!args)
+// 		return (NULL);
+// 	while (i < size_args)
+// 	{
+// 		args[i] = ft_strdup((*token)->value);
+// 		(*token) = (*token)->next;
+// 		i++;
+// 	}
+// 	args[i] = NULL;
+// 	return (args);
+// }
