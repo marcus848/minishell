@@ -51,23 +51,23 @@ void	print_ast(t_ast *node, int level)
 	if (!node)
 		return ;
 	
-	// imprimir a indentação para visualizar a hierarquia
 	for (int i = 0; i < level; i++)
 		printf("    ");
 
 	print_node_type(node->type);
 
-	if (node->type == NODE_COMMAND && node->args)
+	if (node->type == NODE_COMMAND && node->cmd && node->cmd->args)
 	{
 		printf(" ");
-		print_args(node->args);
+		print_args(node->cmd->args);
 	}
 	else
 		printf("\n");
 
-	// Recursivamente imprimir os filhos
 	if (node->left)
 		print_ast(node->left, level + 1);
 	if (node->right)
 		print_ast(node->right, level + 1);
+
 }
+

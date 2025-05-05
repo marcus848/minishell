@@ -23,7 +23,6 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	env = init_env(envp);
-	// test_expander(env);
 	prompt();
 	clean_all(env);
 	return (0);
@@ -38,7 +37,6 @@ void	minishell(char *input)
 	t_token_list	*tokens;
 
 	tokens = tokenizer(input);
-	// parser(tokens);
 	test_commands_from_tokens(tokens);
 	token_list_free(tokens);
 }
@@ -46,8 +44,6 @@ void	minishell(char *input)
 void	parser(t_token_list *tokens)
 {
 	(void)tokens;
-	//syntax_analysis(tokens);
-	//create_ast(tokens);
 	printf("oi eu sou o senhor parser\n");
 }
 

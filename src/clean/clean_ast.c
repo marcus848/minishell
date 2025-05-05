@@ -29,7 +29,6 @@ void	command_free(t_command *command)
 	free(command);
 }
 
-
 void	free_args(t_command *command)
 {
 	int	i;

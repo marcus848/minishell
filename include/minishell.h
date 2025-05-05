@@ -95,10 +95,10 @@ typedef struct s_env
 
 typedef struct s_ast
 {
-	t_node_type	type;
+	t_node_type		type;
 	struct s_ast	*left;
 	struct s_ast	*right;
-	char		**args;
+	t_command		*cmd;
 }	t_ast;
 
 // tokenizer
@@ -140,6 +140,12 @@ char			*extract_key(char *input);
 int				get_expand_len(char *input, t_quote state);
 
 // ast
+t_ast			*make_ast(t_token **token);
+t_ast			*parse_command(t_token **token);
+t_ast			*parse_logical(t_token **token);
+t_ast			*parse_pipe(t_token **token);
+t_ast			*parse_simple_command(t_token **token);
+t_ast			*parse_subshell(t_token **token);
 
 // commands
 t_command		*make_command(t_token **token);
@@ -153,12 +159,12 @@ int				is_pipe_or_logical(t_token *token);
 int				is_redirect(t_token *token);
 int				get_size_args(t_token **token);
 
-
 // debug functions
 void			print_env(t_env *env);
 void			print_tokens(t_token_list *tokens);
 void			print_token(char *str_type, t_token *token);
 void			test_expander(t_env *env);
 void			test_commands_from_tokens(t_token_list *tokens);
+void			print_ast(t_ast *node, int level);
 
 #endif

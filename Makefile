@@ -26,10 +26,12 @@ SRCS		= $(SRC_DIR)/main.c \
 		  ${TOKENIZER_DIR}/token_list.c \
 		  ${DEBUG_DIR}/debug_functions.c \
 		  ${DEBUG_DIR}/debug_command.c \
+		  ${DEBUG_DIR}/debug_ast.c \
 		  ${EXPANSION_DIR}/expansion.c \
 		  ${EXPANSION_DIR}/expansion_utils.c \
 		  ${EXPANSION_DIR}/expansion_types.c \
 		  ${AST_DIR}/ast_utils.c \
+		  ${AST_DIR}/ast.c \
 		  ${AST_DIR}/commands.c \
 
 OBJS		= ${SRCS:${SRC_DIR}/%.c=${OBJ_DIR}/%.o}

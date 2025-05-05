@@ -48,7 +48,7 @@ int	is_redirect(t_token *token)
 
 int	get_size_args(t_token **token)
 {
-	t_token	*t;
+	t_token		*t;
 	int	i;
 
 	i = 0;

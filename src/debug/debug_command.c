@@ -37,7 +37,7 @@ void	print_command(t_command *cmd)
 		printf("Heredoc Path: [%s]\n", cmd->heredoc_path);
 	}
 	printf("Is builtin: %d\n", cmd->is_builtin);
-	printf("==============\n");
+	printf("===============\n");
 }
 
 void	test_commands_from_tokens(t_token_list *tokens)

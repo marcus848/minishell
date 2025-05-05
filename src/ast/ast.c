@@ -12,88 +12,102 @@
 
 #include "../../include/minishell.h"
 
-int	size_args(t_token **token);
-t_ast	*make_node_command(t_token **token);
-t_ast	*start_ast(t_token **token);
-
-t_ast	*make_ast(t_token_list *tokens)
+t_ast	*make_ast(t_token **token)
 {
-	t_ast	*top;
-	t_ast	*new;
-	t_token		*token;
+	t_token	*t;
 
-	token = tokens->head;
-	top = start_ast(&token);
-	while (token && token->type == LOGICAL_AND)
-	{
-		token = token->next;
-		new = malloc(sizeof(t_ast));
-		if (!new)
-			return (NULL);
-		new->type = NODE_AND;
-		new->left = top;
-		new->right = make_node_command(&token);
-		new->args = NULL;
-		top = new;
-	}
-	return (top);
+	t = (*token);
+	return (parse_logical(token));
 }
 
-
-t_ast	*start_ast(t_token **token)
+t_ast	*parse_logical(t_token **token)
 {
-	t_ast	*top;
+	t_ast		*left;
+	t_ast		*right;
+	t_ast		*new;
+	t_token		*t;
+	t_token_type		type;
+
+	t = (*token);
+	left = parse_pipe(&t);
+	while (t && (t->type == LOGICAL_OR || t->type == LOGICAL_AND))
+	{
+		type = t->type;
+		t = t->next;
+		right = parse_pipe(&t);
+		new = (t_ast *) malloc(sizeof(t_ast));
+		new->left = left;
+		new->right = right;
+		new->cmd = NULL;
+		if (type == LOGICAL_OR)
+			new->type = NODE_OR;
+		else
+			new->type = NODE_AND;
+		left = new;
+	}
+	return (left);
+}
+
+t_ast	*parse_pipe(t_token **token)
+{
 	t_ast	*left;
+	t_ast	*right;
+	t_ast	*new;
+	t_token	*t;
 
-	left = make_node_command(token);
-	if (!*token)
-		return (left);
-	if ((*token)->type != PIPE &&
-		(*token)->type != LOGICAL_OR &&
-		(*token)->type != LOGICAL_AND)
-		return (left);
-	top = malloc(sizeof(t_ast));
-	if (!top)
-		return (NULL);
-	top->left = left;
-	top->args = NULL;
-	top->right = NULL;
-	if ((*token)->type == PIPE)
-		top->type = NODE_PIPE;
-	else if ((*token)->type == LOGICAL_OR)
-		top->type = NODE_OR;
-	else if ((*token)->type == LOGICAL_AND)
-		top->type = NODE_AND;
-	(*token) = (*token)->next;
-	top->right = make_node_command(token);
-	return (top);
+	t = (*token);
+	left = parse_simple_command(&t);
+	while (t && t->type == PIPE)
+	{
+		t = t->next;
+		right = parse_simple_command(&t);
+		new = (t_ast *) malloc(sizeof(t_ast));
+		new->left = left;
+		new->right = right;
+		new->cmd = NULL;
+		new->type = NODE_PIPE;
+		left = new;
+	}
+	(*token) = t;
+	return (left);
 }
 
+t_ast	*parse_subshell(t_token **token)
+{
+	t_ast	*subtree;
+	t_ast	*node;
+	t_token	*t;
 
-t_ast	*make_node_command(t_token **token)
+	t = (*token);
+	if (!t || t->type != PAREN_OPEN)
+		return (NULL);
+	t = t->next;
+	subtree = parse_logical(&t);
+	t = t->next;
+	node = (t_ast *) malloc(sizeof(t_ast));
+	node->left = subtree;
+	node->right = NULL;
+	node->cmd = NULL;
+	node->type = NODE_SUBSHELL;
+	(*token) = t;
+	return (node);
+}
+
+t_ast	*parse_simple_command(t_token **token)
+{
+	if ((*token)->type == PAREN_OPEN)
+		return (parse_subshell(token));
+	return (parse_command(token));
+}
+
+t_ast	*parse_command(t_token **token)
 {
 	t_ast	*new;
-	char		**args;
-	int			s_args;
-	int			i;
 
-	i = 0;
-	s_args = size_args(token);
-	args = malloc(sizeof(char *) * (s_args + 1));
-	new = malloc(sizeof(t_ast));
-	if (!args || !new)
-		return (NULL);
-	while (i < s_args)
-	{
-		args[i] = ft_strdup((*token)->value);
-		(*token) = (*token)->next;
-		i++;
-	}
-	args[i] = NULL;
-	new->type = NODE_COMMAND;
-	new->args = args;
+	new = (t_ast *) malloc(sizeof(t_ast));
 	new->left = NULL;
 	new->right = NULL;
+	new->type = NODE_COMMAND;
+	new->cmd = make_command(token);
 	return (new);
 }
-
