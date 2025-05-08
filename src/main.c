@@ -38,6 +38,7 @@ void	minishell(char *input)
 
 	tokens = tokenizer(input);
 	test_commands_from_tokens(tokens);
+	print_ast(parse_logical(&tokens->head), 0);
 	token_list_free(tokens);
 }
 

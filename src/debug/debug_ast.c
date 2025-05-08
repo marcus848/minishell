@@ -48,14 +48,17 @@ void	print_node_type(t_node_type type)
 
 void	print_ast(t_ast *node, int level)
 {
+	int	i;
+
+	i = 0;
 	if (!node)
 		return ;
-	
-	for (int i = 0; i < level; i++)
+	while (i < level)
+	{
 		printf("    ");
-
+		i++;
+	}
 	print_node_type(node->type);
-
 	if (node->type == NODE_COMMAND && node->cmd && node->cmd->args)
 	{
 		printf(" ");
@@ -63,11 +66,8 @@ void	print_ast(t_ast *node, int level)
 	}
 	else
 		printf("\n");
-
 	if (node->left)
 		print_ast(node->left, level + 1);
 	if (node->right)
 		print_ast(node->right, level + 1);
-
 }
-

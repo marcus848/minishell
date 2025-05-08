@@ -12,21 +12,13 @@
 
 #include "../../include/minishell.h"
 
-t_ast	*make_ast(t_token **token)
-{
-	t_token	*t;
-
-	t = (*token);
-	return (parse_logical(token));
-}
-
 t_ast	*parse_logical(t_token **token)
 {
-	t_ast		*left;
-	t_ast		*right;
-	t_ast		*new;
-	t_token		*t;
-	t_token_type		type;
+	t_ast	*left;
+	t_ast	*right;
+	t_ast	*new;
+	t_token	*t;
+	int		type;
 
 	t = (*token);
 	left = parse_pipe(&t);

@@ -11,19 +11,19 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
 void	print_command(t_command *cmd)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	printf("=== Comando ===\n");
-
 	printf("Args (%d):\n", cmd->arg_count);
 	while (cmd->args && cmd->args[i])
 	{
 		printf("  args[%d]: [%s]\n", i, cmd->args[i]);
 		i++;
 	}
-
 	if (cmd->infile)
 		printf("Infile: [%s]\n", cmd->infile);
 	if (cmd->outfile)
@@ -40,40 +40,45 @@ void	print_command(t_command *cmd)
 	printf("===============\n");
 }
 
+void	print_operator(t_token_type type)
+{
+	if (type == PIPE)
+		printf("Operador: PIPE\n");
+	else if (type == LOGICAL_AND)
+		printf("Operador: AND (&&)\n");
+	else if (type == LOGICAL_OR)
+		printf("Operador: OR (||)\n");
+	else if (type == PAREN_OPEN)
+		printf("Operador: PAREN OPEN (\n");
+	else if (type == PAREN_CLOSE)
+		printf("Operador: PAREN CLOSE )\n");
+}
+
 void	test_commands_from_tokens(t_token_list *tokens)
 {
-	t_token	*current = tokens->head;
+	t_token		*current;
+	t_command	*cmd;
 
+	current = tokens->head;
 	while (current)
 	{
 		if (is_pipe_or_logical(current))
 		{
 			printf("=== Operador ===\n");
-			if (current->type == PIPE)
-				printf("Operador: PIPE\n");
-			else if (current->type == LOGICAL_AND)
-				printf("Operador: AND (&&)\n");
-			else if (current->type == LOGICAL_OR)
-				printf("Operador: OR (||)\n");
-			else if (current->type == PAREN_OPEN)
-				printf("Operador: PAREN OPEN (\n");
-			else if (current->type == PAREN_CLOSE)
-				printf("Operador: PAREN CLOSE )\n");
+			print_operator(current->type);
 			printf("================\n");
 			current = current->next;
 		}
 		else
 		{
-			// Chama make_command e atualiza o ponteiro
-			t_command *cmd = make_command(&current);
+			cmd = make_command(&current);
 			if (!cmd)
 			{
 				printf("Erro ao criar comando\n");
-				return;
+				return ;
 			}
 			print_command(cmd);
 			command_free(cmd);
 		}
 	}
 }
-

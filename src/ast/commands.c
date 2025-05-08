@@ -38,8 +38,7 @@ t_command	*make_command(t_token **token)
 			parse_redirect(&t, &command);
 	}
 	command->args[arg] = NULL;
-	(*token) = t;
-	return (command);
+	return ((*token) = t, command);
 }
 
 void	parse_redirect(t_token **token, t_command **command)

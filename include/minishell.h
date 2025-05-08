@@ -140,7 +140,6 @@ char			*extract_key(char *input);
 int				get_expand_len(char *input, t_quote state);
 
 // ast
-t_ast			*make_ast(t_token **token);
 t_ast			*parse_command(t_token **token);
 t_ast			*parse_logical(t_token **token);
 t_ast			*parse_pipe(t_token **token);
