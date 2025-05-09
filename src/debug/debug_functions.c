@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:11:05 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/28 17:42:57 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/04/30 20:02:39 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,31 +41,29 @@ void	print_tokens(t_token_list *tokens)
 
 void	print_token(char *str_type, t_token *token)
 {
-	if (token->type == 0)
+	if (token->type == WORD)
 		str_type = "WORD";
-	else if (token->type == 1)
+	else if (token->type == PIPE)
 		str_type = "PIPE";
-	else if (token->type == 2)
+	else if (token->type == REDIR_IN)
 		str_type = "REDIR_IN";
-	else if (token->type == 3)
+	else if (token->type == REDIR_OUT)
 		str_type = "REDIR_OUT";
-	else if (token->type == 4)
+	else if (token->type == REDIR_APPEND)
 		str_type = "REDIR_APPEND";
-	else if (token->type == 5)
+	else if (token->type == HEREDOC)
 		str_type = "HEREDOC";
-	else if (token->type == 6)
+	else if (token->type == LOGICAL_AND)
 		str_type = "LOGICAL_AND";
-	else if (token->type == 7)
+	else if (token->type == LOGICAL_OR)
 		str_type = "LOGICAL_OR";
-	else if (token->type == 8)
+	else if (token->type == PAREN_OPEN)
 		str_type = "PAREN_OPEN";
-	else if (token->type == 9)
+	else if (token->type == PAREN_CLOSE)
 		str_type = "PAREN_CLOSE";
-	else if (token->type == 10)
-		str_type = "ASTERISK";
 	printf("type - %s, value - [%s]\n", str_type, token->value);
 }
-/*
+
 void	test_expander(t_env *env)
 {
 	char	**args;
@@ -75,50 +73,20 @@ void	test_expander(t_env *env)
 	args = malloc(sizeof(char *));
 	if (!args)
 		return ;
-	args[0] = ft_strdup("echo");
+	args[0] = ft_strdup("c\'a\'t");
 	args[1] = ft_strdup("\"$HOME\"-\'$USER\'");
 	args[2] = NULL;
-
 	printf("Antes da expansão:\n");
 	i = -1;
 	while (args[++i])
 		printf("args[%d] = [%s]\n", i, args[i]);
-
 	expander(&args, env);
-
 	printf("Depois da expansão:\n");
 	i = -1;
 	while (args[++i])
 		printf("args[%d] = [%s]\n", i, args[i]);
-
-	i = 0;
-	while (args[i])
-		free(args[i++]);
-	free(args);
-
-	printf("\n========== TESTE 2 ==========\n");
-	args = malloc(sizeof(char *));
-	if (!args)
-		return ;
-	args[0] = ft_strdup("echo");
-	args[1] = ft_strdup("\"\'$USER\'\"-\'$USER-\'-$ USER-~-$USER");
-	args[2] = NULL;
-
-	printf("Antes da expansão:\n");
-	i = -1;
-	while (args[++i])
-		printf("args[%d] = [%s]\n", i, args[i]);
-
-	expander(&args, env);
-
-	printf("Depois da expansão:\n");
-	i = -1;
-	while (args[++i])
-		printf("args[%d] = [%s]\n", i, args[i]);
-
 	i = 0;
 	while (args[i])
 		free(args[i++]);
 	free(args);
 }
-*/

@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/28 17:28:20 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/02 15:13:57 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,42 +25,31 @@
 // to use add_history
 # include <readline/history.h>
 
-// MACRO FOR SYNTAX ERROR
-# define ERR_QUOTE "minishell: syntax error: expecting closing quote"
-
-typedef struct s_simple_cmd
-{
-	char	**args;
-	int		arg_count;
-}	t_simple_cmd;
-
 typedef struct s_command
 {
-	t_simple_cmd	**simple_cmds;
-	int				cmd_count;
+	char			**args;
+	int				arg_count;
 	char			*infile;
 	char			*outfile;
-	char			*errfile;
-	int				append_out;
-	int				append_err;
+	char			*appendfile;
 	int				heredoc;
 	char			*delimiter;
-	int				background;
+	char			*heredoc_path;
+	int				is_builtin;
 }	t_command;
 
 typedef enum e_token_type
 {
-	TOKEN_WORD,
-	TOKEN_PIPE,
-	TOKEN_REDIR_IN,
-	TOKEN_REDIR_OUT,
-	TOKEN_REDIR_APPEND,
-	TOKEN_HEREDOC,
-	TOKEN_LOGICAL_AND,
-	TOKEN_LOGICAL_OR,
-	TOKEN_PAREN_OPEN,
-	TOKEN_PAREN_CLOSE,
-	TOKEN_ASTERISK
+	WORD,
+	PIPE,
+	REDIR_IN,
+	REDIR_OUT,
+	REDIR_APPEND,
+	HEREDOC,
+	LOGICAL_AND,
+	LOGICAL_OR,
+	PAREN_OPEN,
+	PAREN_CLOSE,
 }	t_token_type;
 
 typedef enum e_quote
@@ -69,6 +58,15 @@ typedef enum e_quote
 	SINGLE_QUOTE,
 	DOUBLE_QUOTE
 }	t_quote;
+
+typedef enum s_node_type
+{
+	NODE_COMMAND,
+	NODE_PIPE,
+	NODE_AND,
+	NODE_OR,
+	NODE_SUBSHELL
+}	t_node_type;
 
 typedef struct s_token
 {
@@ -91,6 +89,14 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct s_ast
+{
+	t_node_type		type;
+	struct s_ast	*left;
+	struct s_ast	*right;
+	t_command		*cmd;
+}	t_ast;
+
 // tokenizer
 t_token_list	*tokenizer(char *input);
 int				handle_operators(char *input, int *i, t_token_list *tokens);
@@ -110,7 +116,13 @@ t_env			*init_env(char **envp);
 void			clean_all(t_env *env);
 void			env_free_all(t_env **head);
 void			exit_perror(const char *msg);
-void			report_syntax_error(const char *msg);
+void			report_unexpected_quotes(const char token_value);
+int				report_unexpected(const char *token_value);
+
+// clean_ast
+void			free_args(t_command *command);
+void			command_free(t_command *command);
+void			ast_free(t_ast *root);
 
 // expansion
 void			expander(char ***args, t_env *env);
@@ -125,10 +137,39 @@ void			update_state_quote(char *input, t_quote *state, int *i);
 char			*extract_key(char *input);
 int				get_expand_len(char *input, t_quote state);
 
+// ast
+t_ast			*parse_command(t_token **token);
+t_ast			*parse_logical(t_token **token);
+t_ast			*parse_pipe(t_token **token);
+t_ast			*parse_simple_command(t_token **token);
+t_ast			*parse_subshell(t_token **token);
+
+// commands
+t_command		*make_command(t_token **token);
+t_command		*init_command(void);
+void			parse_redirect(t_token **token, t_command **command);
+void			parse_heredoc(t_token **token, t_command **command);
+char			**get_args(t_token **token, int size_args);
+
+// ast_utils
+int				is_pipe_or_logical(t_token *token);
+int				is_redirect(t_token *token);
+int				get_size_args(t_token **token);
+
 // debug functions
 void			print_env(t_env *env);
 void			print_tokens(t_token_list *tokens);
 void			print_token(char *str_type, t_token *token);
 void			test_expander(t_env *env);
+void			test_commands_from_tokens(t_token_list *tokens);
+void			print_ast(t_ast *node, int level);
+
+// syntax analysis
+int				syntax_analysis(t_token_list *tokens);
+int				check_pipe(t_token *prev, t_token *next);
+int				check_redir(t_token *next);
+int				check_logical(t_token *prev, t_token *token, t_token *next);
+int				is_twochar(t_token *token);
+int				check_paren(t_token *p, t_token *t, t_token *n, int *depth);
 
 #endif

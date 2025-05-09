@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 20:45:28 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/28 17:54:14 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/03 18:26:50 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,25 +28,29 @@ int	main(int argc, char **argv, char **envp)
 	return (0);
 }
 
-//TODO: tudo abaixo
-// 	parser
-// 	executor
-// 	garbage collector
 void	minishell(char *input)
 {
 	t_token_list	*tokens;
 
 	tokens = tokenizer(input);
+	if (tokens == NULL)
+		return ;
 	parser(tokens);
-	token_list_free(tokens);
 }
 
 void	parser(t_token_list *tokens)
 {
-	(void)tokens;
-	//syntax_analysis(tokens);
-	//create_ast(tokens);
-	printf("oi eu sou o senhor parser\n");
+	t_ast	*ast;
+
+	if (!syntax_analysis(tokens))
+		token_list_free(tokens);
+	else
+	{
+		ast = parse_logical(&tokens->head);
+		print_ast(ast, 0);
+		token_list_free(tokens);
+		ast_free(ast);
+	}
 }
 
 void	prompt(void)
