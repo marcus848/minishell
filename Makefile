@@ -15,6 +15,7 @@ DEBUG_DIR	= ${SRC_DIR}/debug
 EXPANSION_DIR	= ${SRC_DIR}/expansion
 TOKENIZER_DIR	= ${SRC_DIR}/tokenizer
 AST_DIR		= ${SRC_DIR}/ast
+SYNTAX_DIR	= ${SRC_DIR}/syntax
 
 SRCS		= $(SRC_DIR)/main.c \
 		  ${SRC_DIR}/init_env.c \
@@ -33,6 +34,9 @@ SRCS		= $(SRC_DIR)/main.c \
 		  ${AST_DIR}/ast_utils.c \
 		  ${AST_DIR}/ast.c \
 		  ${AST_DIR}/commands.c \
+		  ${SYNTAX_DIR}/syntax_analysis.c \
+		  ${SYNTAX_DIR}/syntax_analysis_utils.c \
+		  ${SYNTAX_DIR}/syntax_errors.c \
 
 OBJS		= ${SRCS:${SRC_DIR}/%.c=${OBJ_DIR}/%.o}
 

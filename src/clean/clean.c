@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 11:41:48 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/23 11:44:35 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/02 14:31:59 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,4 @@ void	exit_perror(const char *msg)
 {
 	perror(msg);
 	exit(EXIT_FAILURE);
-}
-
-// Reports a syntax error
-void	report_syntax_error(const char *msg)
-{
-	write(2, msg, ft_strlen(msg));
-	write(2, "\n", 1);
 }

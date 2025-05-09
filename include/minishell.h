@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/03 19:01:37 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/02 15:13:57 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,6 @@
 
 // to use add_history
 # include <readline/history.h>
-
-// MACRO FOR SYNTAX ERROR
-# define ERR_QUOTE "minishell: syntax error: expecting closing quote"
 
 typedef struct s_command
 {
@@ -53,7 +50,6 @@ typedef enum e_token_type
 	LOGICAL_OR,
 	PAREN_OPEN,
 	PAREN_CLOSE,
-	ASTERISK
 }	t_token_type;
 
 typedef enum e_quote
@@ -120,7 +116,8 @@ t_env			*init_env(char **envp);
 void			clean_all(t_env *env);
 void			env_free_all(t_env **head);
 void			exit_perror(const char *msg);
-void			report_syntax_error(const char *msg);
+void			report_unexpected_quotes(const char token_value);
+int				report_unexpected(const char *token_value);
 
 // clean_ast
 void			free_args(t_command *command);
@@ -165,5 +162,13 @@ void			print_token(char *str_type, t_token *token);
 void			test_expander(t_env *env);
 void			test_commands_from_tokens(t_token_list *tokens);
 void			print_ast(t_ast *node, int level);
+
+// syntax analysis
+int				syntax_analysis(t_token_list *tokens);
+int				check_pipe(t_token *prev, t_token *next);
+int				check_redir(t_token *next);
+int				check_logical(t_token *prev, t_token *token, t_token *next);
+int				is_twochar(t_token *token);
+int				check_paren(t_token *p, t_token *t, t_token *n, int *depth);
 
 #endif

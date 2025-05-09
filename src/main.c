@@ -39,13 +39,19 @@ void	minishell(char *input)
 	tokens = tokenizer(input);
 	test_commands_from_tokens(tokens);
 	print_ast(parse_logical(&tokens->head), 0);
-	token_list_free(tokens);
+	if (tokens == NULL)
+		return ;
+	parser(tokens);
 }
 
 void	parser(t_token_list *tokens)
 {
-	(void)tokens;
-	printf("oi eu sou o senhor parser\n");
+	if (!syntax_analysis(tokens))
+		token_list_free(tokens);
+	else
+	{
+		token_list_free(tokens);
+	}
 }
 
 void	prompt(void)
