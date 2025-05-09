@@ -38,3 +38,14 @@ void	free_args(t_command *command)
 		free(command->args[i++]);
 	free(command->args);
 }
+
+void	ast_free(t_ast *root)
+{
+	if (!root)
+		return ;
+	ast_free(root->left);
+	ast_free(root->right);
+	if (root->type == NODE_COMMAND && root->cmd)
+		command_free(root->cmd);
+	free(root);
+}

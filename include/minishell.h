@@ -122,6 +122,7 @@ int				report_unexpected(const char *token_value);
 // clean_ast
 void			free_args(t_command *command);
 void			command_free(t_command *command);
+void			ast_free(t_ast *root);
 
 // expansion
 void			expander(char ***args, t_env *env);

@@ -28,17 +28,11 @@ int	main(int argc, char **argv, char **envp)
 	return (0);
 }
 
-//TODO: tudo abaixo
-// 	parser
-// 	executor
-// 	garbage collector
 void	minishell(char *input)
 {
 	t_token_list	*tokens;
 
 	tokens = tokenizer(input);
-	test_commands_from_tokens(tokens);
-	print_ast(parse_logical(&tokens->head), 0);
 	if (tokens == NULL)
 		return ;
 	parser(tokens);
@@ -46,11 +40,16 @@ void	minishell(char *input)
 
 void	parser(t_token_list *tokens)
 {
+	t_ast	*ast;
+
 	if (!syntax_analysis(tokens))
 		token_list_free(tokens);
 	else
 	{
+		ast = parse_logical(&tokens->head);
+		print_ast(ast, 0);
 		token_list_free(tokens);
+		ast_free(ast);
 	}
 }
 
