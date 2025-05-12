@@ -69,20 +69,28 @@ t_ast	*parse_subshell(t_token **token)
 	t_ast	*subtree;
 	t_ast	*node;
 	t_token	*t;
+	int		nesting_level;
 
 	t = (*token);
 	if (!t || t->type != PAREN_OPEN)
 		return (NULL);
 	t = t->next;
 	subtree = parse_logical(&t);
-	t = t->next;
+	nesting_level = 1;
+	while (t && nesting_level > 0)
+	{
+		if (t->type == PAREN_OPEN)
+			nesting_level++;
+		else if (t->type == PAREN_CLOSE)
+			nesting_level--;
+		t = t->next;
+	}
 	node = (t_ast *) malloc(sizeof(t_ast));
 	node->left = subtree;
 	node->right = NULL;
 	node->cmd = NULL;
 	node->type = NODE_SUBSHELL;
-	(*token) = t;
-	return (node);
+	return ((*token) = t, node);
 }
 
 t_ast	*parse_simple_command(t_token **token)

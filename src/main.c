@@ -50,7 +50,6 @@ void	parser(t_token_list *tokens, t_env *env)
 	{
 		ast = parse_logical(&tokens->head);
 		print_ast(ast, 0);
-		test_commands_from_tokens(tokens);
 		executor(ast, env);
 		token_list_free(tokens);
 		ast_free(ast);
