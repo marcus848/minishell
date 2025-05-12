@@ -93,7 +93,6 @@ t_ast	*parse_subshell(t_token **token)
 	return ((*token) = t, node);
 }
 
-
 t_ast	*parse_simple_command(t_token **token)
 {
 	if ((*token)->type == PAREN_OPEN)
