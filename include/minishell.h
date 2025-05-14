@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/02 15:13:57 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/13 21:48:02 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,23 @@
 
 # include "../libft/include/libft.h"
 
+// to use printf
 # include <stdio.h>
-# include <unistd.h>
+
+// to use malloc, free, exit
 # include <stdlib.h>
+
+// to use write, usleep, fork
+# include <unistd.h>
+
+// for O_* constants
+# include <fcntl.h>
+
+// to use pid_t type
+# include <sys/types.h>
+
+// to use waitpid
+# include <sys/wait.h>
 
 // to use readline
 # include <readline/readline.h>
@@ -171,5 +185,8 @@ int				check_redir(t_token *next);
 int				check_logical(t_token *prev, t_token *token, t_token *next);
 int				is_twochar(t_token *token);
 int				check_paren(t_token *p, t_token *t, t_token *n, int *depth);
+
+// executor
+void			executor(t_ast *node, t_env *env);
 
 #endif
