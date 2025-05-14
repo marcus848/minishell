@@ -6,16 +6,15 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 21:46:29 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/13 21:49:14 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/14 16:17:55 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 void	exec_command(t_command *cmd, t_env *env);
-void	handle_redirections(t_command *cmd);
+char	**env_list_to_array(t_env *env);
 
-/*
 void	executor(t_ast *node, t_env *env)
 {
 	if (!node)
@@ -23,11 +22,12 @@ void	executor(t_ast *node, t_env *env)
 	// traverse ast
 	if (node->type == NODE_COMMAND)
 		// wildcard expansion
- 		// variable expansion
+		// variable expansion
  		// handle redirections
  		// execute builtin or fork-exec
  		// restore redirections
 		exec_command(node->cmd, env);
+	/*
 	if (node->type == NODE_PIPE)
 		// create pipe
 		// fork left, redirect stdout
@@ -53,80 +53,71 @@ void	executor(t_ast *node, t_env *env)
 		// fork, apply redirs, exec subtree, wait and update status
 		// obs: subshell must execute in a child process
 		executor(node->left, env);
+	*/
 	return ;
 }
 
 void	exec_command(t_command *cmd, t_env *env)
 {
 	char	**args;
+	char	**envp;
 	int	status;
-	int save_fd_stdin;
-	int save_fd_stdout;
+	int save_stdin;
+	int save_stdout;
 
 	args = cmd->args;
-	envp = to_envp(env);
-	// handle redirections
-	save_fd_stdin = dup(STDIN_FILENO);
-	save_fd_stdout = dup(STDOUT_FILENO);
+	save_fds(&save_stdin, &save_stdout);
 	handle_redirections(cmd);
-	// Check for builtin
-	if (is_builtin(args[0]))
-	{
-		status = run_builtin(args, env);
-	}
+	envp = env_list_to_array(env);
+	if (!envp)
+		exit_perror("env array failed");
+	status = exec_dispatch(args, env, envp);
+	/*
 	else
 	{
-		// Fork + exec
 		pid_t	pid = fork();
-		if (pid == 0)
+		if (pid < 0)
+			exit_perror("fork failed");
+		else if (pid == 0)
 		{
 			execve(args[0], args, envp);
 			perror("execve failed");
 			exit(1);
 		}
 		else
-			waitpid(pid, &status, 0);
+			if (waitpid(pid, &status, 0) < 0)
+				exit_perror("waitpid failed");
 	}
-	// Restore original stdio
-	dup2(save_fd_stdin, STDIN_FILENO);
-	dup2(save_fd_stdout, STDOUT_FILENO);
-	close(save_fd_stdin);
-	close(save_fd_stdout);
-	// Update last status
+	*/
+	free_string_array(envp);
+	restore_fds(save_stdin, save_stdout);
 	set_last_status(status);
 }
 
-void	handle_redirections(t_command *cmd)
+char	**env_list_to_array(t_env *env)
 {
-	int	fd_in;
-	int	fd_out;
-	int	fd_app;
-	int	fd_here;
+	int		count;
+	int		i;
+	char	**arr;
+	t_env	*tmp;
 
-	// Handle redirections
-	if (cmd->infile)
+	tmp = env;
+	while (tmp)
 	{
-		fd_in = open(cmd->infile, O_RDONLY);
-		dup2(fd_in, STDIN_FILENO);
-		close(fd_in);
+		count++;
+		tmp = tmp->next;
 	}
-	if (cmd->outfile)
+	arr = (char **)malloc((count + 1) * sizeof(char *));
+	if (!arr)
+		return (NULL);
+	tmp = env;
+	i = 0;
+	while (tmp)
 	{
-		fd_out = open(cmd->outfile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		dup2(fd_out, STDOUT_FILENO);
-		close(fd_out);
+		arr[i] = ft_strjoin3(tmp->key, "=", tmp->value);
+		tmp = tmp->next;
+		i++;
 	}
-	if (cmd->appendfile)
-	{
-		fd_app = open(cmd->appendfile, O_CREAT | O_WRONLY | O_APPEND, 0644);
-		dup2(fd_app, STDOUT_FILENO);
-		close(fd_app);
-	}
-	if (cmd->heredoc)
-	{
-		fd_here = open(cmd->heredoc_path, O_RDONLY);
-		dup2(fd_here, STDOUT_FILENO);
-		close(fd_here);
-	}
+	arr[count] = NULL;
+	return (arr);
 }
-*/

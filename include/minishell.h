@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/13 21:48:02 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/14 16:10:21 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,5 +188,10 @@ int				check_paren(t_token *p, t_token *t, t_token *n, int *depth);
 
 // executor
 void			executor(t_ast *node, t_env *env);
+void			handle_redirections(t_command *cmd);
+void			apply_input_redir(t_command *cmd);
+void			apply_output_redir(t_command *cmd);
+int				save_fds(int *save_stdin, int *save_stdout);
+int				restore_fds(int save_stdin, int save_stdout);
 
 #endif

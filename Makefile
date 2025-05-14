@@ -16,6 +16,7 @@ EXPANSION_DIR	= ${SRC_DIR}/expansion
 TOKENIZER_DIR	= ${SRC_DIR}/tokenizer
 AST_DIR		= ${SRC_DIR}/ast
 SYNTAX_DIR	= ${SRC_DIR}/syntax
+EXEC_DIR	= ${SRC_DIR}/executor
 
 SRCS		= $(SRC_DIR)/main.c \
 		  ${SRC_DIR}/init_env.c \
@@ -37,6 +38,9 @@ SRCS		= $(SRC_DIR)/main.c \
 		  ${SYNTAX_DIR}/syntax_analysis.c \
 		  ${SYNTAX_DIR}/syntax_analysis_utils.c \
 		  ${SYNTAX_DIR}/syntax_errors.c \
+		  ${EXEC_DIR}/executor.c \
+		  ${EXEC_DIR}/executor_fds.c \
+		  ${EXEC_DIR}/executor_redirs.c \
 
 OBJS		= ${SRCS:${SRC_DIR}/%.c=${OBJ_DIR}/%.o}
 
