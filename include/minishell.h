@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/14 16:10:21 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/14 22:40:55 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ typedef struct s_env
 	char			*key;
 	char			*value;
 	struct s_env	*next;
+	int		last_status;
 }	t_env;
 
 typedef struct s_ast
@@ -193,5 +194,9 @@ void			apply_input_redir(t_command *cmd);
 void			apply_output_redir(t_command *cmd);
 int				save_fds(int *save_stdin, int *save_stdout);
 int				restore_fds(int save_stdin, int save_stdout);
+char			**env_list_to_array(t_env *env);
+void			free_string_array(char **arr);
+void			set_last_status(t_env *env, int status);
+int				get_last_status(t_env *env);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:03:20 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/14 16:10:06 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/14 22:40:58 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	handle_redirections(t_command *cmd)
 	apply_output_redir(cmd);
 }
 
-void	apply_intput_redir(t_command *cmd)
+void	apply_input_redir(t_command *cmd)
 {
 	int	fd;
 

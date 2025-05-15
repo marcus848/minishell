@@ -41,6 +41,8 @@ SRCS		= $(SRC_DIR)/main.c \
 		  ${EXEC_DIR}/executor.c \
 		  ${EXEC_DIR}/executor_fds.c \
 		  ${EXEC_DIR}/executor_redirs.c \
+		  ${EXEC_DIR}/executor_utils.c \
+		  ${EXEC_DIR}/executor_status.c \
 
 OBJS		= ${SRCS:${SRC_DIR}/%.c=${OBJ_DIR}/%.o}
 

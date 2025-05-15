@@ -6,14 +6,14 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 21:46:29 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/14 16:17:55 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/14 22:38:02 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 void	exec_command(t_command *cmd, t_env *env);
-char	**env_list_to_array(t_env *env);
+int	exec_dispatch(char **args, t_env *env, char **envp);
 
 void	executor(t_ast *node, t_env *env)
 {
@@ -39,14 +39,14 @@ void	executor(t_ast *node, t_env *env)
 	{
 	 	// execute left, test status, maybe execute right
 		executor(node->left, env);
-		if (get_last_status() == 0)
+		if (get_last_status(env) == 0)
 			executor(node->right, env);
 	}
 	if (node->type == NODE_OR)
 	{
 	 	// execute left, test status, maybe execute right
 		executor(node->left, env);
-		if (get_last_status() != 0)
+		if (get_last_status(env) != 0)
 			executor(node->right, env);
 	}
 	if (node->type == NODE_SUBSHELL)
@@ -72,52 +72,29 @@ void	exec_command(t_command *cmd, t_env *env)
 	if (!envp)
 		exit_perror("env array failed");
 	status = exec_dispatch(args, env, envp);
-	/*
-	else
-	{
-		pid_t	pid = fork();
-		if (pid < 0)
-			exit_perror("fork failed");
-		else if (pid == 0)
-		{
-			execve(args[0], args, envp);
-			perror("execve failed");
-			exit(1);
-		}
-		else
-			if (waitpid(pid, &status, 0) < 0)
-				exit_perror("waitpid failed");
-	}
-	*/
 	free_string_array(envp);
 	restore_fds(save_stdin, save_stdout);
-	set_last_status(status);
+	set_last_status(env, status);
 }
 
-char	**env_list_to_array(t_env *env)
+int	exec_dispatch(char **args, t_env *env, char **envp)
 {
-	int		count;
-	int		i;
-	char	**arr;
-	t_env	*tmp;
+	(void)env;
+	int	status;
+	pid_t	pid;
 
-	tmp = env;
-	while (tmp)
+	//if (is_builtin(args[0]))
+		//return (run_builtin(args, env));
+	pid = fork();
+	if (pid < 0)
+		exit_perror("fork failed");
+	if (pid == 0)
 	{
-		count++;
-		tmp = tmp->next;
+		execve(args[0], args, envp);
+		perror("execve failed");
+		exit(1);
 	}
-	arr = (char **)malloc((count + 1) * sizeof(char *));
-	if (!arr)
-		return (NULL);
-	tmp = env;
-	i = 0;
-	while (tmp)
-	{
-		arr[i] = ft_strjoin3(tmp->key, "=", tmp->value);
-		tmp = tmp->next;
-		i++;
-	}
-	arr[count] = NULL;
-	return (arr);
+	if (waitpid(pid, &status, 0) < 0)
+		exit_perror("waitpid failed");
+	return (WEXITSTATUS(status));
 }
