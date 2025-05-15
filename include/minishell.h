@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/15 10:58:40 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:57:36 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@
 # include <readline/history.h>
 
 // to use errno and ENOENT
-#include <errno.h>
+# include <errno.h>
 
 typedef struct s_command
 {
@@ -204,5 +204,8 @@ char			**env_list_to_array(t_env *env);
 void			free_string_array(char **arr);
 void			set_last_status(t_env *env, int status);
 int				get_last_status(t_env *env);
+int				exec_dispatch(char **args, t_env *env, char **envp);
+void			execve_with_path(char **args, t_env *env, char **envp);
+void			try_exec_explicit(char *cmd, char **args, char **envp);
 
 #endif

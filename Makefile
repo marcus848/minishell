@@ -43,6 +43,7 @@ SRCS		= $(SRC_DIR)/main.c \
 		  ${EXEC_DIR}/executor_redirs.c \
 		  ${EXEC_DIR}/executor_utils.c \
 		  ${EXEC_DIR}/executor_status.c \
+		  ${EXEC_DIR}/executor_command.c \
 		  ${ENV_DIR}/env_init.c \
 		  ${ENV_DIR}/env_utils.c \
 
