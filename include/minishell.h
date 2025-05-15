@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/14 22:40:55 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/15 10:58:40 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@
 
 // to use add_history
 # include <readline/history.h>
+
+// to use errno and ENOENT
+#include <errno.h>
 
 typedef struct s_command
 {
@@ -101,7 +104,7 @@ typedef struct s_env
 	char			*key;
 	char			*value;
 	struct s_env	*next;
-	int		last_status;
+	int				last_status;
 }	t_env;
 
 typedef struct s_ast
@@ -124,8 +127,10 @@ void			token_list_init(t_token_list *list);
 void			token_list_append(t_token_list *list, t_token *token);
 void			token_list_free(t_token_list *list);
 
-// init env
+// env
 t_env			*init_env(char **envp);
+char			*get_env_value(t_env *env, const char *key);
+char			*get_env_path(t_env *env);
 
 // clean
 void			clean_all(t_env *env);
@@ -173,6 +178,7 @@ int				get_size_args(t_token **token);
 
 // debug functions
 void			print_env(t_env *env);
+void			print_envp(char **envp);
 void			print_tokens(t_token_list *tokens);
 void			print_token(char *str_type, t_token *token);
 void			test_expander(t_env *env);

@@ -18,10 +18,24 @@ void	print_env(t_env *env)
 	t_env	*head;
 
 	head = env;
+	printf("======================== PRINT T_ENV ====================\n\n");
 	while (head)
 	{
 		printf("key = [%s], value = [%s]\n", head->key, head->value);
 		head = head->next;
+	}
+}
+
+void	print_envp(char **envp)
+{
+	int	i;
+
+	i = 0;
+	printf("======================== PRINT ENVP ====================\n\n");
+	while (envp[i])
+	{
+		printf("%s\n", envp[i]);
+		i++;
 	}
 }
 

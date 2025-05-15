@@ -17,9 +17,9 @@ TOKENIZER_DIR	= ${SRC_DIR}/tokenizer
 AST_DIR		= ${SRC_DIR}/ast
 SYNTAX_DIR	= ${SRC_DIR}/syntax
 EXEC_DIR	= ${SRC_DIR}/executor
+ENV_DIR		= ${SRC_DIR}/env
 
 SRCS		= $(SRC_DIR)/main.c \
-		  ${SRC_DIR}/init_env.c \
 		  ${CLEAN_DIR}/clean.c \
 		  ${CLEAN_DIR}/clean_ast.c \
 		  ${TOKENIZER_DIR}/tokenizer.c \
@@ -43,6 +43,8 @@ SRCS		= $(SRC_DIR)/main.c \
 		  ${EXEC_DIR}/executor_redirs.c \
 		  ${EXEC_DIR}/executor_utils.c \
 		  ${EXEC_DIR}/executor_status.c \
+		  ${ENV_DIR}/env_init.c \
+		  ${ENV_DIR}/env_utils.c \
 
 OBJS		= ${SRCS:${SRC_DIR}/%.c=${OBJ_DIR}/%.o}
 
