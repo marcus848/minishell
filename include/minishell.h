@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/15 15:57:36 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/15 22:47:41 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,5 +207,10 @@ int				get_last_status(t_env *env);
 int				exec_dispatch(char **args, t_env *env, char **envp);
 void			execve_with_path(char **args, t_env *env, char **envp);
 void			try_exec_explicit(char *cmd, char **args, char **envp);
+int				is_builtin(char *cmd);
+int				run_builtin(char **args, t_env *env);
+
+// builtin
+int				parse_exit_code(char *arg_str, t_env *env);
 
 #endif

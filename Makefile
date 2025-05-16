@@ -18,6 +18,7 @@ AST_DIR		= ${SRC_DIR}/ast
 SYNTAX_DIR	= ${SRC_DIR}/syntax
 EXEC_DIR	= ${SRC_DIR}/executor
 ENV_DIR		= ${SRC_DIR}/env
+BUILTIN_DIR	= ${SRC_DIR}/builtin
 
 SRCS		= $(SRC_DIR)/main.c \
 		  ${CLEAN_DIR}/clean.c \
@@ -44,8 +45,10 @@ SRCS		= $(SRC_DIR)/main.c \
 		  ${EXEC_DIR}/executor_utils.c \
 		  ${EXEC_DIR}/executor_status.c \
 		  ${EXEC_DIR}/executor_command.c \
+		  ${EXEC_DIR}/executor_builtin.c \
 		  ${ENV_DIR}/env_init.c \
 		  ${ENV_DIR}/env_utils.c \
+		  ${BUILTIN_DIR}/builtin_exit.c \
 
 OBJS		= ${SRCS:${SRC_DIR}/%.c=${OBJ_DIR}/%.o}
 

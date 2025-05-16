@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 15:56:30 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/15 15:58:04 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/15 19:41:45 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,8 @@ int	exec_dispatch(char **args, t_env *env, char **envp)
 	int		status;
 	pid_t	pid;
 
-	(void)env;
-	//if (is_builtin(args[0]))
-		//return (run_builtin(args, env));
+	if (is_builtin(args[0]))
+		return (run_builtin(args, env));
 	pid = fork();
 	if (pid < 0)
 		exit_perror("fork failed");
