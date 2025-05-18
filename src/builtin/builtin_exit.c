@@ -30,12 +30,13 @@ int	parse_exit_code(char *arg_str, t_env *env)
 	{
 		if (!ft_isdigit(arg_str[i]))
 		{
-			ft_putstr_fd("exit\n", STDERR_FILENO);
-			ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
+			ft_putstr_fd("exit\nminishell: exit: ", STDERR_FILENO);
 			ft_putstr_fd(arg_str, STDERR_FILENO);
-			ft_putendl_fd(": numeric argument required", STDERR_FILENO);
+			ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 			exit(2);
 		}
+		else
+			ft_putstr_fd("exit\n", STDERR_FILENO);
 		i++;
 	}
 	code = ft_atoi(arg_str);
