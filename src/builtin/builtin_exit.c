@@ -35,10 +35,9 @@ int	parse_exit_code(char *arg_str, t_env *env)
 			ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 			exit(2);
 		}
-		else
-			ft_putstr_fd("exit\n", STDERR_FILENO);
 		i++;
 	}
+	ft_putstr_fd("exit\n", STDERR_FILENO);
 	code = ft_atoi(arg_str);
 	return (code & 0xFF);
 }
