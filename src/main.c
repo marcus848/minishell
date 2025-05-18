@@ -49,7 +49,7 @@ void	parser(t_token_list *tokens, t_env *env)
 	else
 	{
 		ast = parse_logical(&tokens->head);
-		print_ast(ast, 0);
+		print_ast(ast, 0, env);
 		executor(ast, env);
 		token_list_free(tokens);
 		ast_free(ast);

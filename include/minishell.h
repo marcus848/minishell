@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/02 15:13:57 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/17 16:27:37 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,12 @@ typedef struct s_ast
 	t_command		*cmd;
 }	t_ast;
 
+typedef struct s_args
+{
+	char	*arg;
+	struct s_args	*next;
+}	t_args;
+
 // tokenizer
 t_token_list	*tokenizer(char *input);
 int				handle_operators(char *input, int *i, t_token_list *tokens);
@@ -124,18 +130,12 @@ void			free_args(t_command *command);
 void			command_free(t_command *command);
 void			ast_free(t_ast *root);
 
-// expansion
-void			expander(char ***args, t_env *env);
-char			*expander_expand(char *input, t_env *env);
-char			*expand_token(char *input, t_env *env, t_quote state);
+// clean_expansion
+void	free_args_temp(char **args);
+void	free_args_list(t_args *args);
 
-// expansion_types
-char			*expand_env(char *key, t_env *env);
-
-// expansion_utils
-void			update_state_quote(char *input, t_quote *state, int *i);
-char			*extract_key(char *input);
-int				get_expand_len(char *input, t_quote state);
+//expansion
+void	expander(char ***args, t_env *env, int *size_args);
 
 // ast
 t_ast			*parse_command(t_token **token);
@@ -162,7 +162,7 @@ void			print_tokens(t_token_list *tokens);
 void			print_token(char *str_type, t_token *token);
 void			test_expander(t_env *env);
 void			test_commands_from_tokens(t_token_list *tokens);
-void			print_ast(t_ast *node, int level);
+void	print_ast(t_ast *node, int level, t_env *env);
 
 // syntax analysis
 int				syntax_analysis(t_token_list *tokens);
