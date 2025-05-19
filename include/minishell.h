@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/19 02:23:00 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/19 03:23:51 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,5 +218,6 @@ void			builtin_exit(t_token_list *tokens, t_ast *node, t_env *env);
 int				parse_exit_code(char *arg_str, t_env *env);
 int				builtin_pwd(void);
 int				builtin_env(t_env *env);
+int				builtin_echo(char **args);
 
 #endif
