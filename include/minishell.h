@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/19 11:27:53 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/19 16:54:26 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,12 +143,24 @@ void			ast_free(t_ast *root);
 void	free_args_temp(char **args);
 void	free_args_list(t_args *args);
 
-//expansion
+// expansion
 void	expander(char ***args, t_env *env, int *size_args);
-t_args	*expand_token(char *input, t_env *env);
+char	**list_to_args(t_args *args, int *size_args);
+t_args	*args_to_list(char **args);
 
-//expand_env
+// expand_env
 t_args	*expand_env(char **args, t_env *env);
+t_args	*expand_token(char *input, t_env *env);
+char	*start_prefix(char *input, int *i, t_quote *state);
+void	expand_variable(t_exp *exp, char *key);
+
+// expand_env_utils
+char	*extract_key(char *input, int *i);
+void	update_state_quote(char *input, int *i, t_quote *state);
+char	*find_env_value(char *key, t_env *env);
+
+// expansion_utils
+void	add_token(t_args **head, char *value);
 
 // ast
 t_ast			*parse_command(t_token **token);
