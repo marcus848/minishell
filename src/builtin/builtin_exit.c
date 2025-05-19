@@ -6,11 +6,24 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 22:30:29 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/15 22:55:48 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/19 01:47:16 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	builtin_exit(t_token_list *tokens, t_ast *node, t_env *env)
+{
+	int		code;
+	char	*arg_str;
+
+	arg_str = node->cmd->args[1];
+	code = parse_exit_code(arg_str, env);
+	clean_all(tokens, node, env);
+	if (code == -1)
+		exit(2);
+	exit(code);
+}
 
 // Check that arg_str consistis only of digits
 // (and optional leading +/-)
@@ -33,7 +46,7 @@ int	parse_exit_code(char *arg_str, t_env *env)
 			ft_putstr_fd("exit\nminishell: exit: ", STDERR_FILENO);
 			ft_putstr_fd(arg_str, STDERR_FILENO);
 			ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
-			exit(2);
+			return (-1);
 		}
 		i++;
 	}

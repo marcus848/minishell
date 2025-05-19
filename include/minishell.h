@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/15 22:47:41 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/19 00:17:38 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ char			*get_env_value(t_env *env, const char *key);
 char			*get_env_path(t_env *env);
 
 // clean
-void			clean_all(t_env *env);
+void			clean_all(t_token_list *tokens, t_ast *node, t_env *env);
 void			env_free_all(t_env **head);
 void			exit_perror(const char *msg);
 void			report_unexpected_quotes(const char token_value);
@@ -194,7 +194,7 @@ int				is_twochar(t_token *token);
 int				check_paren(t_token *p, t_token *t, t_token *n, int *depth);
 
 // executor
-void			executor(t_ast *node, t_env *env);
+void			executor(t_token_list *tokens, t_ast *node, t_env *env);
 void			handle_redirections(t_command *cmd);
 void			apply_input_redir(t_command *cmd);
 void			apply_output_redir(t_command *cmd);
@@ -214,6 +214,7 @@ int				is_explicit_executable(char *cmd);
 int				search_in_path(char *cmd, t_env *env);
 
 // builtin
+void			builtin_exit(t_token_list *tokens, t_ast *node, t_env *env);
 int				parse_exit_code(char *arg_str, t_env *env);
 
 #endif

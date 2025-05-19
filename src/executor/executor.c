@@ -6,15 +6,15 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 21:46:29 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/18 23:03:23 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/19 00:16:03 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	exec_command(t_command *cmd, t_env *env);
+void	exec_command(t_token_list *tokens, t_ast *node, t_env *env);
 
-void	executor(t_ast *node, t_env *env)
+void	executor(t_token_list *tokens, t_ast *node, t_env *env)
 {
 	if (!node)
 		return ;
@@ -25,7 +25,7 @@ void	executor(t_ast *node, t_env *env)
  		// handle redirections
  		// execute builtin or fork-exec
  		// restore redirections
-		exec_command(node->cmd, env);
+		exec_command(tokens, node, env);
 	/*
 	if (node->type == NODE_PIPE)
 		// create pipe
@@ -56,7 +56,7 @@ void	executor(t_ast *node, t_env *env)
 	return ;
 }
 
-void	exec_command(t_command *cmd, t_env *env)
+void	exec_command(t_token_list *tokens, t_ast *node, t_env *env)
 {
 	char	**args;
 	char	**envp;
@@ -64,10 +64,10 @@ void	exec_command(t_command *cmd, t_env *env)
 	int		save_stdin;
 	int		save_stdout;
 
-	args = cmd->args;
-	if (ft_strcmp(cmd->args[0], "exit") == 0)
-		run_builtin(cmd->args, env);
-	if (!is_executable_command(cmd->args[0], env))
+	args = node->cmd->args;
+	if (ft_strcmp(node->cmd->args[0], "exit") == 0)
+		builtin_exit(tokens, node, env);
+	if (!is_executable_command(node->cmd->args[0], env))
 	{
 		ft_putstr_fd(args[0], STDERR_FILENO);
 		ft_putstr_fd(": command not found\n", STDERR_FILENO);
@@ -75,7 +75,7 @@ void	exec_command(t_command *cmd, t_env *env)
 		return ;
 	}
 	save_fds(&save_stdin, &save_stdout);
-	handle_redirections(cmd);
+	handle_redirections(node->cmd);
 	envp = env_list_to_array(env);
 	if (!envp)
 		exit_perror("env array failed");

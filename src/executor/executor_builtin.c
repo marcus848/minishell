@@ -6,11 +6,13 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 19:34:09 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/15 22:57:49 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/19 01:53:20 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+int	builtin_pwd(void);
 
 int	is_builtin(char *cmd)
 {
@@ -34,16 +36,18 @@ int	is_builtin(char *cmd)
 int	run_builtin(char **args, t_env *env)
 {
 	char	*cmd;
-	int		code;
 
 	cmd = args[0];
+	(void)env;
 	/*
 	if (ft_strcmp(cmd, "echo") == 0)
 		return (builtin_echo(args));
 	else if (ft_strcmp(cmd, "cd") == 0)
 		return (builtin_cd(args, env));
-	else if (ft_strcmp(cmd, "pwd") == 0)
+	*/
+	if (ft_strcmp(cmd, "pwd") == 0)
 		return (builtin_pwd());
+	/*
 	else if (ft_strcmp(cmd, "export") == 0)
 		return (builtin_export(args, envp));
 	else if (ft_strcmp(cmd, "unset") == 0)
@@ -51,12 +55,12 @@ int	run_builtin(char **args, t_env *env)
 	else if (ft_strcmp(cmd, "env") == 0)
 		return (builtin_env(env));
 	*/
-	if (ft_strcmp(cmd, "exit") == 0)
-	{
-		code = parse_exit_code(args[1], env);
-		//cleanup(env);
-		exit(code);
-	}
 	else
 		return (1);
+}
+
+int	builtin_pwd(void)
+{
+	printf("pwd builtin\n");
+	return (0);
 }

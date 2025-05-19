@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 20:45:28 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/13 21:48:08 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/19 00:44:47 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	prompt(t_env *env);
 void	minishell(char *input, t_env *env);
 void	parser(t_token_list *tokens, t_env *env);
-void	executor(t_ast *node, t_env *env);
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -25,7 +24,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	env = init_env(envp);
 	prompt(env);
-	clean_all(env);
+	clean_all(NULL, NULL, env);
 	return (0);
 }
 
@@ -43,13 +42,12 @@ void	parser(t_token_list *tokens, t_env *env)
 {
 	t_ast	*ast;
 
-	(void)env;
 	if (!syntax_analysis(tokens))
 		token_list_free(tokens);
 	else
 	{
 		ast = parse_logical(&tokens->head);
-		executor(ast, env);
+		executor(tokens, ast, env);
 		token_list_free(tokens);
 		ast_free(ast);
 	}
