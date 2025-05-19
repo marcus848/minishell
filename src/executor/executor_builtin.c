@@ -6,13 +6,11 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 19:34:09 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/19 01:53:20 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/19 02:06:03 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-int	builtin_pwd(void);
 
 int	is_builtin(char *cmd)
 {
@@ -57,10 +55,4 @@ int	run_builtin(char **args, t_env *env)
 	*/
 	else
 		return (1);
-}
-
-int	builtin_pwd(void)
-{
-	printf("pwd builtin\n");
-	return (0);
 }
