@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <string.h>
 
 t_args	*args_to_list(char **args);
 char	**list_to_args(t_args *args, int *size_args);
@@ -116,34 +115,35 @@ char	*find_env_value(char *key, t_env *env)
 	return (ft_strdup(""));
 }
 
-void	expand_variable(t_args **head, char *key, t_quote state, t_env *env)
+void	expand_variable(t_exp *exp, char *key)
 {
-	char	*expanded;
+	char	*temp;
 	char	**parts;
 	int	i;
 
-	expanded = find_env_value(key, env);
+	exp->cur = find_env_value(key, exp->env);
 	free(key);
-	if (!expanded)
+	if (!exp->cur)
 		return ;
-	if (state != DOUBLE_QUOTE)
-		parts = ft_split(expanded, ' ');
-	else
+	if (!exp->prefix)
+		exp->prefix = ft_strdup("");
+	temp = exp->prefix;
+	exp->prefix = ft_strjoin(temp, exp->cur);
+	free(temp);
+	free(exp->cur);
+	exp->cur = NULL;
+	if (exp->state == NO_QUOTE)
 	{
-		parts = (char **) malloc(sizeof(char *) * 2);
-		if (!parts)
-			return ;
-		parts[0] = ft_strdup(expanded);
-		parts[1] = NULL;
+		parts = ft_split(exp->prefix, ' ');
+		i = 0;
+		while (i == 0 || (parts[i] && parts[i + 1]))
+			add_token(exp->head, parts[i++]);
+		if (!parts[i])
+			exp->prefix = NULL;
+		else
+			exp->prefix = ft_strdup(parts[i]);
+		free(parts);
 	}
-	free(expanded);
-	i = 0;
-	while (parts[i])
-	{
-		add_token(head, parts[i]);
-		i++;
-	}
-	free(parts);
 }
 
 char	*start_prefix(char *input, int *i, t_quote *state)
@@ -175,28 +175,37 @@ char	*start_prefix(char *input, int *i, t_quote *state)
 
 t_args	*expand_token(char *input, t_env *env)
 {
-	t_args	*head;
-	char	*prefix;
+	// t_args	*head;
+	// char	*prefix;
 	char	*key;
 	int	i;
-	t_quote	state;
+	t_exp	exp;
 
 	i = 0;
-	state = NO_QUOTE; 
-	head = NULL;
+	exp.state = NO_QUOTE; 
+	exp.head = NULL;
+	exp.env = env;
+	exp.head = (t_args **) malloc(sizeof(t_args *));
+	*exp.head = NULL;
+	exp.prefix = NULL;
+	exp.prefix = start_prefix(input, &i, &exp.state);
 	while (input[i])
 	{
-		prefix = start_prefix(input, &i, &state);
-		if (prefix)
-			add_token(&head, prefix);
 		if (input[i] == '$')
 		{
 			key = extract_key(input, &i);
 			if (key)
-				expand_variable(&head, key, state, env);
+				expand_variable(&exp, key);
+		}
+		else
+		{
+			exp.cur = start_prefix(input, &i, &exp.state);
+			exp.prefix = ft_strjoin(exp.prefix, exp.cur);
+			exp.cur = NULL;
 		}
 	}
-	return (head);
+	add_token(exp.head, exp.prefix);
+	return ((*exp.head));
 }
 
 char	**list_to_args(t_args *args, int *size_args)

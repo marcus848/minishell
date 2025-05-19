@@ -103,6 +103,15 @@ typedef struct s_args
 	struct s_args	*next;
 }	t_args;
 
+typedef struct	s_expand
+{
+	t_args	**head;
+	t_quote	state;
+	t_env	*env;
+	char	*prefix;
+	char	*cur;
+}	t_exp;
+
 // tokenizer
 t_token_list	*tokenizer(char *input);
 int				handle_operators(char *input, int *i, t_token_list *tokens);
