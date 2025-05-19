@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 16:14:44 by marcudos          #+#    #+#             */
-/*   Updated: 2025/05/17 20:02:39 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/19 11:34:08 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,24 +55,14 @@ char	*extract_key(char *input, int *i)
 void	expander(char ***args, t_env *env, int *size_args)
 {
 	t_args	*head;
-	t_args	*cur;
-	t_args	*new;
+	// t_args	*cur;
+	// t_args	*new;
 	char		**expanded;
-	int		i;
+	// int		i;
 
 	if (!(*args) || !(*args)[0])
 		return ;
-	head = expand_token((*args)[0], env);
-	cur = head;
-	i = 1;
-	while ((*args)[i])
-	{
-		new = expand_token((*args)[i], env);
-		while (cur->next)
-			cur = cur->next;
-		cur->next = new;
-		i++;
-	}
+	head = expand_env(*args, env);
 	expanded = list_to_args(head, size_args);
 	free_args_temp(*args);
 	(*args) = expanded;
@@ -175,8 +165,6 @@ char	*start_prefix(char *input, int *i, t_quote *state)
 
 t_args	*expand_token(char *input, t_env *env)
 {
-	// t_args	*head;
-	// char	*prefix;
 	char	*key;
 	int	i;
 	t_exp	exp;

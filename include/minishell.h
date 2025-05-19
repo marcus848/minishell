@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/17 16:27:37 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/19 11:27:53 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,10 @@ void	free_args_list(t_args *args);
 
 //expansion
 void	expander(char ***args, t_env *env, int *size_args);
+t_args	*expand_token(char *input, t_env *env);
+
+//expand_env
+t_args	*expand_env(char **args, t_env *env);
 
 // ast
 t_ast			*parse_command(t_token **token);

@@ -27,6 +27,7 @@ SRCS		= $(SRC_DIR)/main.c \
 		  ${TOKENIZER_DIR}/tokenizer_utils.c \
 		  ${TOKENIZER_DIR}/token_list.c \
 		  ${EXPANSION_DIR}/expansion.c \
+		  ${EXPANSION_DIR}/expand_env.c \
 		  ${DEBUG_DIR}/debug_functions.c \
 		  ${DEBUG_DIR}/debug_command.c \
 		  ${DEBUG_DIR}/debug_ast.c \
