@@ -15,7 +15,7 @@
 // Future garbage collector, for now only cleans the t_env struct
 void	clean_all(t_token_list *tokens, t_ast *node, t_env *env)
 {
-	clear_history();
+	rl_clear_history();
 	if (tokens)
 		token_list_free(tokens);
 	if (node)

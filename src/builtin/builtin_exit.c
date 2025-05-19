@@ -17,6 +17,16 @@ void	builtin_exit(t_token_list *tokens, t_ast *node, t_env *env)
 	int		code;
 	char	*arg_str;
 
+	if (node->cmd->args[2])
+	{
+		if (node->cmd->args[2][0])
+		{
+			ft_putstr_fd("exit\nminishell: exit: ", STDERR_FILENO);
+			ft_putstr_fd("too many arguments\n", STDERR_FILENO);
+			clean_all(tokens, node, env);
+			exit(1);
+		}
+	}
 	arg_str = node->cmd->args[1];
 	code = parse_exit_code(arg_str, env);
 	clean_all(tokens, node, env);
