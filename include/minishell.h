@@ -209,6 +209,9 @@ void			execve_with_path(char **args, t_env *env, char **envp);
 void			try_exec_explicit(char *cmd, char **args, char **envp);
 int				is_builtin(char *cmd);
 int				run_builtin(char **args, t_env *env);
+int				is_executable_command(char *cmd, t_env *env);
+int				is_explicit_executable(char *cmd);
+int				search_in_path(char *cmd, t_env *env);
 
 // builtin
 int				parse_exit_code(char *arg_str, t_env *env);

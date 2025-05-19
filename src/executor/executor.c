@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 21:46:29 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/15 15:57:55 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/18 23:03:23 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,15 @@ void	exec_command(t_command *cmd, t_env *env)
 	int		save_stdout;
 
 	args = cmd->args;
+	if (ft_strcmp(cmd->args[0], "exit") == 0)
+		run_builtin(cmd->args, env);
+	if (!is_executable_command(cmd->args[0], env))
+	{
+		ft_putstr_fd(args[0], STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		set_last_status(env, 127);
+		return ;
+	}
 	save_fds(&save_stdin, &save_stdout);
 	handle_redirections(cmd);
 	envp = env_list_to_array(env);
