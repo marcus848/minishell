@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 19:34:09 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/19 02:45:29 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/19 21:04:21 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,8 @@ int	run_builtin(char **args, t_env *env)
 	cmd = args[0];
 	if (ft_strcmp(cmd, "echo") == 0)
 		return (builtin_echo(args));
-	/*
 	else if (ft_strcmp(cmd, "cd") == 0)
 		return (builtin_cd(args, env));
-	*/
 	else if (ft_strcmp(cmd, "pwd") == 0)
 		return (builtin_pwd());
 	/*

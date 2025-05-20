@@ -53,6 +53,7 @@ SRCS		= $(SRC_DIR)/main.c \
 		  ${BUILTIN_DIR}/builtin_pwd.c \
 		  ${BUILTIN_DIR}/builtin_env.c \
 		  ${BUILTIN_DIR}/builtin_echo.c \
+		  ${BUILTIN_DIR}/builtin_cd.c \
 
 OBJS		= ${SRCS:${SRC_DIR}/%.c=${OBJ_DIR}/%.o}
 

@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:55:50 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/15 10:58:21 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/19 22:14:13 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,3 +32,10 @@ char	*get_env_path(t_env *env)
 		return (path);
 	return ("/usr/local/bin:/usr/bin:/bin");
 }
+
+/*
+void	update_env(t_env *env, const char *key, const char *value)
+{
+	
+}
+*/
