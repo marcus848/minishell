@@ -12,7 +12,8 @@
 
 #include "../../include/minishell.h"
 
-int	is_all_n_flag(const char *str);
+int		is_all_n_flag(const char *str);
+void	write_echo_args(char *arg);
 
 int	builtin_echo(char **args)
 {
@@ -28,13 +29,13 @@ int	builtin_echo(char **args)
 	}
 	while (args[i])
 	{
-		printf("%s", args[i]);
+		write_echo_args(args[i]);
 		if (args[i + 1])
-			printf(" ");
+			write(STDOUT_FILENO, " ", 1);
 		i++;
 	}
 	if (!supress_nl)
-		printf("\n");
+		write(STDOUT_FILENO, "\n", 1);
 	return (0);
 }
 
@@ -52,4 +53,17 @@ int	is_all_n_flag(const char *str)
 		i++;
 	}
 	return (1);
+}
+
+void	write_echo_args(char *arg)
+{
+	int	i;
+
+	i = 0;
+	while (arg[i])
+	{
+		if (arg[i] != '\'' && arg[i] != '\"')
+			write(STDOUT_FILENO, &arg[i], 1);
+		i++;
+	}
 }
