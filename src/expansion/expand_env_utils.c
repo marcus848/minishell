@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 16:10:11 by marcudos          #+#    #+#             */
-/*   Updated: 2025/05/19 16:52:33 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/20 19:40:42 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,24 @@ char	*find_env_value(char *key, t_env *env)
 		env = env->next;
 	}
 	return (ft_strdup(""));
+}
+
+int	count_array(void **ptr)
+{
+	int	i;
+
+	i = 0;
+	while (ptr[i])
+		i++;
+	return (i);
+}
+
+char	*ft_strjoin_free(char *s1, char *s2)
+{
+	char	*res;
+
+	res = ft_strjoin(s1, s2);
+	free(s1);
+	free(s2);
+	return (res);
 }

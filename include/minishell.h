@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/19 16:54:26 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/20 19:40:52 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ typedef struct	s_expand
 	t_env	*env;
 	char	*prefix;
 	char	*cur;
+	int	i;
 }	t_exp;
 
 // tokenizer
@@ -158,6 +159,8 @@ void	expand_variable(t_exp *exp, char *key);
 char	*extract_key(char *input, int *i);
 void	update_state_quote(char *input, int *i, t_quote *state);
 char	*find_env_value(char *key, t_env *env);
+int	count_array(void **ptr);
+char	*ft_strjoin_free(char *s1, char *s2);
 
 // expansion_utils
 void	add_token(t_args **head, char *value);

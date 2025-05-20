@@ -12,15 +12,10 @@
 
 #include "../../include/minishell.h"
 
-
-
 void	expander(char ***args, t_env *env, int *size_args)
 {
 	t_args	*head;
-	// t_args	*cur;
-	// t_args	*new;
 	char		**expanded;
-	// int		i;
 
 	if (!(*args) || !(*args)[0])
 		return ;
@@ -89,5 +84,3 @@ t_args	*args_to_list(char **args)
 	}
 	return (head);
 }
-
-

@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:22:33 by marcudos          #+#    #+#             */
-/*   Updated: 2025/05/19 16:51:55 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/20 19:34:37 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,38 +35,39 @@ t_args	*expand_env(char **args, t_env *env)
 	return (head);
 }
 
-t_args	*expand_token(char *input, t_env *env)
-{
-	char	*key;
-	int	i;
-	t_exp	exp;
+// t_args	*expand_token(char *input, t_env *env)
+// {
+// 	char	*key;
+// 	int	i;
+// 	t_exp	exp;
+//
+// 	i = 0;
+// 	exp.state = NO_QUOTE; 
+// 	exp.head = NULL;
+// 	exp.env = env;
+// 	exp.head = (t_args **) malloc(sizeof(t_args *));
+// 	*exp.head = NULL;
+// 	exp.prefix = NULL;
+// 	exp.prefix = start_prefix(input, &i, &exp.state);
+// 	while (input[i])
+// 	{
+// 		if (input[i] == '$')
+// 		{
+// 			key = extract_key(input, &i);
+// 			if (key)
+// 				expand_variable(&exp, key);
+// 		}
+// 		else
+// 		{
+// 			exp.cur = start_prefix(input, &i, &exp.state);
+// 			exp.prefix = ft_strjoin(exp.prefix, exp.cur);
+// 			exp.cur = NULL;
+// 		}
+// 	}
+// 	add_token(exp.head, exp.prefix);
+// 	return ((*exp.head));
+// }
 
-	i = 0;
-	exp.state = NO_QUOTE; 
-	exp.head = NULL;
-	exp.env = env;
-	exp.head = (t_args **) malloc(sizeof(t_args *));
-	*exp.head = NULL;
-	exp.prefix = NULL;
-	exp.prefix = start_prefix(input, &i, &exp.state);
-	while (input[i])
-	{
-		if (input[i] == '$')
-		{
-			key = extract_key(input, &i);
-			if (key)
-				expand_variable(&exp, key);
-		}
-		else
-		{
-			exp.cur = start_prefix(input, &i, &exp.state);
-			exp.prefix = ft_strjoin(exp.prefix, exp.cur);
-			exp.cur = NULL;
-		}
-	}
-	add_token(exp.head, exp.prefix);
-	return ((*exp.head));
-}
 
 char	*start_prefix(char *input, int *i, t_quote *state)
 {
@@ -102,7 +103,6 @@ void	expand_variable(t_exp *exp, char *key)
 	int	i;
 
 	exp->cur = find_env_value(key, exp->env);
-	free(key);
 	if (!exp->cur)
 		return ;
 	if (!exp->prefix)
@@ -115,13 +115,19 @@ void	expand_variable(t_exp *exp, char *key)
 	if (exp->state == NO_QUOTE)
 	{
 		parts = ft_split(exp->prefix, ' ');
-		i = 0;
-		while (i == 0 || (parts[i] && parts[i + 1]))
-			add_token(exp->head, parts[i++]);
-		if (!parts[i])
-			exp->prefix = NULL;
+		if (count_array((void **) parts) == 1)
+			exp->prefix = ft_strdup(parts[0]);
 		else
-			exp->prefix = ft_strdup(parts[i]);
+		{
+			i = 0;
+			while (i == 0 || (parts[i] && parts[i + 1]))
+				add_token(exp->head, parts[i++]);
+			if (!parts[i])
+				exp->prefix = NULL;
+			else
+				exp->prefix = ft_strdup(parts[i]);
+		}
 		free(parts);
 	}
 }
+
