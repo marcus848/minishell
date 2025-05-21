@@ -60,7 +60,7 @@ void	prompt(t_env *env)
 	while (1)
 	{
 		input = readline("minishell$ ");
-		if (!input )
+		if (!input)
 			break ;
 		if (input[0] == '\0')
 		{

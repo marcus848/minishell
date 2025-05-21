@@ -12,10 +12,16 @@
 
 #include "../../include/minishell.h"
 
-int	builtin_pwd(void)
+int	builtin_pwd(t_env *env)
 {
 	char	*pwd;
 
+	pwd = get_env_value(env, "PWD");
+	if (pwd)
+	{
+		printf("%s\n", pwd);
+		return (0);
+	}
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 	{

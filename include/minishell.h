@@ -217,12 +217,12 @@ int				is_explicit_executable(char *cmd);
 int				search_in_path(char *cmd, t_env *env);
 int				try_exit_builtin(t_token_list *toks, t_ast *node, t_env *env);
 int				try_other_builtin(char **args, t_env *env);
-void				run_external_command(char **args, t_command *cmd, t_env *env);
+void			run_external_command(char **args, t_command *cmd, t_env *env);
 
 // builtin
 void			builtin_exit(t_token_list *tokens, t_ast *node, t_env *env);
 int				parse_exit_code(char *arg_str, t_env *env);
-int				builtin_pwd(void);
+int				builtin_pwd(t_env *env);
 int				builtin_env(t_env *env);
 int				builtin_echo(char **args);
 int				builtin_cd(char **args, t_env *env);
