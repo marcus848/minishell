@@ -6,11 +6,23 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 16:22:33 by marcudos          #+#    #+#             */
-/*   Updated: 2025/05/17 16:34:19 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/20 21:57:46 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	free_array(void **arr)
+{
+	int	i;
+
+	if (!arr)
+		return ;
+	i = 0;
+	while (arr[i])
+		free(arr[i++]);
+	free(arr);
+}
 
 void	free_args_temp(char **args)
 {

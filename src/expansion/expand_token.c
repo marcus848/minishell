@@ -6,27 +6,27 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 19:27:18 by marcudos          #+#    #+#             */
-/*   Updated: 2025/05/20 19:38:59 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/20 21:46:50 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	init_expander(t_exp *exp, char *input, t_env *env);
-char	*ft_strjoin_free(char *s1, char *s2);
-void	handle_next_token(t_exp *exp, char *input);
-
 t_args	*expand_token(char *input, t_env *env)
 {
 	t_exp	exp;
+	t_args	*result;
 
 	init_expander(&exp, input, env);
 	while (input[exp.i])
 		handle_next_token(&exp, input);
 	if (exp.prefix)
 		add_token(exp.head, exp.prefix);
-	return (*exp.head);
-
+	result = *exp.head;
+	free(exp.head);
+	if (exp.prefix)
+		free (exp.prefix);
+	return (result);
 }
 
 void	handle_next_token(t_exp *exp, char *input)
@@ -59,14 +59,4 @@ void	init_expander(t_exp *exp, char *input, t_env *env)
 	exp->prefix = start_prefix(input, &exp->i, &exp->state);
 	exp->cur = NULL;
 	exp->env = env;
-}
-
-char	*ft_strjoin_free(char *s1, char *s2)
-{
-	char	*res;
-
-	res = ft_strjoin(s1, s2);
-	free(s1);
-	free(s2);
-	return (res);
 }

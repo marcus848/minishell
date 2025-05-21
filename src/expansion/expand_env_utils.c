@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 16:10:11 by marcudos          #+#    #+#             */
-/*   Updated: 2025/05/20 19:40:42 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/20 21:30:53 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,16 @@ char	*ft_strjoin_free(char *s1, char *s2)
 {
 	char	*res;
 
+	if (!s1 && !s2)
+		return (NULL);
+	else if (!s1)
+		return (ft_strdup(s2));
+	else if (!s2)
+	{
+		res = ft_strdup(s1);
+		free(s1);
+		return (res);
+	}
 	res = ft_strjoin(s1, s2);
 	free(s1);
 	free(s2);

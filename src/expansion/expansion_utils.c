@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 16:53:08 by marcudos          #+#    #+#             */
-/*   Updated: 2025/05/19 16:53:34 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/20 21:07:50 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	add_token(t_args **head, char *value)
 	new = (t_args *)malloc(sizeof(t_args));
 	if (!new)
 		return ;
-	new->arg = value;
+	new->arg = ft_strdup(value);
 	new->next = NULL;
 	if (!(*head))
 		*head = new;

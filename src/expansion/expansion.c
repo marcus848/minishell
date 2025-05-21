@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 16:14:44 by marcudos          #+#    #+#             */
-/*   Updated: 2025/05/19 16:53:37 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/20 22:02:20 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	expander(char ***args, t_env *env, int *size_args)
 {
 	t_args	*head;
-	char		**expanded;
+	char	**expanded;
 
 	if (!(*args) || !(*args)[0])
 		return ;
@@ -53,34 +53,4 @@ char	**list_to_args(t_args *args, int *size_args)
 	}
 	res[i] = NULL;
 	return (res);
-}
-
-t_args	*args_to_list(char **args)
-{
-	t_args	*head;
-	t_args	*arg;
-	t_args	*new;
-	int		i;
-
-	i = 0;
-	while (args[i])
-	{
-		if (i == 0)
-		{
-			head = (t_args *) malloc(sizeof(t_args));
-			head->arg = ft_strdup(args[i]);
-			head->next = NULL;
-			arg = head;
-		}
-		else
-		{
-			new = (t_args *) malloc(sizeof(t_args));
-			new->arg = ft_strdup(args[i]);
-			new->next = NULL;
-			arg->next = new;
-			arg = arg->next;
-		}
-		i++;
-	}
-	return (head);
 }
