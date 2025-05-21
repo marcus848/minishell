@@ -1,20 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_env.c                                         :+:      :+:    :+:   */
+/*   env_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:26:29 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/23 11:42:56 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/15 10:58:24 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 static int		env_process(char *entry, t_env **head, t_env **tail);
-static t_env	*env_new(const char *key, const char *value);
-static int		env_append(t_env **head, t_env **tail, t_env *node);
 
 // Initializes a linked list of environment variables from envp.
 // 1. Iterates over each entry in envp.
@@ -61,7 +59,7 @@ static int	env_process(char *entry, t_env **head, t_env **tail)
 }
 
 // Allocates and initializes a new t_env node.
-static t_env	*env_new(const char *key, const char *value)
+t_env	*env_new(const char *key, const char *value)
 {
 	t_env	*node;
 
@@ -82,7 +80,7 @@ static t_env	*env_new(const char *key, const char *value)
 }
 
 // Appends a node to the end of the t_env linked list.
-static int	env_append(t_env **head, t_env **tail, t_env *node)
+int	env_append(t_env **head, t_env **tail, t_env *node)
 {
 	if (!*head)
 		*head = node;

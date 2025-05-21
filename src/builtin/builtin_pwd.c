@@ -1,30 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   syntax_errors.c                                    :+:      :+:    :+:   */
+/*   builtin_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 14:29:45 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/20 21:41:24 by caide-so         ###   ########.fr       */
+/*   Created: 2025/05/19 01:57:27 by caide-so          #+#    #+#             */
+/*   Updated: 2025/05/19 02:31:12 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-// Print one bash-style syntax error for quotes
-void	report_unexpected_quotes(const char token_value)
+int	builtin_pwd(t_env *env)
 {
-	write(2, "minishell: syntax error near unexpected token `", 49);
-	write(2, &token_value, 1);
-	write(2, "'\n", 2);
-}
+	char	*pwd;
 
-// Print one bash-style syntax error and return 0
-int	report_unexpected(const char *token_value)
-{
-	write(2, "minishell: syntax error near unexpected token `", 49);
-	write(2, token_value, ft_strlen(token_value));
-	write(2, "'\n", 2);
+	pwd = get_env_value(env, "PWD");
+	if (pwd)
+	{
+		printf("%s\n", pwd);
+		return (0);
+	}
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+	{
+		perror("pwd");
+		return (1);
+	}
+	printf("%s\n", pwd);
+	free(pwd);
 	return (0);
 }

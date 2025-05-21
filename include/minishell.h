@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/02 15:13:57 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/20 22:04:01 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,32 @@
 
 # include "../libft/include/libft.h"
 
+// to use printf
 # include <stdio.h>
-# include <unistd.h>
+
+// to use malloc, free, exit
 # include <stdlib.h>
+
+// to use write, usleep, fork
+# include <unistd.h>
+
+// for O_* constants
+# include <fcntl.h>
+
+// to use pid_t type
+# include <sys/types.h>
+
+// to use waitpid
+# include <sys/wait.h>
 
 // to use readline
 # include <readline/readline.h>
 
 // to use add_history
 # include <readline/history.h>
+
+// to use errno and ENOENT
+# include <errno.h>
 
 typedef struct s_command
 {
@@ -87,6 +104,7 @@ typedef struct s_env
 	char			*key;
 	char			*value;
 	struct s_env	*next;
+	int				last_status;
 }	t_env;
 
 typedef struct s_ast
@@ -96,6 +114,22 @@ typedef struct s_ast
 	struct s_ast	*right;
 	t_command		*cmd;
 }	t_ast;
+
+typedef struct s_args
+{
+	char			*arg;
+	struct s_args	*next;
+}	t_args;
+
+typedef struct s_expand
+{
+	t_args	**head;
+	t_quote	state;
+	t_env	*env;
+	char	*prefix;
+	char	*cur;
+	int		i;
+}	t_exp;
 
 // tokenizer
 t_token_list	*tokenizer(char *input);
@@ -109,11 +143,16 @@ void			token_list_init(t_token_list *list);
 void			token_list_append(t_token_list *list, t_token *token);
 void			token_list_free(t_token_list *list);
 
-// init env
+// env
 t_env			*init_env(char **envp);
+char			*get_env_value(t_env *env, const char *key);
+char			*get_env_path(t_env *env);
+t_env			*env_new(const char *key, const char *value);
+int				env_append(t_env **head, t_env **tail, t_env *node);
+void			env_update(t_env **env, char *key, char *value);
 
 // clean
-void			clean_all(t_env *env);
+void			clean_all(t_token_list *tokens, t_ast *node, t_env *env);
 void			env_free_all(t_env **head);
 void			exit_perror(const char *msg);
 void			report_unexpected_quotes(const char token_value);
@@ -124,18 +163,35 @@ void			free_args(t_command *command);
 void			command_free(t_command *command);
 void			ast_free(t_ast *root);
 
-// expansion
-void			expander(char ***args, t_env *env);
-char			*expander_expand(char *input, t_env *env);
-char			*expand_token(char *input, t_env *env, t_quote state);
+// clean_expansion
+void			free_args_temp(char **args);
+void			free_args_list(t_args *args);
+void			free_array(void **ptr);
 
-// expansion_types
-char			*expand_env(char *key, t_env *env);
+// expansion
+void			expander(char ***args, t_env *env, int *size_args);
+char			**list_to_args(t_args *args, int *size_args);
+
+// expand_env
+t_args			*expand_env(char **args, t_env *env);
+char			*start_prefix(char *input, int *i, t_quote *state);
+void			expand_variable(t_exp *exp, char *key);
+void			handle_no_quotes(t_exp *exp);
+
+//expand_token
+t_args			*expand_token(char *input, t_env *env);
+void			init_expander(t_exp *exp, char *input, t_env *env);
+void			handle_next_token(t_exp *exp, char *input);
+
+// expand_env_utils
+char			*extract_key(char *input, int *i);
+void			update_state_quote(char *input, int *i, t_quote *state);
+char			*find_env_value(char *key, t_env *env);
+int				count_array(void **ptr);
+char			*ft_strjoin_free(char *s1, char *s2);
 
 // expansion_utils
-void			update_state_quote(char *input, t_quote *state, int *i);
-char			*extract_key(char *input);
-int				get_expand_len(char *input, t_quote state);
+void			add_token(t_args **head, char *value);
 
 // ast
 t_ast			*parse_command(t_token **token);
@@ -158,11 +214,12 @@ int				get_size_args(t_token **token);
 
 // debug functions
 void			print_env(t_env *env);
+void			print_envp(char **envp);
 void			print_tokens(t_token_list *tokens);
 void			print_token(char *str_type, t_token *token);
 void			test_expander(t_env *env);
 void			test_commands_from_tokens(t_token_list *tokens);
-void			print_ast(t_ast *node, int level);
+void			print_ast(t_ast *node, int level, t_env *env);
 
 // syntax analysis
 int				syntax_analysis(t_token_list *tokens);
@@ -171,5 +228,36 @@ int				check_redir(t_token *next);
 int				check_logical(t_token *prev, t_token *token, t_token *next);
 int				is_twochar(t_token *token);
 int				check_paren(t_token *p, t_token *t, t_token *n, int *depth);
+
+// executor
+void			executor(t_token_list *tokens, t_ast *node, t_env *env);
+void			handle_redirections(t_command *cmd);
+void			apply_input_redir(t_command *cmd);
+void			apply_output_redir(t_command *cmd);
+int				save_fds(int *save_stdin, int *save_stdout);
+int				restore_fds(int save_stdin, int save_stdout);
+char			**env_list_to_array(t_env *env);
+void			free_string_array(char **arr);
+void			set_last_status(t_env *env, int status);
+int				get_last_status(t_env *env);
+int				exec_dispatch(char **args, t_env *env, char **envp);
+void			execve_with_path(char **args, t_env *env, char **envp);
+void			try_exec_explicit(char *cmd, char **args, char **envp);
+int				is_builtin(char *cmd);
+int				run_builtin(char **args, t_env *env);
+int				is_executable_command(char *cmd, t_env *env);
+int				is_explicit_executable(char *cmd);
+int				search_in_path(char *cmd, t_env *env);
+int				try_exit_builtin(t_token_list *toks, t_ast *node, t_env *env);
+int				try_other_builtin(char **args, t_env *env);
+void			run_external_command(char **args, t_command *cmd, t_env *env);
+
+// builtin
+void			builtin_exit(t_token_list *tokens, t_ast *node, t_env *env);
+int				parse_exit_code(char *arg_str, t_env *env);
+int				builtin_pwd(t_env *env);
+int				builtin_env(t_env *env);
+int				builtin_echo(char **args);
+int				builtin_cd(char **args, t_env *env);
 
 #endif

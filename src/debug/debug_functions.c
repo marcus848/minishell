@@ -18,10 +18,24 @@ void	print_env(t_env *env)
 	t_env	*head;
 
 	head = env;
+	printf("======================== PRINT T_ENV ====================\n\n");
 	while (head)
 	{
 		printf("key = [%s], value = [%s]\n", head->key, head->value);
 		head = head->next;
+	}
+}
+
+void	print_envp(char **envp)
+{
+	int	i;
+
+	i = 0;
+	printf("======================== PRINT ENVP ====================\n\n");
+	while (envp[i])
+	{
+		printf("%s\n", envp[i]);
+		i++;
 	}
 }
 
@@ -62,31 +76,4 @@ void	print_token(char *str_type, t_token *token)
 	else if (token->type == PAREN_CLOSE)
 		str_type = "PAREN_CLOSE";
 	printf("type - %s, value - [%s]\n", str_type, token->value);
-}
-
-void	test_expander(t_env *env)
-{
-	char	**args;
-	int		i;
-
-	printf("\n========== TESTE 1 ==========\n");
-	args = malloc(sizeof(char *));
-	if (!args)
-		return ;
-	args[0] = ft_strdup("c\'a\'t");
-	args[1] = ft_strdup("\"$HOME\"-\'$USER\'");
-	args[2] = NULL;
-	printf("Antes da expansão:\n");
-	i = -1;
-	while (args[++i])
-		printf("args[%d] = [%s]\n", i, args[i]);
-	expander(&args, env);
-	printf("Depois da expansão:\n");
-	i = -1;
-	while (args[++i])
-		printf("args[%d] = [%s]\n", i, args[i]);
-	i = 0;
-	while (args[i])
-		free(args[i++]);
-	free(args);
 }
