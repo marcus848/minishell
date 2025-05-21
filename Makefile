@@ -23,16 +23,19 @@ BUILTIN_DIR	= ${SRC_DIR}/builtin
 SRCS		= $(SRC_DIR)/main.c \
 		  ${CLEAN_DIR}/clean.c \
 		  ${CLEAN_DIR}/clean_ast.c \
+		  ${CLEAN_DIR}/clean_expansion.c \
 		  ${TOKENIZER_DIR}/tokenizer.c \
 		  ${TOKENIZER_DIR}/tokenizer_handle_operators.c \
 		  ${TOKENIZER_DIR}/tokenizer_utils.c \
 		  ${TOKENIZER_DIR}/token_list.c \
+		  ${EXPANSION_DIR}/expansion.c \
+		  ${EXPANSION_DIR}/expand_env.c \
+		  ${EXPANSION_DIR}/expand_token.c \
+		  ${EXPANSION_DIR}/expand_env_utils.c \
+		  ${EXPANSION_DIR}/expansion_utils.c \
 		  ${DEBUG_DIR}/debug_functions.c \
 		  ${DEBUG_DIR}/debug_command.c \
 		  ${DEBUG_DIR}/debug_ast.c \
-		  ${EXPANSION_DIR}/expansion.c \
-		  ${EXPANSION_DIR}/expansion_utils.c \
-		  ${EXPANSION_DIR}/expansion_types.c \
 		  ${AST_DIR}/ast_utils.c \
 		  ${AST_DIR}/ast.c \
 		  ${AST_DIR}/commands.c \

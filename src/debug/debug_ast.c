@@ -46,7 +46,7 @@ void	print_node_type(t_node_type type)
 		printf("[UNKNOWN]");
 }
 
-void	print_ast(t_ast *node, int level)
+void	print_ast(t_ast *node, int level, t_env *env)
 {
 	int	i;
 
@@ -63,11 +63,14 @@ void	print_ast(t_ast *node, int level)
 	{
 		printf(" ");
 		print_args(node->cmd->args);
+		expander(&node->cmd->args, env, &node->cmd->arg_count);
+		printf(" ");
+		print_args(node->cmd->args);
 	}
 	else
 		printf("\n");
 	if (node->left)
-		print_ast(node->left, level + 1);
+		print_ast(node->left, level + 1, env);
 	if (node->right)
-		print_ast(node->right, level + 1);
+		print_ast(node->right, level + 1, env);
 }
