@@ -20,12 +20,15 @@ void	executor(t_token_list *tokens, t_ast *node, t_env *env)
 		return ;
 	// traverse ast
 	if (node->type == NODE_COMMAND)
+	{
 		// wildcard expansion
 		// variable expansion
  		// handle redirections
  		// execute builtin or fork-exec
  		// restore redirections
+		expander(&node->cmd->args, env, &node->cmd->arg_count);
 		exec_command(tokens, node, env);
+	}
 	/*
 	if (node->type == NODE_PIPE)
 		// create pipe
