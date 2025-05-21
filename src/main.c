@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 20:45:28 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/19 00:44:47 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/20 21:24:11 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,19 +60,21 @@ void	prompt(t_env *env)
 	while (1)
 	{
 		input = readline("minishell$ ");
-		if (!input || ft_strcmp(input, "exit") == 0)
+		if (!input )
+			break ;
+		if (input[0] == '\0')
+		{
+			free(input);
+			continue ;
+		}
+		if (ft_strcmp(input, "exit") == 0)
 		{
 			printf("exit\n");
 			free(input);
 			break ;
 		}
-		else if (input != NULL)
-		{
-			add_history(input);
-			minishell(input, env);
-			free(input);
-		}
-		else
-			printf("Error reading input or end of file reached.\n");
+		add_history(input);
+		minishell(input, env);
+		free(input);
 	}
 }
