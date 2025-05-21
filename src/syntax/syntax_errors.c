@@ -15,7 +15,10 @@
 // Print one bash-style syntax error for quotes
 void	report_unexpected_quotes(const char token_value)
 {
-	write(2, "minishell: syntax error near unexpected token `", 49);
+	char	*str;
+
+	str = "minishell: syntax error near unexpected token `";
+	write(2, str, ft_strlen(str));
 	write(2, &token_value, 1);
 	write(2, "'\n", 2);
 }
@@ -23,7 +26,10 @@ void	report_unexpected_quotes(const char token_value)
 // Print one bash-style syntax error and return 0
 int	report_unexpected(const char *token_value)
 {
-	write(2, "minishell: syntax error near unexpected token `", 49);
+	char	*str;
+
+	str = "minishell: syntax error near unexpected token `";
+	write(2, str, ft_strlen(str));
 	write(2, token_value, ft_strlen(token_value));
 	write(2, "'\n", 2);
 	return (0);
