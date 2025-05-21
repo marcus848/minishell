@@ -47,6 +47,7 @@ SRCS		= $(SRC_DIR)/main.c \
 		  ${EXEC_DIR}/executor_dispatch.c \
 		  ${EXEC_DIR}/executor_builtin.c \
 		  ${EXEC_DIR}/executor_path_utils.c \
+		  ${EXEC_DIR}/executor_command.c \
 		  ${ENV_DIR}/env_init.c \
 		  ${ENV_DIR}/env_utils.c \
 		  ${BUILTIN_DIR}/builtin_exit.c \

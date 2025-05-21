@@ -215,6 +215,9 @@ int				run_builtin(char **args, t_env *env);
 int				is_executable_command(char *cmd, t_env *env);
 int				is_explicit_executable(char *cmd);
 int				search_in_path(char *cmd, t_env *env);
+int				try_exit_builtin(t_token_list *toks, t_ast *node, t_env *env);
+int				try_other_builtin(char **args, t_env *env);
+void				run_external_command(char **args, t_command *cmd, t_env *env);
 
 // builtin
 void			builtin_exit(t_token_list *tokens, t_ast *node, t_env *env);

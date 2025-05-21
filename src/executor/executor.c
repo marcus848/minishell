@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 21:46:29 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/19 00:16:03 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/20 21:01:16 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,28 +59,11 @@ void	executor(t_token_list *tokens, t_ast *node, t_env *env)
 void	exec_command(t_token_list *tokens, t_ast *node, t_env *env)
 {
 	char	**args;
-	char	**envp;
-	int		status;
-	int		save_stdin;
-	int		save_stdout;
 
 	args = node->cmd->args;
-	if (ft_strcmp(node->cmd->args[0], "exit") == 0)
-		builtin_exit(tokens, node, env);
-	if (!is_executable_command(node->cmd->args[0], env))
-	{
-		ft_putstr_fd(args[0], STDERR_FILENO);
-		ft_putstr_fd(": command not found\n", STDERR_FILENO);
-		set_last_status(env, 127);
+	if (try_exit_builtin(tokens, node, env))
 		return ;
-	}
-	save_fds(&save_stdin, &save_stdout);
-	handle_redirections(node->cmd);
-	envp = env_list_to_array(env);
-	if (!envp)
-		exit_perror("env array failed");
-	status = exec_dispatch(args, env, envp);
-	free_string_array(envp);
-	restore_fds(save_stdin, save_stdout);
-	set_last_status(env, status);
+	if (try_other_builtin(args, env))
+		return ;
+	run_external_command(args, node->cmd, env);
 }
