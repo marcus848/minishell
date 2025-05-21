@@ -12,6 +12,8 @@
 
 #include "../../include/minishell.h"
 
+void	env_create_append(t_env **env_head, char *key, char *val, t_env *curr);
+
 char	*get_env_value(t_env *env, const char *key)
 {
 	while (env)
@@ -33,9 +35,38 @@ char	*get_env_path(t_env *env)
 	return ("/usr/local/bin:/usr/bin:/bin");
 }
 
-/*
-void	update_env(t_env *env, const char *key, const char *value)
+void	env_update(t_env **env_head, char *key, char *value)
 {
-	
+	t_env	*curr;
+
+	curr = *env_head;
+	while (curr)
+	{
+		if (ft_strcmp(curr->key, key) == 0)
+		{
+			free(curr->value);
+			curr->value = ft_strdup(value);
+			return ;
+		}
+		curr = curr->next;
+	}
+	env_create_append(env_head, key, value, curr);
 }
-*/
+
+void	env_create_append(t_env **env_head, char *key, char *val, t_env *curr)
+{
+	t_env	*node;
+
+	node = env_new(key, val);
+	if (!node)
+		exit_perror("env_new failed");
+	if (*env_head == NULL)
+		*env_head = node;
+	else
+	{
+		curr = *env_head;
+		while (curr->next)
+			curr = curr->next;
+		curr->next = node;
+	}
+}

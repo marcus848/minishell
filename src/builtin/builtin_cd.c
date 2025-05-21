@@ -73,14 +73,12 @@ static void	update_env_vars(t_env *env, char *oldcwd)
 {
 	char	*newcwd;
 
-	/*
-	update_env(env, "OLDPWD", oldcwd);
+	env_update(&env, "OLDPWD", oldcwd);
 	free(oldcwd);
 	newcwd = getcwd(NULL, 0);
 	if (newcwd)
 	{
-		update_env(env, "PWD", newcwd);
+		env_update(&env, "PWD", newcwd);
 		free(newcwd);
 	}
-	*/
 }

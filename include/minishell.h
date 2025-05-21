@@ -131,6 +131,9 @@ void			token_list_free(t_token_list *list);
 t_env			*init_env(char **envp);
 char			*get_env_value(t_env *env, const char *key);
 char			*get_env_path(t_env *env);
+t_env			*env_new(const char *key, const char *value);
+int				env_append(t_env **head, t_env **tail, t_env *node);
+void			env_update(t_env **env, char *key, char *value);
 
 // clean
 void			clean_all(t_token_list *tokens, t_ast *node, t_env *env);
