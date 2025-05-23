@@ -6,13 +6,13 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 21:46:29 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/20 21:01:16 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/23 03:40:31 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	exec_command(t_token_list *tokens, t_ast *node, t_env *env);
+void	exec_command(t_token_list *tokens, t_shell *shell);
 
 /*
 if (node->type == NODE_COMMAND)
@@ -51,26 +51,26 @@ if (node->type == NODE_SUBSHELL)
 	// obs: subshell must execute in a child process
 	executor(node->left, env);
 */
-void	executor(t_token_list *tokens, t_ast *node, t_env *env)
+void	executor(t_token_list *tokens, t_shell *sh)
 {
-	if (!node)
+	if (!sh->ast)
 		return ;
-	if (node->type == NODE_COMMAND)
+	if (sh->ast->type == NODE_COMMAND)
 	{
-		expander(&node->cmd->args, env, &node->cmd->arg_count);
-		exec_command(tokens, node, env);
+		expander(&sh->ast->cmd->args, sh->env, &sh->ast->cmd->arg_count);
+		exec_command(tokens, sh);
 	}
 	return ;
 }
 
-void	exec_command(t_token_list *tokens, t_ast *node, t_env *env)
+void	exec_command(t_token_list *tokens, t_shell *shell)
 {
 	char	**args;
 
-	args = node->cmd->args;
-	if (try_exit_builtin(tokens, node, env))
+	args = shell->ast->cmd->args;
+	if (try_exit_builtin(tokens, shell))
 		return ;
-	if (try_other_builtin(args, env))
+	if (try_other_builtin(args, shell))
 		return ;
-	run_external_command(args, node->cmd, env);
+	run_external_cmd(args, shell->ast->cmd, shell);
 }

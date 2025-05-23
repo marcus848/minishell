@@ -6,30 +6,30 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 22:30:29 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/19 01:47:16 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/23 03:30:59 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	builtin_exit(t_token_list *tokens, t_ast *node, t_env *env)
+void	builtin_exit(t_token_list *tokens, t_shell *shell)
 {
 	int		code;
 	char	*arg_str;
 
-	if (node->cmd->args[2])
+	if (shell->ast->cmd->args[2])
 	{
-		if (node->cmd->args[2][0])
+		if (shell->ast->cmd->args[2][0])
 		{
 			ft_putstr_fd("exit\nminishell: exit: ", STDERR_FILENO);
 			ft_putstr_fd("too many arguments\n", STDERR_FILENO);
-			clean_all(tokens, node, env);
+			clean_all(tokens, shell->ast, shell->env);
 			exit(1);
 		}
 	}
-	arg_str = node->cmd->args[1];
-	code = parse_exit_code(arg_str, env);
-	clean_all(tokens, node, env);
+	arg_str = shell->ast->cmd->args[1];
+	code = parse_exit_code(arg_str, shell);
+	clean_all(tokens, shell->ast, shell->env);
 	if (code == -1)
 		exit(2);
 	exit(code);
@@ -39,13 +39,13 @@ void	builtin_exit(t_token_list *tokens, t_ast *node, t_env *env)
 // (and optional leading +/-)
 // 	if not, print an error ("numeric argument required") and exit
 // 	with status 2
-int	parse_exit_code(char *arg_str, t_env *env)
+int	parse_exit_code(char *arg_str, t_shell *shell)
 {
 	int	code;
 	int	i;
 
 	if (!arg_str)
-		return (get_last_status(env));
+		return (get_last_status(shell));
 	i = 0;
 	if (arg_str[i] == '+' || arg_str[i] == '-')
 		i++;
