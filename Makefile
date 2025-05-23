@@ -19,6 +19,7 @@ SYNTAX_DIR	= ${SRC_DIR}/syntax
 EXEC_DIR	= ${SRC_DIR}/executor
 ENV_DIR		= ${SRC_DIR}/env
 BUILTIN_DIR	= ${SRC_DIR}/builtin
+PROMPT_DIR	= ${SRC_DIR}/prompt
 
 SRCS		= $(SRC_DIR)/main.c \
 		  ${CLEAN_DIR}/clean.c \
@@ -58,6 +59,9 @@ SRCS		= $(SRC_DIR)/main.c \
 		  ${BUILTIN_DIR}/builtin_env.c \
 		  ${BUILTIN_DIR}/builtin_echo.c \
 		  ${BUILTIN_DIR}/builtin_cd.c \
+		  ${PROMPT_DIR}/prompt.c \
+		  ${PROMPT_DIR}/prompt_utils.c \
+		  ${PROMPT_DIR}/prompt_colors.c \
 
 OBJS		= ${SRCS:${SRC_DIR}/%.c=${OBJ_DIR}/%.o}
 

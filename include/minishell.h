@@ -6,13 +6,17 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/20 22:04:01 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/23 00:38:48 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+// color macros
+# include "colors.h"
+
+// libft
 # include "../libft/include/libft.h"
 
 // to use printf
@@ -41,19 +45,6 @@
 
 // to use errno and ENOENT
 # include <errno.h>
-
-typedef struct s_command
-{
-	char			**args;
-	int				arg_count;
-	char			*infile;
-	char			*outfile;
-	char			*appendfile;
-	int				heredoc;
-	char			*delimiter;
-	char			*heredoc_path;
-	int				is_builtin;
-}	t_command;
 
 typedef enum e_token_type
 {
@@ -84,6 +75,19 @@ typedef enum s_node_type
 	NODE_OR,
 	NODE_SUBSHELL
 }	t_node_type;
+
+typedef struct s_command
+{
+	char			**args;
+	int				arg_count;
+	char			*infile;
+	char			*outfile;
+	char			*appendfile;
+	int				heredoc;
+	char			*delimiter;
+	char			*heredoc_path;
+	int				is_builtin;
+}	t_command;
 
 typedef struct s_token
 {
@@ -259,5 +263,15 @@ int				builtin_pwd(t_env *env);
 int				builtin_env(t_env *env);
 int				builtin_echo(char **args);
 int				builtin_cd(char **args, t_env *env);
+
+// prompt
+char			*make_prompt(void);
+char			*get_user(void);
+char			*read_hostname_file(void);
+char			*get_cwd_display(void);
+void			build_user_host(char *dst, size_t *i, char *user, char *host);
+void			build_cwd(char *dst, size_t *i, char *cwd);
+void			append_str(char *dst, size_t *i, const char *src);
+void			append_char(char *dst, size_t *i, char c);
 
 #endif
