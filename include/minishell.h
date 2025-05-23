@@ -6,13 +6,17 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/20 22:04:01 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/23 03:39:24 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+// color macros
+# include "colors.h"
+
+// libft
 # include "../libft/include/libft.h"
 
 // to use printf
@@ -41,19 +45,6 @@
 
 // to use errno and ENOENT
 # include <errno.h>
-
-typedef struct s_command
-{
-	char			**args;
-	int				arg_count;
-	char			*infile;
-	char			*outfile;
-	char			*appendfile;
-	int				heredoc;
-	char			*delimiter;
-	char			*heredoc_path;
-	int				is_builtin;
-}	t_command;
 
 typedef enum e_token_type
 {
@@ -85,6 +76,19 @@ typedef enum s_node_type
 	NODE_SUBSHELL
 }	t_node_type;
 
+typedef struct s_command
+{
+	char			**args;
+	int				arg_count;
+	char			*infile;
+	char			*outfile;
+	char			*appendfile;
+	int				heredoc;
+	char			*delimiter;
+	char			*heredoc_path;
+	int				is_builtin;
+}	t_command;
+
 typedef struct s_token
 {
 	t_token_type	type;
@@ -104,7 +108,6 @@ typedef struct s_env
 	char			*key;
 	char			*value;
 	struct s_env	*next;
-	int				last_status;
 }	t_env;
 
 typedef struct s_ast
@@ -130,6 +133,13 @@ typedef struct s_expand
 	char	*cur;
 	int		i;
 }	t_exp;
+
+typedef struct s_shell
+{
+	t_ast	*ast;
+	t_env	*env;
+	int		last_status;
+}	t_shell;
 
 // tokenizer
 t_token_list	*tokenizer(char *input);
@@ -230,7 +240,7 @@ int				is_twochar(t_token *token);
 int				check_paren(t_token *p, t_token *t, t_token *n, int *depth);
 
 // executor
-void			executor(t_token_list *tokens, t_ast *node, t_env *env);
+void			executor(t_token_list *tokens, t_shell *sh);
 void			handle_redirections(t_command *cmd);
 void			apply_input_redir(t_command *cmd);
 void			apply_output_redir(t_command *cmd);
@@ -238,8 +248,8 @@ int				save_fds(int *save_stdin, int *save_stdout);
 int				restore_fds(int save_stdin, int save_stdout);
 char			**env_list_to_array(t_env *env);
 void			free_string_array(char **arr);
-void			set_last_status(t_env *env, int status);
-int				get_last_status(t_env *env);
+void			set_last_status(t_shell *shell, int status);
+int				get_last_status(t_shell *shell);
 int				exec_dispatch(char **args, t_env *env, char **envp);
 void			execve_with_path(char **args, t_env *env, char **envp);
 void			try_exec_explicit(char *cmd, char **args, char **envp);
@@ -248,16 +258,26 @@ int				run_builtin(char **args, t_env *env);
 int				is_executable_command(char *cmd, t_env *env);
 int				is_explicit_executable(char *cmd);
 int				search_in_path(char *cmd, t_env *env);
-int				try_exit_builtin(t_token_list *toks, t_ast *node, t_env *env);
-int				try_other_builtin(char **args, t_env *env);
-void			run_external_command(char **args, t_command *cmd, t_env *env);
+int				try_exit_builtin(t_token_list *toks, t_shell *shell);
+int				try_other_builtin(char **args, t_shell *shell);
+void			run_external_cmd(char **args, t_command *cmd, t_shell *sh);
 
 // builtin
-void			builtin_exit(t_token_list *tokens, t_ast *node, t_env *env);
-int				parse_exit_code(char *arg_str, t_env *env);
+void			builtin_exit(t_token_list *tokens, t_shell *shell);
+int				parse_exit_code(char *arg_str, t_shell *shell);
 int				builtin_pwd(t_env *env);
 int				builtin_env(t_env *env);
 int				builtin_echo(char **args);
 int				builtin_cd(char **args, t_env *env);
+
+// prompt
+char			*make_prompt(void);
+char			*get_user(void);
+char			*read_hostname_file(void);
+char			*get_cwd_display(void);
+void			build_user_host(char *dst, size_t *i, char *user, char *host);
+void			build_cwd(char *dst, size_t *i, char *cwd);
+void			append_str(char *dst, size_t *i, const char *src);
+void			append_char(char *dst, size_t *i, char c);
 
 #endif

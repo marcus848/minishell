@@ -19,8 +19,9 @@ SYNTAX_DIR	= ${SRC_DIR}/syntax
 EXEC_DIR	= ${SRC_DIR}/executor
 ENV_DIR		= ${SRC_DIR}/env
 BUILTIN_DIR	= ${SRC_DIR}/builtin
+PROMPT_DIR	= ${SRC_DIR}/prompt
 
-SRCS		= $(SRC_DIR)/main.c \
+SRCS		= ${SRC_DIR}/main.c \
 		  ${CLEAN_DIR}/clean.c \
 		  ${CLEAN_DIR}/clean_ast.c \
 		  ${CLEAN_DIR}/clean_expansion.c \
@@ -58,42 +59,50 @@ SRCS		= $(SRC_DIR)/main.c \
 		  ${BUILTIN_DIR}/builtin_env.c \
 		  ${BUILTIN_DIR}/builtin_echo.c \
 		  ${BUILTIN_DIR}/builtin_cd.c \
+		  ${PROMPT_DIR}/prompt.c \
+		  ${PROMPT_DIR}/prompt_utils.c \
+		  ${PROMPT_DIR}/prompt_colors.c \
 
 OBJS		= ${SRCS:${SRC_DIR}/%.c=${OBJ_DIR}/%.o}
 
 # Colors
-GREEN	= \033[0;32m
+RED	= \033[1;31m
+GREEN	= \033[1;32m
+YELLOW	= \033[1;33m
+BLUE	= \033[1;34m
+MAG	= \033[1;35m
+CYAN	= \033[1;36m
 RESET	= \033[0m
 
 all:		${NAME}
 
 ${NAME}:	${OBJS} ${LIBFT_LIB} 
+			@echo "${CYAN}[  COMPILING ]${RESET} Compiling source files..."
 			@${CC} ${CFLAGS} ${OBJS} ${LIBFT_LIB} ${LIBS} -o ${NAME}
-			@echo "$(GREEN)Done!$(RESET)"
+			@echo "${GREEN}✅ Build complete!${RESET}"
 
 ${OBJ_DIR}/%.o:	${SRC_DIR}/%.c
 			@mkdir -p ${@D}
 			@${CC} ${CFLAGS} ${INCLUDE} -I ${LIBFT_DIR} -c $< -o $@
 
 ${LIBFT_LIB}:
-			@echo "Building libft..."
+			@echo "${BLUE}[  BUILDING  ]${RESET} Building libft..."
 			@make -C ${LIBFT_DIR} --no-print-directory
 
 leak:
 			valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=readline.supp ./${NAME}
 
 clean:
-			@echo "Cleaning object files..."
+			@echo "${RED}[  CLEANING  ]${RESET} Removing object files..."
 			@${RM} ${OBJ_DIR}
-			@echo "Cleaning libft objects..."
+			@echo "${RED}[  CLEANING  ]${RESET} Removing libft object files..."
 			@make -s -C ${LIBFT_DIR} clean --no-print-directory
 
 fclean:		clean
-			@echo "Removing binary and libraries..."
+			@echo "${RED}[  CLEANING  ]${RESET} Removing binary and libraries..."
 			@${RM} ${NAME}
 			@make -s -C ${LIBFT_DIR} fclean --no-print-directory
 
 re:		fclean all
 
 .PHONY:		all clean fclean re
-
