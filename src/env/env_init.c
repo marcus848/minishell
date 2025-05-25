@@ -65,17 +65,17 @@ t_env	*env_new(const char *key, const char *value)
 
 	node = (t_env *)malloc(sizeof(t_env));
 	if (!node)
-		return (NULL);
+		exit_perror("malloc");
 	node->key = ft_strdup(key);
-	node->value = ft_strdup(value);
+	if (!node->key)
+		exit_perror("ft_strdup");
+	if (value)
+		node->value = ft_strdup(value);
+	else
+		node->value = NULL;
+	if (value && !node->value)
+		exit_perror("ft_strdup");
 	node->next = NULL;
-	if (!node->key || !node->value)
-	{
-		free(node->key);
-		free(node->value);
-		free(node);
-		return (NULL);
-	}
 	return (node);
 }
 
@@ -88,4 +88,31 @@ int	env_append(t_env **head, t_env **tail, t_env *node)
 		(*tail)->next = node;
 	*tail = node;
 	return (1);
+}
+
+// Create a node with value == NULL if it doesn't exist yet
+void	env_export_only(t_env **env_head, char *name)
+{
+	t_env	*curr;
+	t_env	*node;
+
+	curr = *env_head;
+	while (curr)
+	{
+		if (ft_strcmp(curr->key, name) == 0)
+			return ;
+		curr = curr->next;
+	}
+	node = env_new(name, NULL);
+	if (!node)
+		exit_perror("env_new");
+	if (*env_head == NULL)
+		*env_head = node;
+	else
+	{
+		curr = *env_head;
+		while (curr->next)
+			curr = curr->next;
+		curr->next = node;
+	}
 }
