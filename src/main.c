@@ -76,7 +76,7 @@ void	parser(t_token_list *tokens, t_shell *shell)
 	else
 	{
 		shell->ast = parse_logical(&tokens->head);
-		executor(tokens, shell);
+		executor(tokens, shell, shell->ast);
 		token_list_free(tokens);
 		ast_free(shell->ast);
 	}

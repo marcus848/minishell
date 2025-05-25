@@ -22,8 +22,8 @@ if (node->type == NODE_COMMAND)
  	// handle redirections
  	// execute builtin or fork-exec
  	// restore redirections
-	expander(&node->cmd->args, env, &node->cmd->arg_count);
-	exec_command(tokens, node, env);
+	expander(&node->cmd->args, sh->env, &node->cmd->arg_count);
+	exec_command(tokens, sh);
 }
 if (node->type == NODE_PIPE)
 	// create pipe
@@ -31,35 +31,37 @@ if (node->type == NODE_PIPE)
 	// fork right, redirect stdin
 	// wait and update status
 	// obs: inside exec_pipe fork left/right and maybe recurse there
-	exec_pipe(node, env);
+	exec_pipe(sh);
 if (node->type == NODE_AND)
 {
 	// execute left, test status, maybe execute right
-	executor(node->left, env);
-	if (get_last_status(env) == 0)
-		executor(node->right, env);
+	executor(tokens, sh, node->left);
+	if (get_last_status(sh) == 0)
+		executor(tokens, sh, node->right);
 }
 if (node->type == NODE_OR)
 {
 	// execute left, test status, maybe execute right
-	executor(node->left, env);
-	if (get_last_status(env) != 0)
-		executor(node->right, env);
+	executor(tokens, sh, node->left);
+	if (get_last_status(sh) != 0)
+		executor(tokens, sh, node->right);
 }
 if (node->type == NODE_SUBSHELL)
 	// fork, apply redirs, exec subtree, wait and update status
 	// obs: subshell must execute in a child process
-	executor(node->left, env);
+	executor(tokens, sh, node->left);
 */
-void	executor(t_token_list *tokens, t_shell *sh)
+void	executor(t_token_list *tokens, t_shell *sh, t_ast *node)
 {
-	if (!sh->ast)
+	if (!node)
 		return ;
-	if (sh->ast->type == NODE_COMMAND)
+	if (node->type == NODE_COMMAND)
 	{
-		expander(&sh->ast->cmd->args, sh->env, &sh->ast->cmd->arg_count);
+		expander(&node->cmd->args, sh->env, &node->cmd->arg_count);
 		exec_command(tokens, sh);
 	}
+	//if (node->type == NODE_PIPE)
+	//	exec_pipe(node, sh->env);
 	return ;
 }
 

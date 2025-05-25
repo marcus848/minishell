@@ -241,7 +241,7 @@ int				is_twochar(t_token *token);
 int				check_paren(t_token *p, t_token *t, t_token *n, int *depth);
 
 // executor
-void			executor(t_token_list *tokens, t_shell *sh);
+void			executor(t_token_list *tokens, t_shell *sh, t_ast *node);
 void			handle_redirections(t_command *cmd);
 void			apply_input_redir(t_command *cmd);
 void			apply_output_redir(t_command *cmd);
