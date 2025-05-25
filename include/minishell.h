@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/23 18:33:10 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/25 03:42:49 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,6 +272,7 @@ int				builtin_echo(char **args);
 int				builtin_cd(char **args, t_env *env);
 int				builtin_export(char **args, t_env **env);
 void			print_exported(t_env *env);
+int				builtin_unset(char **args, t_env **env);
 
 // prompt
 char			*make_prompt(void);

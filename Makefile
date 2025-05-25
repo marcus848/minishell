@@ -61,6 +61,7 @@ SRCS		= ${SRC_DIR}/main.c \
 		  ${BUILTIN_DIR}/builtin_cd.c \
 		  ${BUILTIN_DIR}/builtin_export.c \
 		  ${BUILTIN_DIR}/builtin_export_utils.c \
+		  ${BUILTIN_DIR}/builtin_unset.c \
 		  ${PROMPT_DIR}/prompt.c \
 		  ${PROMPT_DIR}/prompt_utils.c \
 		  ${PROMPT_DIR}/prompt_colors.c \

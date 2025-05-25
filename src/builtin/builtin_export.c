@@ -63,9 +63,9 @@ int	handle_export_arg(char *arg, t_env **env, char *name, char *value)
 	err = 0;
 	if (!is_valid_identifier(name))
 	{
-		ft_putstr_fd("minishell: export: `", STDOUT_FILENO);
-		ft_putstr_fd(arg, STDOUT_FILENO);
-		ft_putstr_fd("': not a valid identifier\n", STDOUT_FILENO);
+		ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+		ft_putstr_fd(arg, STDERR_FILENO);
+		ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
 		err = 1;
 	}
 	else if (value)

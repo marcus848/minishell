@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 19:34:09 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/23 17:10:13 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/25 03:42:55 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,6 @@ int	is_builtin(char *cmd)
 	return (0);
 }
 
-/* TODO:
-else if (ft_strcmp(cmd, "unset") == 0)
-	return (builtin_unset(args, envp));
-*/
-
 int	run_builtin(char **args, t_env *env)
 {
 	char	*cmd;
@@ -49,6 +44,8 @@ int	run_builtin(char **args, t_env *env)
 		return (builtin_pwd(env));
 	else if (ft_strcmp(cmd, "export") == 0)
 		return (builtin_export(args, &env));
+	else if (ft_strcmp(cmd, "unset") == 0)
+		return (builtin_unset(args, &env));
 	else if (ft_strcmp(cmd, "env") == 0)
 		return (builtin_env(env));
 	else
