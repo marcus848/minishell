@@ -101,9 +101,13 @@ void	print_env_array(t_env **arr, size_t n)
 	{
 		ft_putstr_fd("declare -x ", STDOUT_FILENO);
 		ft_putstr_fd(arr[i]->key, STDOUT_FILENO);
-		ft_putstr_fd("=\"", STDOUT_FILENO);
-		ft_putstr_fd(arr[i]->value, STDOUT_FILENO);
-		ft_putstr_fd("\"\n", STDOUT_FILENO);
+		if (arr[i]->value)
+		{
+			ft_putstr_fd("=\"", STDOUT_FILENO);
+			ft_putstr_fd(arr[i]->value, STDOUT_FILENO);
+			ft_putstr_fd("\"", STDOUT_FILENO);
+		}
+		ft_putstr_fd("\n", STDOUT_FILENO);
 		i++;
 	}
 }
