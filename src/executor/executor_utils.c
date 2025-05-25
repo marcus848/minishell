@@ -12,6 +12,8 @@
 
 #include "../../include/minishell.h"
 
+int	count_exported(t_env *env);
+
 char	**env_list_to_array(t_env *env)
 {
 	int		count;
@@ -20,25 +22,41 @@ char	**env_list_to_array(t_env *env)
 	t_env	*tmp;
 
 	tmp = env;
-	count = 0;
-	while (tmp)
-	{
-		count++;
-		tmp = tmp->next;
-	}
+	count = count_exported(env);
 	arr = (char **)malloc((count + 1) * sizeof(char *));
 	if (!arr)
-		return (NULL);
+		exit_perror("malloc");
 	tmp = env;
 	i = 0;
 	while (tmp)
 	{
-		arr[i] = ft_strjoin3(tmp->key, "=", tmp->value);
+		if (tmp->value)
+		{
+			arr[i] = ft_strjoin3(tmp->key, "=", tmp->value);
+			if (!arr[i])
+				exit_perror("ft_strjoin3");
+			i++;
+		}
 		tmp = tmp->next;
-		i++;
 	}
-	arr[count] = NULL;
+	arr[i] = NULL;
 	return (arr);
+}
+
+int	count_exported(t_env *env)
+{
+	int		count;
+	t_env	*tmp;
+
+	count = 0;
+	tmp = env;
+	while (tmp)
+	{
+		if (tmp->value)
+			count++;
+		tmp = tmp->next;
+	}
+	return (count);
 }
 
 void	free_string_array(char **arr)
