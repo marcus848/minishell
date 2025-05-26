@@ -14,6 +14,7 @@
 
 void	exec_command(t_token_list *tokens, t_shell *shell, t_ast *node);
 void	exec_pipe(t_shell *shell, t_ast *node);
+void	exec_subshell(t_token_list *tokens, t_shell *shell, t_ast *node);
 
 /*
 if (node->type == NODE_COMMAND)
@@ -63,6 +64,20 @@ void	executor(t_token_list *tokens, t_shell *sh, t_ast *node)
 	}
 	else if (node->type == NODE_PIPE)
 		exec_pipe(sh, node);
+	else if (node->type == NODE_AND)
+	{
+		executor(tokens, sh, node->left);
+		if (get_last_status(sh) == 0)
+			executor(tokens, sh, node->right);
+	}
+	else if (node->type == NODE_OR)
+	{
+		executor(tokens, sh, node->left);
+		if (get_last_status(sh) != 0)
+			executor(tokens, sh, node->right);
+	}
+	else if (node->type == NODE_SUBSHELL)
+		exec_subshell(tokens, sh, node->left);
 	return ;
 }
 
@@ -97,4 +112,26 @@ void	exec_pipe(t_shell *shell, t_ast *node)
 	waitpid(left_pid, &shell->last_status, 0);
 	waitpid(right_pid, &shell->last_status, 0);
 	set_last_status(shell, WEXITSTATUS(shell->last_status));
+}
+
+// Child: execute the subtree, then exit with its status
+// Grab the last status from the shell context
+// Parent: wait for the child and update last_status
+void	exec_subshell(t_token_list *tokens, t_shell *shell, t_ast *node)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	if (pid < 0)
+		exit_perror("fork");
+	if (pid == 0)
+	{
+		executor(tokens, shell, node);
+		clean_all(shell->tokens, shell->ast, &shell->env);
+		exit(shell->last_status);
+	}
+	if (waitpid(pid, &status, 0) < 0)
+		exit_perror("waitpid");
+	shell->last_status = WEXITSTATUS(status);
 }
