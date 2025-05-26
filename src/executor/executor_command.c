@@ -12,12 +12,11 @@
 
 #include "../../include/minishell.h"
 
-int	try_exit_builtin(t_token_list *toks, t_shell *shell)
+int	try_exit(t_token_list *toks, char **args, t_shell *shell)
 {
-	char	*cmd;
-
-	cmd = shell->ast->cmd->args[0];
-	if (ft_strcmp(cmd, "exit") == 0)
+	if (!args || !args[0])
+		return (1);
+	if (ft_strcmp(args[0], "exit") == 0)
 		builtin_exit(toks, shell);
 	return (0);
 }

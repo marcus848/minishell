@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/25 03:42:49 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/26 03:12:18 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,9 +136,10 @@ typedef struct s_expand
 
 typedef struct s_shell
 {
-	t_ast	*ast;
-	t_env	*env;
-	int		last_status;
+	t_env			*env;
+	t_token_list	*tokens;
+	t_ast			*ast;
+	int				last_status;
 }	t_shell;
 
 // tokenizer
@@ -163,7 +164,7 @@ void			env_update(t_env **env, char *key, char *value);
 void			env_export_only(t_env **env_head, char *name);
 
 // clean
-void			clean_all(t_token_list *tokens, t_ast *node, t_env *env);
+void			clean_all(t_token_list *tokens, t_ast *node, t_env **env);
 void			env_free_all(t_env **head);
 void			exit_perror(const char *msg);
 void			report_unexpected_quotes(const char token_value);
@@ -241,7 +242,7 @@ int				is_twochar(t_token *token);
 int				check_paren(t_token *p, t_token *t, t_token *n, int *depth);
 
 // executor
-void			executor(t_token_list *tokens, t_shell *sh);
+void			executor(t_token_list *tokens, t_shell *sh, t_ast *node);
 void			handle_redirections(t_command *cmd);
 void			apply_input_redir(t_command *cmd);
 void			apply_output_redir(t_command *cmd);
@@ -259,9 +260,13 @@ int				run_builtin(char **args, t_env *env);
 int				is_executable_command(char *cmd, t_env *env);
 int				is_explicit_executable(char *cmd);
 int				search_in_path(char *cmd, t_env *env);
-int				try_exit_builtin(t_token_list *toks, t_shell *shell);
+int				try_exit(t_token_list *toks, char **args, t_shell *shell);
 int				try_other_builtin(char **args, t_shell *shell);
 void			run_external_cmd(char **args, t_command *cmd, t_shell *sh);
+
+// executor pipe
+void			handle_left_child(int *fd, t_shell *shell, t_ast *node);
+void			handle_right_child(int *fd, t_shell *shell, t_ast *node);
 
 // builtin
 void			builtin_exit(t_token_list *tokens, t_shell *shell);

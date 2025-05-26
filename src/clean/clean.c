@@ -12,16 +12,16 @@
 
 #include "../../include/minishell.h"
 
-// Future garbage collector, for now only cleans the t_env struct
-void	clean_all(t_token_list *tokens, t_ast *node, t_env *env)
+// Cleans all
+void	clean_all(t_token_list *tokens, t_ast *node, t_env **env)
 {
 	rl_clear_history();
 	if (tokens)
 		token_list_free(tokens);
 	if (node)
 		ast_free(node);
-	if (env)
-		env_free_all(&env);
+	if (env && *env)
+		env_free_all(env);
 }
 
 // Free all nodes in the t_env linked list.
