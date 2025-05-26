@@ -62,8 +62,5 @@ void	token_list_free(t_token_list *list)
 		free(curr);
 		curr = next;
 	}
-	list->head = NULL;
-	list->tail = NULL;
-	list->size = 0;
 	free(list);
 }

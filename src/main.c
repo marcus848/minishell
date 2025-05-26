@@ -23,10 +23,11 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	shell.env = init_env(envp);
+	shell.tokens = NULL;
 	shell.ast = NULL;
 	shell.last_status = 0;
 	prompt(&shell);
-	clean_all(NULL, NULL, shell.env);
+	clean_all(NULL, NULL, &shell.env);
 	return (0);
 }
 
@@ -64,20 +65,26 @@ void	minishell(char *input, t_shell *shell)
 	t_token_list	*tokens;
 
 	tokens = tokenizer(input);
-	if (tokens == NULL)
+	if (!tokens)
 		return ;
+	shell->tokens = tokens;
 	parser(tokens, shell);
 }
 
 void	parser(t_token_list *tokens, t_shell *shell)
 {
+	t_ast	*ast;
+
 	if (!syntax_analysis(tokens))
-		token_list_free(tokens);
-	else
 	{
-		shell->ast = parse_logical(&tokens->head);
-		executor(tokens, shell, shell->ast);
 		token_list_free(tokens);
-		ast_free(shell->ast);
+		return ;
 	}
+	ast = parse_logical(&tokens->head);
+	shell->ast = ast;
+	executor(tokens, shell, ast);
+	token_list_free(tokens);
+	ast_free(shell->ast);
+	shell->ast = NULL;
+	shell->tokens = NULL;
 }

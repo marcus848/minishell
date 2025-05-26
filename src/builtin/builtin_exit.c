@@ -23,13 +23,13 @@ void	builtin_exit(t_token_list *tokens, t_shell *shell)
 		{
 			ft_putstr_fd("exit\nminishell: exit: ", STDERR_FILENO);
 			ft_putstr_fd("too many arguments\n", STDERR_FILENO);
-			clean_all(tokens, shell->ast, shell->env);
+			clean_all(tokens, shell->ast, &shell->env);
 			exit(1);
 		}
 	}
 	arg_str = shell->ast->cmd->args[1];
 	code = parse_exit_code(arg_str, shell);
-	clean_all(tokens, shell->ast, shell->env);
+	clean_all(tokens, shell->ast, &shell->env);
 	if (code == -1)
 		exit(2);
 	exit(code);
