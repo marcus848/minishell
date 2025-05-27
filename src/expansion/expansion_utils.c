@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 16:53:08 by marcudos          #+#    #+#             */
-/*   Updated: 2025/05/20 21:07:50 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/27 16:17:05 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,3 +34,32 @@ void	add_token(t_args **head, char *value)
 		temp->next = new;
 	}
 }
+
+void	append_list(t_args **head, t_args *list)
+{
+	t_args	*temp;
+
+	if (!list)
+		return ;
+	if (!(*head))
+	{
+		*head = list;
+		return ;
+	}
+	temp = *head;
+	while (temp->next)
+		temp = temp->next;
+	temp->next = list;
+}
+
+int	count_array(void **arr)
+{
+	int	i = 0;
+
+	if (!arr)
+		return (0);
+	while (arr[i])
+		i++;
+	return (i);
+}
+

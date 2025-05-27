@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/26 03:12:18 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/27 16:22:03 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,9 @@
 
 // to use errno and ENOENT
 # include <errno.h>
+
+// to use opendir, readdir and closedir
+# include <dirent.h>
 
 typedef enum e_token_type
 {
@@ -134,6 +137,13 @@ typedef struct s_expand
 	int		i;
 }	t_exp;
 
+typedef struct s_wild
+{
+	char	**parts;
+	int		have_start;
+	int		have_end;
+}	t_wild;
+
 typedef struct s_shell
 {
 	t_env			*env;
@@ -199,11 +209,16 @@ void			handle_next_token(t_exp *exp, char *input);
 char			*extract_key(char *input, int *i);
 void			update_state_quote(char *input, int *i, t_quote *state);
 char			*find_env_value(char *key, t_env *env);
-int				count_array(void **ptr);
+// int				count_array(void **ptr);
 char			*ft_strjoin_free(char *s1, char *s2);
 
 // expansion_utils
 void			add_token(t_args **head, char *value);
+void	append_list(t_args **head, t_args *list);
+int	count_array(void **arr);
+
+// expand_wild
+t_args			*expand_wild(t_args *envs);
 
 // ast
 t_ast			*parse_command(t_token **token);
