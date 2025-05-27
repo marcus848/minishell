@@ -6,13 +6,13 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:22:33 by marcudos          #+#    #+#             */
-/*   Updated: 2025/05/20 21:56:04 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:09:44 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_args	*expand_env(char **args, t_env *env)
+t_args	*expand_env(char **args, t_env *env, t_shell *sh)
 {
 	t_args	*head;
 	t_args	*cur;
@@ -21,12 +21,12 @@ t_args	*expand_env(char **args, t_env *env)
 
 	if (!args || !args[0])
 		return (NULL);
-	head = expand_token(args[0], env);
+	head = expand_token(args[0], env, sh);
 	cur = head;
 	i = 1;
 	while (args[i])
 	{
-		new = expand_token(args[i], env);
+		new = expand_token(args[i], env, sh);
 		while (cur->next)
 			cur = cur->next;
 		cur->next = new;
@@ -84,6 +84,22 @@ void	expand_variable(t_exp *exp, char *key)
 	exp->cur = NULL;
 	if (exp->state == NO_QUOTE)
 		handle_no_quotes(exp);
+}
+
+void	expand_status(t_exp *exp, int status)
+{
+	char	*temp;
+
+	exp->cur = ft_itoa(status);
+	if (!exp->cur)
+		return ;
+	if (!exp->prefix)
+		exp->prefix = ft_strdup("");
+	temp = exp->prefix;
+	exp->prefix = ft_strjoin(temp, exp->cur);
+	free(temp);
+	free(exp->cur);
+	exp->cur = NULL;
 }
 
 void	handle_no_quotes(t_exp *exp)

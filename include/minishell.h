@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/26 03:12:18 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:09:55 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,9 @@
 
 // to use errno and ENOENT
 # include <errno.h>
+
+// to use opendir, readdir and closedir
+# include <dirent.h>
 
 typedef enum e_token_type
 {
@@ -134,6 +137,14 @@ typedef struct s_expand
 	int		i;
 }	t_exp;
 
+typedef struct s_wild
+{
+	char	**parts;
+	char	*path;
+	int		have_start;
+	int		have_end;
+}	t_wild;
+
 typedef struct s_shell
 {
 	t_env			*env;
@@ -181,29 +192,42 @@ void			free_args_list(t_args *args);
 void			free_array(void **ptr);
 
 // expansion
-void			expander(char ***args, t_env *env, int *size_args);
+void			expander(char ***args, t_env *env, int *size_args, t_shell *sh);
 char			**list_to_args(t_args *args, int *size_args);
 
 // expand_env
-t_args			*expand_env(char **args, t_env *env);
+t_args			*expand_env(char **args, t_env *env, t_shell *sh);
 char			*start_prefix(char *input, int *i, t_quote *state);
 void			expand_variable(t_exp *exp, char *key);
+void			expand_status(t_exp *exp, int status);
 void			handle_no_quotes(t_exp *exp);
 
 //expand_token
-t_args			*expand_token(char *input, t_env *env);
+t_args			*expand_token(char *input, t_env *env, t_shell *sh);
 void			init_expander(t_exp *exp, char *input, t_env *env);
-void			handle_next_token(t_exp *exp, char *input);
+void			handle_next_token(t_exp *exp, char *input, t_shell *sh);
 
 // expand_env_utils
 char			*extract_key(char *input, int *i);
 void			update_state_quote(char *input, int *i, t_quote *state);
 char			*find_env_value(char *key, t_env *env);
-int				count_array(void **ptr);
 char			*ft_strjoin_free(char *s1, char *s2);
 
 // expansion_utils
 void			add_token(t_args **head, char *value);
+void			append_list(t_args **head, t_args *list);
+int				count_array(void **arr);
+
+// expand_wild
+t_args			*expand_wild(t_args *envs);
+t_wild			parse_pattern(char *arg);
+t_args			*wild_matches(t_wild *wild);
+int				is_wildcard(char *arg);
+
+// expand_wild_utils
+int				match_middle(char *pos, t_wild *wild, int i, int limit);
+int				match_end(const char *filename, const char *end);
+int				match_pattern(const char *filename, t_wild *wild);
 
 // ast
 t_ast			*parse_command(t_token **token);
