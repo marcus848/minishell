@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:12:14 by marcudos          #+#    #+#             */
-/*   Updated: 2025/05/27 16:32:04 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/27 16:38:08 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_args	*expand_wild(t_args *envs)
 t_wild	parse_pattern(char *arg)
 {
 	t_wild	wild;
-	int	count;
+	int		count;
 
 	wild.parts = ft_split(arg, '*');
 	wild.have_start = 0;
@@ -63,21 +63,23 @@ t_wild	parse_pattern(char *arg)
 
 t_args	*wild_matches(t_wild *wild)
 {
-	t_args	*matches;
-	DIR	*dir;
 	struct dirent	*entry;
+	t_args			*matches;
+	DIR				*dir;
 
 	matches = NULL;
 	dir = opendir(".");
 	if (!dir)
 		return (NULL);
-	while (dir && (entry = readdir(dir)))
+	entry = readdir(dir);
+	while (dir && entry)
 	{
 		if (entry->d_name[0] == '.'
 			&& (!wild->parts[0] || wild->parts[0][0] != '.'))
-			continue ;		
+			continue ;
 		if (match_pattern(entry->d_name, wild))
 			add_token(&matches, entry->d_name);
+		entry = readdir(dir);
 	}
 	closedir(dir);
 	return (matches);
@@ -96,4 +98,3 @@ int	is_wildcard(char *arg)
 	}
 	return (0);
 }
-

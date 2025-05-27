@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/27 16:33:28 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/27 16:42:08 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,25 +209,23 @@ void			handle_next_token(t_exp *exp, char *input);
 char			*extract_key(char *input, int *i);
 void			update_state_quote(char *input, int *i, t_quote *state);
 char			*find_env_value(char *key, t_env *env);
-// int				count_array(void **ptr);
 char			*ft_strjoin_free(char *s1, char *s2);
 
 // expansion_utils
 void			add_token(t_args **head, char *value);
-void	append_list(t_args **head, t_args *list);
-int	count_array(void **arr);
+void			append_list(t_args **head, t_args *list);
+int				count_array(void **arr);
 
 // expand_wild
 t_args			*expand_wild(t_args *envs);
 t_wild			parse_pattern(char *arg);
-t_args			*wild_matches(t_wild *wild)
+t_args			*wild_matches(t_wild *wild);
 int				is_wildcard(char *arg);
 
 // expand_wild_utils
-int	match_middle(char *pos, t_wild *wild, int i, int limit);
-int	match_end(const char *filename, const char *end);
-int	match_pattern(const char *filename, t_wild *wild);
-
+int				match_middle(char *pos, t_wild *wild, int i, int limit);
+int				match_end(const char *filename, const char *end);
+int				match_pattern(const char *filename, t_wild *wild);
 
 // ast
 t_ast			*parse_command(t_token **token);

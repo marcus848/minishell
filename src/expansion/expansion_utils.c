@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 16:53:08 by marcudos          #+#    #+#             */
-/*   Updated: 2025/05/27 16:17:05 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/27 16:41:13 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,12 @@ void	append_list(t_args **head, t_args *list)
 
 int	count_array(void **arr)
 {
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	if (!arr)
 		return (0);
 	while (arr[i])
 		i++;
 	return (i);
 }
-

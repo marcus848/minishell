@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:29:40 by marcudos          #+#    #+#             */
-/*   Updated: 2025/05/27 16:29:55 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/27 16:39:46 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ int	match_end(const char *filename, const char *end)
 
 int	match_pattern(const char *filename, t_wild *wild)
 {
-	int	i;
-	int	len;
 	char	*pos;
+	int		i;
+	int		len;
 
 	i = 0;
 	pos = (char *) filename;
@@ -53,7 +53,8 @@ int	match_pattern(const char *filename, t_wild *wild)
 	len = count_array((void **) wild->parts);
 	if (wild->have_start)
 	{
-		if (ft_strncmp(filename, wild->parts[0], ft_strlen(wild->parts[0])) != 0)
+		if (ft_strncmp(filename, wild->parts[0],
+				ft_strlen(wild->parts[0])) != 0)
 			return (0);
 		pos = (char *) filename + ft_strlen(wild->parts[0]);
 		i++;
