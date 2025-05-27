@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/27 16:22:03 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/27 16:30:47 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,12 @@ int	count_array(void **arr);
 
 // expand_wild
 t_args			*expand_wild(t_args *envs);
+
+// expand_wild_utils
+int	match_middle(char *pos, t_wild *wild, int i, int limit);
+int	match_end(const char *filename, const char *end);
+int	match_pattern(const char *filename, t_wild *wild);
+
 
 // ast
 t_ast			*parse_command(t_token **token);
