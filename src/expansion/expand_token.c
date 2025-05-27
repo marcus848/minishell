@@ -6,20 +6,20 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 19:27:18 by marcudos          #+#    #+#             */
-/*   Updated: 2025/05/20 21:46:50 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:27:25 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_args	*expand_token(char *input, t_env *env)
+t_args	*expand_token(char *input, t_env *env, t_shell *sh)
 {
 	t_exp	exp;
 	t_args	*result;
 
 	init_expander(&exp, input, env);
 	while (input[exp.i])
-		handle_next_token(&exp, input);
+		handle_next_token(&exp, input, sh);
 	if (exp.prefix)
 		add_token(exp.head, exp.prefix);
 	result = *exp.head;
@@ -29,12 +29,19 @@ t_args	*expand_token(char *input, t_env *env)
 	return (result);
 }
 
-void	handle_next_token(t_exp *exp, char *input)
+void	handle_next_token(t_exp *exp, char *input, t_shell *sh)
 {
 	char	*key;
 
 	if (input[exp->i] == '$')
 	{
+		(void) sh;
+		if (input[exp->i + 1] == '?')
+		{
+			expand_status(exp, sh->last_status);
+			exp->i = exp->i + 2;
+			return ;
+		}
 		key = extract_key(input, &exp->i);
 		if (key)
 		{

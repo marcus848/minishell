@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:59:37 by marcudos          #+#    #+#             */
-/*   Updated: 2025/04/30 19:19:38 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:11:28 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	print_ast(t_ast *node, int level, t_env *env)
 	{
 		printf(" ");
 		print_args(node->cmd->args);
-		expander(&node->cmd->args, env, &node->cmd->arg_count);
+		expander(&node->cmd->args, env, &node->cmd->arg_count, NULL);
 		printf(" ");
 		print_args(node->cmd->args);
 	}

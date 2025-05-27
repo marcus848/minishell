@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/27 16:42:08 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:09:55 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ typedef struct s_expand
 typedef struct s_wild
 {
 	char	**parts;
+	char	*path;
 	int		have_start;
 	int		have_end;
 }	t_wild;
@@ -191,19 +192,20 @@ void			free_args_list(t_args *args);
 void			free_array(void **ptr);
 
 // expansion
-void			expander(char ***args, t_env *env, int *size_args);
+void			expander(char ***args, t_env *env, int *size_args, t_shell *sh);
 char			**list_to_args(t_args *args, int *size_args);
 
 // expand_env
-t_args			*expand_env(char **args, t_env *env);
+t_args			*expand_env(char **args, t_env *env, t_shell *sh);
 char			*start_prefix(char *input, int *i, t_quote *state);
 void			expand_variable(t_exp *exp, char *key);
+void			expand_status(t_exp *exp, int status);
 void			handle_no_quotes(t_exp *exp);
 
 //expand_token
-t_args			*expand_token(char *input, t_env *env);
+t_args			*expand_token(char *input, t_env *env, t_shell *sh);
 void			init_expander(t_exp *exp, char *input, t_env *env);
-void			handle_next_token(t_exp *exp, char *input);
+void			handle_next_token(t_exp *exp, char *input, t_shell *sh);
 
 // expand_env_utils
 char			*extract_key(char *input, int *i);

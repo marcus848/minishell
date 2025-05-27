@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 21:46:29 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/26 03:12:22 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:10:59 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	executor(t_token_list *tokens, t_shell *sh, t_ast *node)
 		return ;
 	if (node->type == NODE_COMMAND)
 	{
-		expander(&node->cmd->args, sh->env, &node->cmd->arg_count);
+		expander(&node->cmd->args, sh->env, &node->cmd->arg_count, sh);
 		exec_command(tokens, sh, node);
 	}
 	else if (node->type == NODE_PIPE)

@@ -6,13 +6,13 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 16:14:44 by marcudos          #+#    #+#             */
-/*   Updated: 2025/05/27 14:44:18 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:15:09 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	expander(char ***args, t_env *env, int *size_args)
+void	expander(char ***args, t_env *env, int *size_args, t_shell *sh)
 {
 	t_args	*expanded_envs;
 	t_args	*head;
@@ -20,7 +20,7 @@ void	expander(char ***args, t_env *env, int *size_args)
 
 	if (!(*args) || !(*args)[0])
 		return ;
-	expanded_envs = expand_env(*args, env);
+	expanded_envs = expand_env(*args, env, sh);
 	head = expand_wild(expanded_envs);
 	free_args_list(expanded_envs);
 	expanded = list_to_args(head, size_args);

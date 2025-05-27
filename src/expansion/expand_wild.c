@@ -46,6 +46,7 @@ t_wild	parse_pattern(char *arg)
 	int		count;
 
 	wild.parts = ft_split(arg, '*');
+	wild.path = ft_strdup(".");
 	wild.have_start = 0;
 	wild.have_end = 0;
 	if (arg && arg[0] != '\0' && arg[0] != '*')
@@ -76,8 +77,8 @@ t_args	*wild_matches(t_wild *wild)
 	{
 		if (entry->d_name[0] == '.'
 			&& (!wild->parts[0] || wild->parts[0][0] != '.'))
-			continue ;
-		if (match_pattern(entry->d_name, wild))
+			;
+		else if (match_pattern(entry->d_name, wild))
 			add_token(&matches, entry->d_name);
 		entry = readdir(dir);
 	}
