@@ -140,7 +140,6 @@ typedef struct s_expand
 typedef struct s_wild
 {
 	char	**parts;
-	char	*path;
 	int		have_start;
 	int		have_end;
 }	t_wild;
