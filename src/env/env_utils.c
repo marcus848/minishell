@@ -30,9 +30,7 @@ char	*get_env_path(t_env *env)
 	char	*path;
 
 	path = get_env_value(env, "PATH");
-	if (path && *path != '\0')
-		return (path);
-	return ("/usr/local/bin:/usr/bin:/bin");
+	return (path);
 }
 
 void	env_update(t_env **env_head, char *key, char *value)
