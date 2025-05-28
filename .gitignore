@@ -6,3 +6,7 @@ obj/
 .nfs*
 *.txt
 *.log
+infile
+in
+out
+outfile

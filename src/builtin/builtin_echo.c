@@ -62,8 +62,7 @@ void	write_echo_args(char *arg)
 	i = 0;
 	while (arg[i])
 	{
-		if (arg[i] != '\'' && arg[i] != '\"')
-			write(STDOUT_FILENO, &arg[i], 1);
+		write(STDOUT_FILENO, &arg[i], 1);
 		i++;
 	}
 }
