@@ -13,8 +13,9 @@
 #include "../../include/minishell.h"
 
 char	*assemble_prompt(char *user, char *host, char *cwd, size_t len);
+char	*get_cwd(t_shell *shell);
 
-char	*make_prompt(void)
+char	*make_prompt(t_shell *shell)
 {
 	char	*user;
 	char	*host;
@@ -24,7 +25,7 @@ char	*make_prompt(void)
 
 	user = get_user();
 	host = read_hostname_file();
-	cwd = get_cwd_display();
+	cwd = get_cwd(shell);
 	len = ft_strlen(user) + 1 + ft_strlen(host) + 1 + ft_strlen(cwd) + 3;
 	prompt = assemble_prompt(user, host, cwd, len);
 	return (prompt);
@@ -41,11 +42,31 @@ char	*assemble_prompt(char *user, char *host, char *cwd, size_t len)
 	prompt = (char *)malloc(len + extra + 1);
 	i = 0;
 	build_user_host(prompt, &i, user, host);
-	build_cwd(prompt, &i, cwd);
+	if (cwd)
+		build_cwd(prompt, &i, cwd);
+	else
+		build_cwd(prompt, &i, "[deleted]");
 	append_char(prompt, &i, '$');
 	append_char(prompt, &i, ' ');
 	append_char(prompt, &i, '\0');
 	free(host);
 	free(cwd);
 	return (prompt);
+}
+
+char	*get_cwd(t_shell *shell)
+{
+	char	*raw;
+	char	*home;
+	char	*cwd;
+
+	raw = get_env_value(shell->env, "PWD");
+	home = getenv("HOME");
+	if (raw && home && ft_strncmp(raw, home, ft_strlen(home)) == 0)
+		cwd = replace_home(ft_strdup(raw), home);
+	else if (raw)
+		cwd = ft_strdup(raw);
+	else
+		cwd = get_cwd_display();
+	return (cwd);
 }

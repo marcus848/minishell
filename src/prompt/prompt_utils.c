@@ -12,7 +12,6 @@
 
 #include "../../include/minishell.h"
 
-char	*replace_home(char *cwd, char *home);
 char	*build_shortc(char *src, char *cwd);
 
 char	*get_user(void)
@@ -51,6 +50,8 @@ char	*get_cwd_display(void)
 	char	*display;
 
 	cwd = getcwd(NULL, 0);
+	if (!cwd)
+		return (ft_strdup("[deleted]"));
 	home = getenv("HOME");
 	if (cwd && home && ft_strncmp(cwd, home, ft_strlen(home)) == 0)
 	{
@@ -67,6 +68,8 @@ char	*replace_home(char *cwd, char *home)
 	char	*src;
 	char	*shortc;
 
+	if (!cwd || !home)
+		return (ft_strdup("~"));
 	h_len = ft_strlen(home);
 	if (cwd[h_len] == '/')
 		src = cwd + h_len + 1;
