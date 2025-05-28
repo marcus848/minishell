@@ -21,13 +21,18 @@ int	try_exit(t_token_list *toks, char **args, t_shell *shell)
 	return (0);
 }
 
-int	try_other_builtin(char **args, t_shell *shell)
+int	try_other_builtin(char **args, t_command *cmd, t_shell *shell)
 {
 	int	status;
+	int	save_stdin;
+	int	save_stdout;
 
 	if (is_builtin(args[0]))
 	{
+		save_fds(&save_stdin, &save_stdout);
+		handle_redirections(cmd);
 		status = run_builtin(args, shell->env);
+		restore_fds(save_stdin, save_stdout);
 		set_last_status(shell, status);
 		return (1);
 	}

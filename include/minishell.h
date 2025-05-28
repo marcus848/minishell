@@ -284,7 +284,7 @@ int				is_executable_command(char *cmd, t_env *env);
 int				is_explicit_executable(char *cmd);
 int				search_in_path(char *cmd, t_env *env);
 int				try_exit(t_token_list *toks, char **args, t_shell *shell);
-int				try_other_builtin(char **args, t_shell *shell);
+int				try_other_builtin(char **args, t_command *cmd, t_shell *shell);
 void			run_external_cmd(char **args, t_command *cmd, t_shell *sh);
 
 // executor pipe
