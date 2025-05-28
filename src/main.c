@@ -38,7 +38,7 @@ void	prompt(t_shell *shell)
 
 	while (1)
 	{
-		pmt = make_prompt();
+		pmt = make_prompt(shell);
 		input = readline(pmt);
 		free(pmt);
 		if (!input)

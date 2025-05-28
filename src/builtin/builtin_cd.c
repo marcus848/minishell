@@ -13,7 +13,7 @@
 #include "../../include/minishell.h"
 
 static char	*get_cd_target(char **args, t_env *env);
-static char	*do_chdir(const char *path);
+static char	*do_chdir(const char *path, t_env *env);
 static void	update_env_vars(t_env *env, char *oldcwd);
 
 int	builtin_cd(char **args, t_env *env)
@@ -24,7 +24,7 @@ int	builtin_cd(char **args, t_env *env)
 	target = get_cd_target(args, env);
 	if (!target)
 		return (1);
-	oldcwd = do_chdir(target);
+	oldcwd = do_chdir(target, env);
 	if (!oldcwd)
 		return (1);
 	update_env_vars(env, oldcwd);
@@ -53,11 +53,16 @@ static char	*get_cd_target(char **args, t_env *env)
 	return (args[1]);
 }
 
-static char	*do_chdir(const char *path)
+static char	*do_chdir(const char *path, t_env *env)
 {
+	char	*oldpwd_env;
 	char	*oldcwd;
 
-	oldcwd = getcwd(NULL, 0);
+	oldpwd_env = get_env_value(env, "PWD");
+	if (oldpwd_env)
+		oldcwd = ft_strdup(oldpwd_env);
+	else
+		oldcwd = getcwd(NULL, 0);
 	if (!oldcwd)
 		return (NULL);
 	if (chdir(path) < 0)

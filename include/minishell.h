@@ -304,7 +304,7 @@ void			print_exported(t_env *env);
 int				builtin_unset(char **args, t_env **env);
 
 // prompt
-char			*make_prompt(void);
+char			*make_prompt(t_shell *shell);
 char			*get_user(void);
 char			*read_hostname_file(void);
 char			*get_cwd_display(void);
@@ -312,5 +312,6 @@ void			build_user_host(char *dst, size_t *i, char *user, char *host);
 void			build_cwd(char *dst, size_t *i, char *cwd);
 void			append_str(char *dst, size_t *i, const char *src);
 void			append_char(char *dst, size_t *i, char c);
+char			*replace_home(char *cwd, char *home);
 
 #endif
