@@ -55,3 +55,17 @@ int	token_analysis(t_token *prev, t_token *token, t_token *next, int *depth)
 		return (check_paren(prev, token, next, depth));
 	return (1);
 }
+
+int	is_all_whitespace(const char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] != ' ' && s[i] != '\t')
+			return (0);
+		i++;
+	}
+	return (1);
+}

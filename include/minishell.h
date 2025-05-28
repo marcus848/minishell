@@ -263,6 +263,7 @@ int				check_redir(t_token *next);
 int				check_logical(t_token *prev, t_token *token, t_token *next);
 int				is_twochar(t_token *token);
 int				check_paren(t_token *p, t_token *t, t_token *n, int *depth);
+int				is_all_whitespace(const char *s);
 
 // executor
 void			executor(t_token_list *tokens, t_shell *sh, t_ast *node);

@@ -43,7 +43,7 @@ void	prompt(t_shell *shell)
 		free(pmt);
 		if (!input)
 			break ;
-		if (input[0] == '\0')
+		if (input[0] == '\0' || is_all_whitespace(input))
 		{
 			free(input);
 			continue ;
