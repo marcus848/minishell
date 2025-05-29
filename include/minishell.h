@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/27 17:09:55 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/29 00:13:41 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct s_command
 	char			*outfile;
 	char			*appendfile;
 	int				heredoc;
+	int				heredoc_fd;
 	char			*delimiter;
 	char			*heredoc_path;
 	int				is_builtin;
@@ -267,15 +268,6 @@ int				is_all_whitespace(const char *s);
 
 // executor
 void			executor(t_token_list *tokens, t_shell *sh, t_ast *node);
-void			handle_redirections(t_command *cmd);
-void			apply_input_redir(t_command *cmd);
-void			apply_output_redir(t_command *cmd);
-int				save_fds(int *save_stdin, int *save_stdout);
-int				restore_fds(int save_stdin, int save_stdout);
-char			**env_list_to_array(t_env *env);
-void			free_string_array(char **arr);
-void			set_last_status(t_shell *shell, int status);
-int				get_last_status(t_shell *shell);
 int				exec_dispatch(char **args, t_env *env, char **envp);
 void			execve_with_path(char **args, t_env *env, char **envp);
 void			try_exec_explicit(char *cmd, char **args, char **envp);
@@ -287,6 +279,27 @@ int				search_in_path(char *cmd, t_env *env);
 int				try_exit(t_token_list *toks, char **args, t_shell *shell);
 int				try_other_builtin(char **args, t_command *cmd, t_shell *shell);
 void			run_external_cmd(char **args, t_command *cmd, t_shell *sh);
+
+// redir
+void			handle_redirections(t_command *cmd);
+void			apply_input_redir(t_command *cmd);
+void			apply_output_redir(t_command *cmd);
+
+// heredoc
+int				process_heredoc(char *delimiter);
+void				prepare_heredocs(t_ast *node);
+
+// stdin stdout
+int				save_fds(int *save_stdin, int *save_stdout);
+int				restore_fds(int save_stdin, int save_stdout);
+
+// env manipulation
+char			**env_list_to_array(t_env *env);
+void			free_string_array(char **arr);
+
+// last status
+void			set_last_status(t_shell *shell, int status);
+int				get_last_status(t_shell *shell);
 
 // executor pipe
 void			handle_left_child(int *fd, t_shell *shell, t_ast *node);

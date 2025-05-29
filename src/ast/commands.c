@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 19:58:35 by marcudos          #+#    #+#             */
-/*   Updated: 2025/05/03 17:45:36 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/29 00:08:38 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,9 @@ void	parse_redirect(t_token **token, t_command **command)
 void	parse_heredoc(t_token **token, t_command **command)
 {
 	if ((*command)->heredoc == 1)
-	{
 		free((*command)->delimiter);
-		free((*command)->heredoc_path);
-	}
 	(*command)->heredoc = 1;
 	(*command)->delimiter = ft_strdup((*token)->next->value);
-	(*command)->heredoc_path = ft_strjoin("tmp/", (*command)->delimiter);
 	(*token) = (*token)->next->next;
 }
 
@@ -93,6 +89,7 @@ t_command	*init_command(void)
 	command->outfile = NULL;
 	command->appendfile = NULL;
 	command->heredoc = 0;
+	command->heredoc_fd = -1;
 	command->delimiter = NULL;
 	command->heredoc_path = NULL;
 	command->is_builtin = 0;
