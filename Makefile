@@ -70,6 +70,7 @@ SRCS		= ${SRC_DIR}/main.c \
 		  ${PROMPT_DIR}/prompt_utils.c \
 		  ${PROMPT_DIR}/prompt_colors.c \
 		  ${HEREDOC_DIR}/heredoc.c \
+		  ${HEREDOC_DIR}/heredoc_utils.c \
 
 OBJS		= ${SRCS:${SRC_DIR}/%.c=${OBJ_DIR}/%.o}
 

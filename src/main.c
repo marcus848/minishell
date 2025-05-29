@@ -82,7 +82,7 @@ void	parser(t_token_list *tokens, t_shell *shell)
 	}
 	ast = parse_logical(&tokens->head);
 	shell->ast = ast;
-	prepare_heredocs(shell->ast);
+	prepare_heredocs(shell->ast, shell);
 	executor(tokens, shell, ast);
 	token_list_free(tokens);
 	ast_free(shell->ast);

@@ -69,10 +69,23 @@ void	parse_redirect(t_token **token, t_command **command)
 
 void	parse_heredoc(t_token **token, t_command **command)
 {
-	if ((*command)->heredoc == 1)
-		free((*command)->delimiter);
+	char	*raw;
+	size_t	len;
+
+	raw = (*token)->next->value;
+	len = ft_strlen(raw);
 	(*command)->heredoc = 1;
-	(*command)->delimiter = ft_strdup((*token)->next->value);
+	if ((raw[0] == '\'' && raw[len - 1] == '\'')
+		|| (raw[0] == '"' && raw[len - 1] == '"'))
+	{
+		(*command)->quoted_delim = 1;
+		(*command)->delimiter = ft_substr(raw, 1, len - 2);
+	}
+	else
+	{
+		(*command)->quoted_delim = 0;
+		(*command)->delimiter = ft_strdup(raw);
+	}
 	(*token) = (*token)->next->next;
 }
 
@@ -91,7 +104,7 @@ t_command	*init_command(void)
 	command->heredoc = 0;
 	command->heredoc_fd = -1;
 	command->delimiter = NULL;
-	command->heredoc_path = NULL;
+	command->quoted_delim = 0;
 	command->is_builtin = 0;
 	return (command);
 }

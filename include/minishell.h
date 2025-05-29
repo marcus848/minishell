@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/29 00:13:41 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/29 04:23:56 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ typedef struct s_command
 	int				heredoc;
 	int				heredoc_fd;
 	char			*delimiter;
+	int				quoted_delim;
 	char			*heredoc_path;
 	int				is_builtin;
 }	t_command;
@@ -286,8 +287,9 @@ void			apply_input_redir(t_command *cmd);
 void			apply_output_redir(t_command *cmd);
 
 // heredoc
-int				process_heredoc(char *delimiter);
-void				prepare_heredocs(t_ast *node);
+void			prepare_heredocs(t_ast *node, t_shell *sh);
+char			**expand_line_to_words(char *line, t_env *env, t_shell *shell);
+char			*join_words(char **words);
 
 // stdin stdout
 int				save_fds(int *save_stdin, int *save_stdout);
