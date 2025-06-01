@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/06/01 17:58:02 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/06/01 18:37:17 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,15 @@ typedef struct s_shell
 	int				last_status;
 }	t_shell;
 
+typedef struct s_quote_ctx
+{
+	char	*str;
+	char	*result;
+	int		i;
+	int		j;
+	t_quote	state;
+}	t_quote_ctx;
+
 // tokenizer
 t_token_list	*tokenizer(char *input);
 int				handle_operators(char *input, int *i, t_token_list *tokens);
@@ -209,8 +218,8 @@ void			handle_next_token(t_exp *exp, char *input, t_shell *sh);
 
 // expand_env_utils
 char			*extract_key(char *input, int *i);
-void	update_state_quote(t_quote *state, char c);
-int	update_state_quote_update_i(char *input, int *i, t_quote *state);
+void			update_state_quote(t_quote *state, char c);
+int				update_state_quote_i(char *input, int *i, t_quote *state);
 char			*find_env_value(char *key, t_env *env);
 char			*ft_strjoin_free(char *s1, char *s2);
 
@@ -218,6 +227,7 @@ char			*ft_strjoin_free(char *s1, char *s2);
 void			add_token(t_args **head, char *value);
 void			append_list(t_args **head, t_args *list);
 int				count_array(void **arr);
+void			add_token_free(t_args **head, char *value);
 
 // expand_wild
 t_args			*expand_wild(t_args *envs);
@@ -232,9 +242,9 @@ int				match_end(const char *filename, const char *end);
 int				match_pattern(const char *filename, t_wild *wild);
 
 // expand_wild_split
-char	**split_wildcard(char *input);
-void	add_token_to_array(char ***array, char *token);
-char	*remove_quotes(char *str, int free_str);
+char			**split_wildcard(char *input);
+void			add_token_to_array(char ***array, char *token);
+char			*rem_quotes(char *str, int free_str);
 
 // ast
 t_ast			*parse_command(t_token **token);

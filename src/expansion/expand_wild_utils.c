@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:29:40 by marcudos          #+#    #+#             */
-/*   Updated: 2025/06/01 18:04:35 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/06/01 18:38:47 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	handle_opening_quote(char *input, int *i, t_quote *state)
 	return (0);
 }
 
-int	update_state_quote_update_i(char *input, int *i, t_quote *state)
+int	update_state_quote_i(char *input, int *i, t_quote *state)
 {
 	int	handled;
 

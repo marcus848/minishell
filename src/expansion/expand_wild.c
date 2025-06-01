@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:12:14 by marcudos          #+#    #+#             */
-/*   Updated: 2025/06/01 17:58:07 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/06/01 18:35:00 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ t_args	*expand_wild(t_args *envs)
 {
 	t_args	*result;
 	t_args	*matches;
-	char	*temp;
 	t_wild	wild;
 
 	result = NULL;
@@ -27,21 +26,13 @@ t_args	*expand_wild(t_args *envs)
 			wild = parse_pattern(envs->arg);
 			matches = wild_matches(&wild);
 			if (!matches)
-			{
-				temp = remove_quotes(envs->arg, 0);
-				add_token(&result, temp);
-				free(temp);
-			}
+				add_token_free(&result, rem_quotes(envs->arg, 0));
 			else
 				append_list(&result, matches);
 			free_array((void **) wild.parts);
 		}
 		else
-		{
-			temp = remove_quotes(envs->arg, 0);
-			add_token(&result, temp);
-			free(temp);
-		}
+			add_token_free(&result, rem_quotes(envs->arg, 0));
 		envs = envs->next;
 	}
 	return (result);

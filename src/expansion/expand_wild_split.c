@@ -6,11 +6,19 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 16:12:32 by marcudos          #+#    #+#             */
-/*   Updated: 2025/06/01 17:56:07 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/06/01 18:35:06 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	init_vars_split_wildcard(t_quote *state, char ***parts, int *i, int *j)
+{
+	*state = NO_QUOTE;
+	(*parts) = NULL;
+	*i = 0;
+	*j = 0;
+}
 
 char	**split_wildcard(char *input)
 {
@@ -20,11 +28,8 @@ char	**split_wildcard(char *input)
 	int		i;
 	int		j;
 
-	state = NO_QUOTE;
-	parts = NULL;
 	start = input;
-	i = 0;
-	j = 0;
+	init_vars_split_wildcard(&state, &parts, &i, &j);
 	while (input [i])
 	{
 		update_state_quote(&state, input[i]);
@@ -32,14 +37,13 @@ char	**split_wildcard(char *input)
 		{
 			if (i - j > 0)
 				add_token_to_array(&parts,
-					remove_quotes(ft_substr(input, j, i - j), 1));
+					rem_quotes(ft_substr(input, j, i - j), 1));
 			j = i + 1;
 		}
 		i++;
 	}
 	if (i - j > 0)
-		add_token_to_array(&parts,
-			remove_quotes(ft_substr(input, j, i - j), 1));
+		add_token_to_array(&parts, rem_quotes(ft_substr(input, j, i - j), 1));
 	else if (j == 0)
 		add_token_to_array(&parts, ft_strdup(""));
 	return (parts);
@@ -70,35 +74,4 @@ void	add_token_to_array(char ***array, char *token)
 	new_array[i] = NULL;
 	free(*array);
 	*array = new_array;
-}
-
-char	*remove_quotes(char *str, int free_str)
-{
-	char	*result;
-	int		i;
-	int		j;
-	int		quote_handled;
-	t_quote	state;
-
-	result = malloc(ft_strlen(str) + 1);
-	if (!result)
-		return (NULL);
-	i = 0;
-	j = 0;
-	state = NO_QUOTE;
-	while (str[i])
-	{
-		quote_handled = update_state_quote_update_i(str, &i, &state);
-		if (quote_handled)
-			continue ;
-		if (!((str[i] == '\'' && state == NO_QUOTE)
-				|| (str[i] == '\"' && state == NO_QUOTE)))
-			result[j++] = str[i];
-		if (str[i])
-			i++;
-	}
-	if (free_str)
-		free(str);
-	result[j] = '\0';
-	return (result);
 }
