@@ -27,6 +27,20 @@ char	*extract_key(char *input, int *i)
 
 void	update_state_quote(char *input, int *i, t_quote *state)
 {
+	// while (input[*i] == '\'' || input[*i] == '\"')
+	// {
+	if ((input[*i] == '\'' && *state == SINGLE_QUOTE)
+		|| (input[*i] == '\"' && *state == DOUBLE_QUOTE))
+		*state = NO_QUOTE;
+	else if ((input[*i] == '\'' && *state == NO_QUOTE))
+		*state = SINGLE_QUOTE;
+	else if ((input[*i] == '\"' && *state == NO_QUOTE))
+		*state = DOUBLE_QUOTE;
+	// }
+}
+
+void	update_state_quote_update_i(char *input, int *i, t_quote *state)
+{
 	while (input[*i] == '\'' || input[*i] == '\"')
 	{
 		if ((input[*i] == '\'' && *state == SINGLE_QUOTE)
@@ -49,7 +63,6 @@ void	update_state_quote(char *input, int *i, t_quote *state)
 			break ;
 	}
 }
-
 char	*find_env_value(char *key, t_env *env)
 {
 	while (env)

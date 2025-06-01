@@ -209,6 +209,7 @@ void			handle_next_token(t_exp *exp, char *input, t_shell *sh);
 // expand_env_utils
 char			*extract_key(char *input, int *i);
 void			update_state_quote(char *input, int *i, t_quote *state);
+void			update_state_quote_update_i(char *input, int *i, t_quote *state);
 char			*find_env_value(char *key, t_env *env);
 char			*ft_strjoin_free(char *s1, char *s2);
 
@@ -254,7 +255,7 @@ void			print_tokens(t_token_list *tokens);
 void			print_token(char *str_type, t_token *token);
 void			test_expander(t_env *env);
 void			test_commands_from_tokens(t_token_list *tokens);
-void			print_ast(t_ast *node, int level, t_env *env);
+void			print_ast(t_ast *node, int level, t_env *env, t_shell *sh);
 
 // syntax analysis
 int				syntax_analysis(t_token_list *tokens);
