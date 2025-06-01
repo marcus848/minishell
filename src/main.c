@@ -82,7 +82,8 @@ void	parser(t_token_list *tokens, t_shell *shell)
 	}
 	ast = parse_logical(&tokens->head);
 	shell->ast = ast;
-	executor(tokens, shell, ast);
+	// executor(tokens, shell, ast);
+	print_ast(ast, 0, shell->env, shell);
 	token_list_free(tokens);
 	ast_free(shell->ast);
 	shell->ast = NULL;

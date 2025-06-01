@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/27 17:09:55 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/06/01 16:46:21 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,7 @@ void			handle_next_token(t_exp *exp, char *input, t_shell *sh);
 
 // expand_env_utils
 char			*extract_key(char *input, int *i);
-void			update_state_quote(char *input, int *i, t_quote *state);
+void	update_state_quote(t_quote *state, char c);
 void			update_state_quote_update_i(char *input, int *i, t_quote *state);
 char			*find_env_value(char *key, t_env *env);
 char			*ft_strjoin_free(char *s1, char *s2);
@@ -228,6 +228,10 @@ int				is_wildcard(char *arg);
 int				match_middle(char *pos, t_wild *wild, int i, int limit);
 int				match_end(const char *filename, const char *end);
 int				match_pattern(const char *filename, t_wild *wild);
+
+// expand_wild_split
+char	**split_wildcard(char *input);
+char	*remove_quotes(char *str);
 
 // ast
 t_ast			*parse_command(t_token **token);

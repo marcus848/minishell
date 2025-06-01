@@ -36,6 +36,7 @@ SRCS		= ${SRC_DIR}/main.c \
 		  ${EXPANSION_DIR}/expansion_utils.c \
 		  ${EXPANSION_DIR}/expand_wild.c \
 		  ${EXPANSION_DIR}/expand_wild_utils.c \
+		  ${EXPANSION_DIR}/expand_wild_split.c \
 		  ${DEBUG_DIR}/debug_functions.c \
 		  ${DEBUG_DIR}/debug_command.c \
 		  ${DEBUG_DIR}/debug_ast.c \

@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:22:33 by marcudos          #+#    #+#             */
-/*   Updated: 2025/05/27 17:09:44 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/06/01 16:21:42 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*start_prefix(char *input, int *i, t_quote *state)
 	new = NULL;
 	while (input[*i])
 	{
-		update_state_quote(input, i, state);
+		update_state_quote(state, input[*i]);
 		if (input[*i] == '\0' || (input[*i] == '$' && *state != SINGLE_QUOTE))
 			break ;
 		temp = ft_substr(input, *i, 1);
