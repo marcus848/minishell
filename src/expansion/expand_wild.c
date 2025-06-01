@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:12:14 by marcudos          #+#    #+#             */
-/*   Updated: 2025/06/01 18:35:00 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/06/01 18:55:04 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_args	*expand_wild(t_args *envs)
 			if (!matches)
 				add_token_free(&result, rem_quotes(envs->arg, 0));
 			else
-				append_list(&result, matches);
+				sort_append(&result, matches);
 			free_array((void **) wild.parts);
 		}
 		else

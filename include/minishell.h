@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/06/01 18:37:17 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/06/01 18:51:12 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,6 +245,9 @@ int				match_pattern(const char *filename, t_wild *wild);
 char			**split_wildcard(char *input);
 void			add_token_to_array(char ***array, char *token);
 char			*rem_quotes(char *str, int free_str);
+
+// sort_wildcard
+void			sort_append(t_args **head, t_args *list);
 
 // ast
 t_ast			*parse_command(t_token **token);
