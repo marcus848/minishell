@@ -6,13 +6,11 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 16:12:32 by marcudos          #+#    #+#             */
-/*   Updated: 2025/06/01 16:46:28 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/06/01 17:23:39 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-void	add_token_to_array(char ***array, char *token);
 
 char	**split_wildcard(char *input)
 {
@@ -33,13 +31,14 @@ char	**split_wildcard(char *input)
 		if (input[i] == '*' && state == NO_QUOTE)
 		{
 			if (i - j > 0)
-				add_token_to_array(&parts, remove_quotes(ft_substr(input, j, i - j)));
+				add_token_to_array(&parts,
+					remove_quotes(ft_substr(input, j, i - j), 1));
 			j = i + 1;
 		}
 		i++;
 	}
 	if (i - j > 0)
-		add_token_to_array(&parts, ft_substr(input, j, i = j));
+		add_token_to_array(&parts, remove_quotes(ft_substr(input, j, i - j), 1));
 	else if (j == 0)
 		add_token_to_array(&parts, ft_strdup(""));
 	return (parts);
@@ -69,15 +68,15 @@ void	add_token_to_array(char ***array, char *token)
 	new_array[i++] = token;
 	new_array[i] = NULL;
 	free(*array);
-	// free_array((void **) *array);
 	*array = new_array;
 }
 
-char	*remove_quotes(char *str)
+char	*remove_quotes(char *str, int free_str)
 {
 	char	*result;
 	int		i;
 	int		j;
+	int		quote_handled;
 	t_quote	state;
 
 	result = malloc(ft_strlen(str) + 1);
@@ -88,11 +87,16 @@ char	*remove_quotes(char *str)
 	state = NO_QUOTE;
 	while (str[i])
 	{
-		update_state_quote_update_i(str, &i,  &state);
+		quote_handled = update_state_quote_update_i(str, &i,  &state);
+		if (quote_handled)
+			continue ;
 		if (!((str[i] == '\'' && state == NO_QUOTE) || (str[i] == '\"' && state == NO_QUOTE)))
 			result[j++] = str[i];
-		i++;
+		if (str[i])
+			i++;
 	}
+	if (free_str)
+		free(str);
 	result[j] = '\0';
 	return (result);
 }

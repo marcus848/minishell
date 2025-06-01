@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:29:40 by marcudos          #+#    #+#             */
-/*   Updated: 2025/05/27 16:39:46 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/06/01 17:39:14 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ int	match_pattern(const char *filename, t_wild *wild)
 	int		len;
 
 	i = 0;
+	if (wild->full)
+		return (1);
 	pos = (char *) filename;
 	if (!filename || !wild->parts)
 		return (0);

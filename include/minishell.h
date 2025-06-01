@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/06/01 16:46:21 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/06/01 17:35:42 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ typedef struct s_wild
 	char	**parts;
 	int		have_start;
 	int		have_end;
+	int		full;
 }	t_wild;
 
 typedef struct s_shell
@@ -209,7 +210,7 @@ void			handle_next_token(t_exp *exp, char *input, t_shell *sh);
 // expand_env_utils
 char			*extract_key(char *input, int *i);
 void	update_state_quote(t_quote *state, char c);
-void			update_state_quote_update_i(char *input, int *i, t_quote *state);
+int	update_state_quote_update_i(char *input, int *i, t_quote *state);
 char			*find_env_value(char *key, t_env *env);
 char			*ft_strjoin_free(char *s1, char *s2);
 
@@ -231,7 +232,8 @@ int				match_pattern(const char *filename, t_wild *wild);
 
 // expand_wild_split
 char	**split_wildcard(char *input);
-char	*remove_quotes(char *str);
+void	add_token_to_array(char ***array, char *token);
+char	*remove_quotes(char *str, int free_str);
 
 // ast
 t_ast			*parse_command(t_token **token);

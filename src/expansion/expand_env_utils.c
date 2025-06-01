@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 16:10:11 by marcudos          #+#    #+#             */
-/*   Updated: 2025/06/01 16:25:03 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/06/01 17:21:46 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,11 @@ void	update_state_quote(t_quote *state, char c)
 	// }
 }
 
-void	update_state_quote_update_i(char *input, int *i, t_quote *state)
+int	update_state_quote_update_i(char *input, int *i, t_quote *state)
 {
+	int	handled;
+
+	handled = 0;
 	while (input[*i] == '\'' || input[*i] == '\"')
 	{
 		if ((input[*i] == '\'' && *state == SINGLE_QUOTE)
@@ -48,20 +51,24 @@ void	update_state_quote_update_i(char *input, int *i, t_quote *state)
 		{
 			(*i)++;
 			*state = NO_QUOTE;
+			handled = 1;
 		}
 		else if ((input[*i] == '\'' && *state == NO_QUOTE))
 		{
 			*state = SINGLE_QUOTE;
 			(*i)++;
+			handled = 1;
 		}
 		else if ((input[*i] == '\"' && *state == NO_QUOTE))
 		{
 			*state = DOUBLE_QUOTE;
 			(*i)++;
+			handled = 1;
 		}
 		else
 			break ;
 	}
+	return (handled);
 }
 char	*find_env_value(char *key, t_env *env)
 {
