@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 16:12:32 by marcudos          #+#    #+#             */
-/*   Updated: 2025/06/01 17:23:39 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/06/01 17:56:07 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ char	**split_wildcard(char *input)
 		i++;
 	}
 	if (i - j > 0)
-		add_token_to_array(&parts, remove_quotes(ft_substr(input, j, i - j), 1));
+		add_token_to_array(&parts,
+			remove_quotes(ft_substr(input, j, i - j), 1));
 	else if (j == 0)
 		add_token_to_array(&parts, ft_strdup(""));
 	return (parts);
@@ -87,10 +88,11 @@ char	*remove_quotes(char *str, int free_str)
 	state = NO_QUOTE;
 	while (str[i])
 	{
-		quote_handled = update_state_quote_update_i(str, &i,  &state);
+		quote_handled = update_state_quote_update_i(str, &i, &state);
 		if (quote_handled)
 			continue ;
-		if (!((str[i] == '\'' && state == NO_QUOTE) || (str[i] == '\"' && state == NO_QUOTE)))
+		if (!((str[i] == '\'' && state == NO_QUOTE)
+				|| (str[i] == '\"' && state == NO_QUOTE)))
 			result[j++] = str[i];
 		if (str[i])
 			i++;
@@ -100,4 +102,3 @@ char	*remove_quotes(char *str, int free_str)
 	result[j] = '\0';
 	return (result);
 }
-

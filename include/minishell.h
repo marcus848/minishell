@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/06/01 17:35:42 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/06/01 17:58:02 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,6 +224,7 @@ t_args			*expand_wild(t_args *envs);
 t_wild			parse_pattern(char *arg);
 t_args			*wild_matches(t_wild *wild);
 int				is_wildcard(char *arg);
+int				only_asterisk(char *arg);
 
 // expand_wild_utils
 int				match_middle(char *pos, t_wild *wild, int i, int limit);

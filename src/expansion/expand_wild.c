@@ -6,13 +6,12 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:12:14 by marcudos          #+#    #+#             */
-/*   Updated: 2025/06/01 17:44:24 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/06/01 17:58:07 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	only_asterisk(char *arg);
 t_args	*expand_wild(t_args *envs)
 {
 	t_args	*result;
@@ -97,7 +96,7 @@ t_args	*wild_matches(t_wild *wild)
 int	is_wildcard(char *arg)
 {
 	t_quote	state;
-	int	i;
+	int		i;
 
 	i = 0;
 	state = NO_QUOTE;

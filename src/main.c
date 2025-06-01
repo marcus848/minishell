@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 20:45:28 by caide-so          #+#    #+#             */
-/*   Updated: 2025/06/01 16:56:27 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/06/01 17:52:44 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void	parser(t_token_list *tokens, t_shell *shell)
 	ast = parse_logical(&tokens->head);
 	shell->ast = ast;
 	executor(tokens, shell, ast);
-	// print_ast(ast, 0, shell->env, shell);
 	token_list_free(tokens);
 	ast_free(shell->ast);
 	shell->ast = NULL;
