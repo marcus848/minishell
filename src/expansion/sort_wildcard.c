@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <readline/history.h>
 
 void	swap_args(t_args *a, t_args *b)
 {
@@ -20,6 +19,30 @@ void	swap_args(t_args *a, t_args *b)
 	temp = a->arg;
 	a->arg = b->arg;
 	b->arg = temp;
+}
+
+int	ft_tolower(int c)
+{
+	if (c >= 'A' && c <= 'Z')
+		return (c + 32);
+	return (c);
+}
+
+int	ft_strcasecmp(const char *s1, const char *s2)
+{
+	unsigned char	c1;
+	unsigned char	c2;
+
+	while (*s1 || *s2)
+	{
+		c1 = ft_tolower((int) *s1);
+		c2 = ft_tolower((int) *s2);
+		if (c1 != c2)
+			return (c1 - c2);
+		s1++;
+		s2++;
+	}
+	return (0);
 }
 
 void	sort_args_list(t_args *list)
@@ -38,7 +61,7 @@ void	sort_args_list(t_args *list)
 		while (cur && cur->next)
 		{
 			next = cur->next;
-			if (ft_strcmp(cur->arg, next->arg) > 0)
+			if (ft_strcasecmp(cur->arg, next->arg) > 0)
 			{
 				swap_args(cur, next);
 				swapped = 1;
