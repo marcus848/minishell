@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/27 17:09:55 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/06/02 17:12:01 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@
 
 // to use opendir, readdir and closedir
 # include <dirent.h>
+
+// to use signal functions
+# include <signal.h>
 
 typedef enum e_token_type
 {
@@ -302,6 +305,9 @@ int				builtin_cd(char **args, t_env *env);
 int				builtin_export(char **args, t_env **env);
 void			print_exported(t_env *env);
 int				builtin_unset(char **args, t_env **env);
+
+// handle_signals
+void	handle_signals(void);
 
 // prompt
 char			*make_prompt(t_shell *shell);
