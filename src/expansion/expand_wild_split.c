@@ -24,11 +24,11 @@ char	**split_wildcard(char *input)
 {
 	t_quote	state;
 	char	**parts;
-	char	*start;
+	// char	*start;
 	int		i;
 	int		j;
 
-	start = input;
+	// start = input;
 	init_vars_split_wildcard(&state, &parts, &i, &j);
 	while (input [i])
 	{

@@ -103,6 +103,8 @@ int	update_state_quote_i(char *input, int *i, t_quote *state)
 		{
 			if (handle_opening_quote(input, i, state))
 				handled = 1;
+			else
+				break ;
 		}
 		else
 			break ;

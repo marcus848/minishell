@@ -12,6 +12,8 @@
 
 #include "../../include/minishell.h"
 
+int	handle_special_expand(t_exp *exp, char *input);
+
 t_args	*expand_token(char *input, t_env *env, t_shell *sh)
 {
 	t_exp	exp;
@@ -35,13 +37,14 @@ void	handle_next_token(t_exp *exp, char *input, t_shell *sh)
 
 	if (input[exp->i] == '$')
 	{
-		(void) sh;
 		if (input[exp->i + 1] == '?')
 		{
 			expand_status(exp, sh->last_status);
 			exp->i = exp->i + 2;
 			return ;
 		}
+		if (handle_special_expand(exp, input))
+			return ;
 		key = extract_key(input, &exp->i);
 		if (key)
 		{
@@ -55,6 +58,29 @@ void	handle_next_token(t_exp *exp, char *input, t_shell *sh)
 		exp->prefix = ft_strjoin_free(exp->prefix, exp->cur);
 		exp->cur = NULL;
 	}
+}
+
+int	handle_special_expand(t_exp *exp, char *input)
+{
+	char	*temp;
+
+	if (input[exp->i + 1] == '\0' || input[exp->i + 1] == ' '
+		|| input[exp->i + 1] == '\"' || input[exp->i + 1] == '\'')
+	{
+		exp->cur = ft_strdup("$");
+		if (!exp->cur)
+			return (1);
+		if (!exp->prefix)
+			exp->prefix = ft_strdup("");
+		temp = exp->prefix;
+		exp->prefix = ft_strjoin(temp, exp->cur);
+		free(temp);
+		free(exp->cur);
+		exp->cur = NULL;
+		exp->i++;
+		return (1);
+	}
+	return (0);
 }
 
 void	init_expander(t_exp *exp, char *input, t_env *env)
