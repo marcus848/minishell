@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:03:20 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/14 22:40:58 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/29 00:11:15 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,9 @@ void	apply_input_redir(t_command *cmd)
 		dup2(fd, STDIN_FILENO);
 		close(fd);
 	}
-	if (cmd->heredoc)
+	if (cmd->heredocs)
 	{
-		fd = open(cmd->heredoc_path, O_RDONLY);
-		if (fd < 0)
-			exit_perror("open heredoc file");
+		fd = cmd->heredoc_fd;
 		dup2(fd, STDIN_FILENO);
 		close(fd);
 	}

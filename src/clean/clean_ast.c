@@ -6,14 +6,29 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 18:42:03 by marcudos          #+#    #+#             */
-/*   Updated: 2025/05/03 19:06:30 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/05/29 04:30:32 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+void	free_heredocs(t_heredoc *hd);
+
+void	ast_free(t_ast *root)
+{
+	if (!root)
+		return ;
+	ast_free(root->left);
+	ast_free(root->right);
+	if (root->type == NODE_COMMAND && root->cmd)
+		command_free(root->cmd);
+	free(root);
+}
+
 void	command_free(t_command *command)
 {
+	if (command->heredoc_fd >= 0)
+		close(command->heredoc_fd);
 	if (command->args)
 		free_args(command);
 	if (command->infile)
@@ -22,10 +37,8 @@ void	command_free(t_command *command)
 		free(command->outfile);
 	if (command->appendfile)
 		free(command->appendfile);
-	if (command->heredoc_path)
-		free(command->heredoc_path);
-	if (command->delimiter)
-		free(command->delimiter);
+	if (command->heredocs)
+		free_heredocs(command->heredocs);
 	free(command);
 }
 
@@ -39,13 +52,15 @@ void	free_args(t_command *command)
 	free(command->args);
 }
 
-void	ast_free(t_ast *root)
+void	free_heredocs(t_heredoc *hd)
 {
-	if (!root)
-		return ;
-	ast_free(root->left);
-	ast_free(root->right);
-	if (root->type == NODE_COMMAND && root->cmd)
-		command_free(root->cmd);
-	free(root);
+	t_heredoc	*next;
+
+	while (hd)
+	{
+		next = hd->next;
+		free(hd->delimiter);
+		free(hd);
+		hd = next;
+	}
 }
