@@ -6,11 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/06/02 17:12:01 by marcudos         ###   ########.fr       */
-=======
 /*   Updated: 2025/05/29 04:23:56 by caide-so         ###   ########.fr       */
->>>>>>> 011e486b7741e2321f1a544db44709ab7e423196
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -330,7 +326,7 @@ void			print_exported(t_env *env);
 int				builtin_unset(char **args, t_env **env);
 
 // handle_signals
-void	handle_signals(void);
+void			handle_signals(void);
 
 // prompt
 char			*make_prompt(t_shell *shell);
