@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 16:10:11 by marcudos          #+#    #+#             */
-/*   Updated: 2025/05/27 16:40:38 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/06/01 18:04:54 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,29 +25,15 @@ char	*extract_key(char *input, int *i)
 	return (ft_substr(input, start, *i - start));
 }
 
-void	update_state_quote(char *input, int *i, t_quote *state)
+void	update_state_quote(t_quote *state, char c)
 {
-	while (input[*i] == '\'' || input[*i] == '\"')
-	{
-		if ((input[*i] == '\'' && *state == SINGLE_QUOTE)
-			|| (input[*i] == '\"' && *state == DOUBLE_QUOTE))
-		{
-			(*i)++;
-			*state = NO_QUOTE;
-		}
-		else if ((input[*i] == '\'' && *state == NO_QUOTE))
-		{
-			*state = SINGLE_QUOTE;
-			(*i)++;
-		}
-		else if ((input[*i] == '\"' && *state == NO_QUOTE))
-		{
-			*state = DOUBLE_QUOTE;
-			(*i)++;
-		}
-		else
-			break ;
-	}
+	if ((c == '\'' && *state == SINGLE_QUOTE)
+		|| (c == '\"' && *state == DOUBLE_QUOTE))
+		*state = NO_QUOTE;
+	else if ((c == '\'' && *state == NO_QUOTE))
+		*state = SINGLE_QUOTE;
+	else if ((c == '\"' && *state == NO_QUOTE))
+		*state = DOUBLE_QUOTE;
 }
 
 char	*find_env_value(char *key, t_env *env)

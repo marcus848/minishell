@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 16:53:08 by marcudos          #+#    #+#             */
-/*   Updated: 2025/05/27 16:41:13 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/06/01 18:08:13 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,12 @@ void	add_token(t_args **head, char *value)
 			temp = temp->next;
 		temp->next = new;
 	}
+}
+
+void	add_token_free(t_args **head, char *value)
+{
+	add_token(head, value);
+	free(value);
 }
 
 void	append_list(t_args **head, t_args *list)

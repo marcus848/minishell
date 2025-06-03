@@ -148,6 +148,7 @@ typedef struct s_wild
 	char	**parts;
 	int		have_start;
 	int		have_end;
+	int		full;
 }	t_wild;
 
 typedef struct s_shell
@@ -157,6 +158,15 @@ typedef struct s_shell
 	t_ast			*ast;
 	int				last_status;
 }	t_shell;
+
+typedef struct s_quote_ctx
+{
+	char	*str;
+	char	*result;
+	int		i;
+	int		j;
+	t_quote	state;
+}	t_quote_ctx;
 
 // tokenizer
 t_token_list	*tokenizer(char *input);
@@ -214,7 +224,8 @@ void			handle_next_token(t_exp *exp, char *input, t_shell *sh);
 
 // expand_env_utils
 char			*extract_key(char *input, int *i);
-void			update_state_quote(char *input, int *i, t_quote *state);
+void			update_state_quote(t_quote *state, char c);
+int				update_state_quote_i(char *input, int *i, t_quote *state);
 char			*find_env_value(char *key, t_env *env);
 char			*ft_strjoin_free(char *s1, char *s2);
 
@@ -222,17 +233,27 @@ char			*ft_strjoin_free(char *s1, char *s2);
 void			add_token(t_args **head, char *value);
 void			append_list(t_args **head, t_args *list);
 int				count_array(void **arr);
+void			add_token_free(t_args **head, char *value);
 
 // expand_wild
 t_args			*expand_wild(t_args *envs);
 t_wild			parse_pattern(char *arg);
 t_args			*wild_matches(t_wild *wild);
 int				is_wildcard(char *arg);
+int				only_asterisk(char *arg);
 
 // expand_wild_utils
 int				match_middle(char *pos, t_wild *wild, int i, int limit);
 int				match_end(const char *filename, const char *end);
 int				match_pattern(const char *filename, t_wild *wild);
+
+// expand_wild_split
+char			**split_wildcard(char *input);
+void			add_token_to_array(char ***array, char *token);
+char			*rem_quotes(char *str, int free_str);
+
+// sort_wildcard
+void			sort_append(t_args **head, t_args *list);
 
 // ast
 t_ast			*parse_command(t_token **token);
@@ -260,7 +281,7 @@ void			print_tokens(t_token_list *tokens);
 void			print_token(char *str_type, t_token *token);
 void			test_expander(t_env *env);
 void			test_commands_from_tokens(t_token_list *tokens);
-void			print_ast(t_ast *node, int level, t_env *env);
+void			print_ast(t_ast *node, int level, t_env *env, t_shell *sh);
 
 // syntax analysis
 int				syntax_analysis(t_token_list *tokens);
