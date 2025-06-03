@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/29 04:23:56 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:19:43 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@
 
 // to use signal functions
 # include <signal.h>
+
+typedef struct sigaction	t_sig;
 
 typedef enum e_token_type
 {
@@ -325,8 +327,14 @@ int				builtin_export(char **args, t_env **env);
 void			print_exported(t_env *env);
 int				builtin_unset(char **args, t_env **env);
 
-// handle_signals
-void			handle_signals(void);
+// setup_signals_prompt
+void	setup_signals_prompt(void);
+t_sig	setup_sigint_prompt(void);
+
+// setup_signals_exec
+void	setup_signals_exec(void);
+//
+void	set_std_sig();
 
 // prompt
 char			*make_prompt(t_shell *shell);

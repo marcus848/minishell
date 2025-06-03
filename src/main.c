@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 20:45:28 by caide-so          #+#    #+#             */
-/*   Updated: 2025/06/02 17:12:58 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:15:43 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,9 @@ void	prompt(t_shell *shell)
 
 	while (1)
 	{
-		handle_signals();
 		pmt = make_prompt(shell);
+		// set_std_sig();
+		setup_signals_prompt();
 		input = readline(pmt);
 		free(pmt);
 		if (!input)
