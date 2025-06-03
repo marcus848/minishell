@@ -14,6 +14,7 @@
 
 int		process_heredoc(char *delim, int no_expand, t_env *env, t_shell *sh);
 char	*get_expanded(char *line, int no_expand, t_env *env, t_shell *sh);
+char	*heredoc_expand_vars(char *line, t_env *env, int last_status);
 
 // Recursively prepare all heredocs in the AST before forking, so readline()
 // runs in the parent shell.
@@ -63,16 +64,40 @@ int	process_heredoc(char *delim, int no_expand, t_env *env, t_shell *sh)
 
 char	*get_expanded(char *line, int no_expand, t_env *env, t_shell *sh)
 {
-	char	**words;
 	char	*res;
 
 	if (no_expand)
 		res = ft_strdup(line);
 	else
-	{
-		words = expand_line_to_words(line, env, sh);
-		res = join_words(words);
-		free_args_temp(words);
-	}
+		res = heredoc_expand_vars(line, env, sh->last_status);
 	return (res);
+}
+
+// Scans 'line' character by character. Whenever it sees '$...', it calls
+// get_var_value() to get the replacement. All other characters (including '
+// and ") copy through literally.
+char	*heredoc_expand_vars(char *line, t_env *env, int last_status)
+{
+	char	*out;
+	char	*val;
+	int		i;
+
+	out = ft_strdup("");
+	if (!out)
+		exit_perror("ft_strdup");
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == '$' && line[i + 1])
+		{
+			val = get_var_value(line, &i, env, last_status);
+			out = ft_strjoin_free(out, val);
+			continue ;
+			out = ft_strjoin_free(out, val);
+			continue ;
+		}
+		out = ft_strjoin_char_free(out, line[i]);
+		i++;
+	}
+	return (out);
 }

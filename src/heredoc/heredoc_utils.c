@@ -12,73 +12,44 @@
 
 #include "../../include/minishell.h"
 
-int	count_args(t_args *head);
-
-// Build a NULL-terminated argv-line array from one input line, running the
-// expander on it.
-char	**expand_line_to_words(char *line, t_env *env, t_shell *shell)
+// Given a line starting at index *ip, build the variable/value string and
+// advance *ip past it.
+// - If next char is '?', returns ft_itoa(last_status)
+// - Otherwise, reads ft_alnum() to form a key, finds its value.
+char	*get_var_value(char *line, int *ip, t_env *env, int last_sts)
 {
-	t_args	*head;
-	t_args	*iter;
-	char	**words;
-	int		count;
-	int		i;
+	char	*val;
+	char	*key;
+	int		j;
 
-	head = expand_token(line, env, shell);
-	count = count_args(head);
-	words = (char **)malloc(sizeof(char *) * (count + 1));
-	if (!words)
-		exit_perror("malloc");
-	iter = head;
-	i = 0;
-	while (iter)
+	if (line[*ip + 1] == '?')
 	{
-		words[i++] = ft_strdup(iter->arg);
-		iter = iter->next;
+		val = ft_itoa(last_sts);
+		*ip += 2;
+		return (val);
 	}
-	words[i] = NULL;
-	free_args_list(head);
-	return (words);
+	j = *ip + 1;
+	while (line[j] && (ft_isalnum(line[j]) || line[j] == '_'))
+		j++;
+	key = ft_substr(line, *ip + 1, j - *ip - 1);
+	val = find_env_value(key, env);
+	free(key);
+	*ip = j;
+	return (val);
 }
 
-int	count_args(t_args *head)
+char	*ft_strjoin_char_free(char *str, char c)
 {
-	int	count;
-
-	count = 0;
-	while (head)
-	{
-		count++;
-		head = head->next;
-	}
-	return (count);
-}
-
-// Join an argv-like back into one string with spaces.
-char	*join_words(char **words)
-{
+	size_t	len;
 	char	*out;
-	char	*tmp;
-	int		count;
-	int		i;
 
-	count = count_array((void **)words);
-	out = ft_strdup("");
+	len = ft_strlen(str);
+	out = (char *)malloc(len + 2);
 	if (!out)
-		exit_perror("ft_strdup");
-	i = 0;
-	while (i < count)
-	{
-		tmp = ft_strjoin(out, words[i]);
-		free(out);
-		out = tmp;
-		if (i + 1 < count)
-		{
-			tmp = ft_strjoin(out, " ");
-			free(out);
-			out = tmp;
-		}
-		i++;
-	}
+		exit_perror("malloc");
+	ft_memcpy(out, str, len);
+	out[len] = c;
+	out[len + 1] = '\0';
+	free(str);
 	return (out);
 }

@@ -288,8 +288,8 @@ void			apply_output_redir(t_command *cmd);
 
 // heredoc
 void			prepare_heredocs(t_ast *node, t_shell *sh);
-char			**expand_line_to_words(char *line, t_env *env, t_shell *shell);
-char			*join_words(char **words);
+char			*get_var_value(char *line, int *ip, t_env *env, int last_sts);
+char			*ft_strjoin_char_free(char *str, char c);
 
 // stdin stdout
 int				save_fds(int *save_stdin, int *save_stdout);
