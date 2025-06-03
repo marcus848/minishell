@@ -20,15 +20,28 @@ char	*heredoc_expand_vars(char *line, t_env *env, int last_status);
 // runs in the parent shell.
 void	prepare_heredocs(t_ast *node, t_shell *sh)
 {
-	int	no_expand;
+	t_heredoc	*hd;
+	int			final_fd;
+	int			no_expand;
+	int			tmp_fd;
 
 	if (!node)
 		return ;
-	if (node->type == NODE_COMMAND && node->cmd->heredoc)
+	if (node->type == NODE_COMMAND && node->cmd->heredocs)
 	{
-		no_expand = node->cmd->quoted_delim;
-		node->cmd->heredoc_fd = process_heredoc(node->cmd->delimiter,
-				no_expand, sh->env, sh);
+		final_fd = -1;
+		hd = node->cmd->heredocs;
+		while (hd)
+		{
+			no_expand = hd->quoted_delim;
+			tmp_fd = process_heredoc(hd->delimiter, no_expand,
+					sh->env, sh);
+			if (final_fd >= 0)
+				close(final_fd);
+			final_fd = tmp_fd;
+			hd = hd->next;
+		}
+		node->cmd->heredoc_fd = final_fd;
 	}
 	prepare_heredocs(node->left, sh);
 	prepare_heredocs(node->right, sh);

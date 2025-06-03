@@ -79,6 +79,13 @@ typedef enum s_node_type
 	NODE_SUBSHELL
 }	t_node_type;
 
+typedef struct s_heredoc
+{
+	char				*delimiter;
+	int					quoted_delim;
+	struct s_heredoc	*next;
+}	t_heredoc;
+
 typedef struct s_command
 {
 	char			**args;
@@ -86,11 +93,8 @@ typedef struct s_command
 	char			*infile;
 	char			*outfile;
 	char			*appendfile;
-	int				heredoc;
+	t_heredoc		*heredocs;
 	int				heredoc_fd;
-	char			*delimiter;
-	int				quoted_delim;
-	char			*heredoc_path;
 	int				is_builtin;
 }	t_command;
 

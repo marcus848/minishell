@@ -12,6 +12,8 @@
 
 #include "../../include/minishell.h"
 
+void	append_heredoc(t_heredoc **head, t_heredoc *new_hd);
+
 t_command	*make_command(t_token **token)
 {
 	t_command	*command;
@@ -69,24 +71,44 @@ void	parse_redirect(t_token **token, t_command **command)
 
 void	parse_heredoc(t_token **token, t_command **command)
 {
-	char	*raw;
-	size_t	len;
+	char		*raw;
+	size_t		len;
+	t_heredoc	*new_hd;
 
 	raw = (*token)->next->value;
 	len = ft_strlen(raw);
-	(*command)->heredoc = 1;
+	new_hd = (t_heredoc *)malloc(sizeof(t_heredoc));
+	if (!new_hd)
+		exit_perror("malloc");
 	if ((raw[0] == '\'' && raw[len - 1] == '\'')
 		|| (raw[0] == '"' && raw[len - 1] == '"'))
 	{
-		(*command)->quoted_delim = 1;
-		(*command)->delimiter = ft_substr(raw, 1, len - 2);
+		new_hd->quoted_delim = 1;
+		new_hd->delimiter = ft_substr(raw, 1, len - 2);
 	}
 	else
 	{
-		(*command)->quoted_delim = 0;
-		(*command)->delimiter = ft_strdup(raw);
+		new_hd->quoted_delim = 0;
+		new_hd->delimiter = ft_strdup(raw);
 	}
+	new_hd->next = NULL;
+	append_heredoc(&(*command)->heredocs, new_hd);
 	(*token) = (*token)->next->next;
+}
+
+void	append_heredoc(t_heredoc **head, t_heredoc *new_hd)
+{
+	t_heredoc	*iter;
+
+	if (!*head)
+		*head = new_hd;
+	else
+	{
+		iter = *head;
+		while (iter->next)
+			iter = iter->next;
+		iter->next = new_hd;
+	}
 }
 
 t_command	*init_command(void)
@@ -101,10 +123,8 @@ t_command	*init_command(void)
 	command->infile = NULL;
 	command->outfile = NULL;
 	command->appendfile = NULL;
-	command->heredoc = 0;
+	command->heredocs = NULL;
 	command->heredoc_fd = -1;
-	command->delimiter = NULL;
-	command->quoted_delim = 0;
 	command->is_builtin = 0;
 	return (command);
 }

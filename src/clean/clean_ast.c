@@ -12,6 +12,19 @@
 
 #include "../../include/minishell.h"
 
+void	free_heredocs(t_heredoc *hd);
+
+void	ast_free(t_ast *root)
+{
+	if (!root)
+		return ;
+	ast_free(root->left);
+	ast_free(root->right);
+	if (root->type == NODE_COMMAND && root->cmd)
+		command_free(root->cmd);
+	free(root);
+}
+
 void	command_free(t_command *command)
 {
 	if (command->heredoc_fd >= 0)
@@ -24,8 +37,8 @@ void	command_free(t_command *command)
 		free(command->outfile);
 	if (command->appendfile)
 		free(command->appendfile);
-	if (command->delimiter)
-		free(command->delimiter);
+	if (command->heredocs)
+		free_heredocs(command->heredocs);
 	free(command);
 }
 
@@ -39,13 +52,15 @@ void	free_args(t_command *command)
 	free(command->args);
 }
 
-void	ast_free(t_ast *root)
+void	free_heredocs(t_heredoc *hd)
 {
-	if (!root)
-		return ;
-	ast_free(root->left);
-	ast_free(root->right);
-	if (root->type == NODE_COMMAND && root->cmd)
-		command_free(root->cmd);
-	free(root);
+	t_heredoc	*next;
+
+	while (hd)
+	{
+		next = hd->next;
+		free(hd->delimiter);
+		free(hd);
+		hd = next;
+	}
 }

@@ -30,7 +30,7 @@ void	apply_input_redir(t_command *cmd)
 		dup2(fd, STDIN_FILENO);
 		close(fd);
 	}
-	if (cmd->heredoc)
+	if (cmd->heredocs)
 	{
 		fd = cmd->heredoc_fd;
 		dup2(fd, STDIN_FILENO);

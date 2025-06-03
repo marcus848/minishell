@@ -30,12 +30,6 @@ void	print_command(t_command *cmd)
 		printf("Outfile: [%s]\n", cmd->outfile);
 	if (cmd->appendfile)
 		printf("Appendfile: [%s]\n", cmd->appendfile);
-	if (cmd->heredoc)
-	{
-		printf("Heredoc: YES\n");
-		printf("Delimiter: [%s]\n", cmd->delimiter);
-		printf("Heredoc Path: [%s]\n", cmd->heredoc_path);
-	}
 	printf("Is builtin: %d\n", cmd->is_builtin);
 	printf("===============\n");
 }
