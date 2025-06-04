@@ -14,6 +14,11 @@
 
 void	set_last_status(t_shell *shell, int status)
 {
+	if (g_signal_status >= 0)
+	{
+		shell->last_status = g_signal_status;
+		return ;
+	}
 	shell->last_status = status & 0xFF;
 }
 

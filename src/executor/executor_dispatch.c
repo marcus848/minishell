@@ -19,13 +19,19 @@ int	exec_dispatch(char **args, t_env *env, char **envp)
 
 	if (is_builtin(args[0]))
 		return (run_builtin(args, env));
+	signal(SIGINT, handle_sigint_exec);
+	signal(SIGQUIT, handle_sigquit_exec);
 	pid = fork();
 	if (pid < 0)
 		exit_perror("fork failed");
 	if (pid == 0)
+	{
+		setup_signals_exec();
 		execve_with_path(args, env, envp);
+	}
 	if (waitpid(pid, &status, 0) < 0)
 		exit_perror("waitpid failed");
+	setup_signals_prompt();
 	return (WEXITSTATUS(status));
 }
 

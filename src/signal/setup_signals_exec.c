@@ -16,6 +16,7 @@ t_sig	setup_sigint_exec(void);
 t_sig	setup_sigquit_exec(void);
 void	handle_sigint_exec(int sig);
 void	handle_sigquit_exec(int sig);
+// volatile int g_signal_status;
 
 void	setup_signals_exec(void)
 {
@@ -32,10 +33,28 @@ t_sig	setup_sigint_exec(void)
 {
 	t_sig	sa_int;
 
-	sa_int.sa_handler = SIG_DFL;
+	sa_int.sa_handler = handle_sigint_exec;
 	sigemptyset(&sa_int.sa_mask);	
 	sa_int.sa_flags = 0;
 	return (sa_int);
+}
+
+void	handle_sigint_exec(int sig)
+{
+	if (sig == SIGINT)
+	{
+		g_signal_status = 130;
+		write(1, "\n", 1);
+	}
+}
+
+void	handle_sigquit_exec(int sig)
+{
+	if (sig == SIGQUIT)
+	{
+		g_signal_status = 131;
+		write(1, "Quit (core dumped)\n", 19);
+	}
 }
 
 t_sig	setup_sigquit_exec(void)

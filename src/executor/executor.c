@@ -36,7 +36,7 @@ void	executor(t_token_list *tokens, t_shell *sh, t_ast *node)
 	else if (node->type == NODE_OR)
 	{
 		executor(tokens, sh, node->left);
-		if (get_last_status(sh) != 0)
+		if (get_last_status(sh) != 0 && g_signal_status == -1) 
 			executor(tokens, sh, node->right);
 	}
 	else if (node->type == NODE_SUBSHELL)
@@ -90,6 +90,7 @@ void	exec_subshell(t_token_list *tokens, t_shell *shell, t_ast *node)
 		exit_perror("fork");
 	if (pid == 0)
 	{
+		setup_signals_exec();
 		executor(tokens, shell, node);
 		clean_all(shell->tokens, shell->ast, &shell->env);
 		exit(shell->last_status);

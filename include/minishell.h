@@ -163,6 +163,7 @@ typedef struct s_shell
 	int				last_status;
 }	t_shell;
 
+extern volatile int	g_signal_status;
 // tokenizer
 t_token_list	*tokenizer(char *input);
 int				handle_operators(char *input, int *i, t_token_list *tokens);
@@ -330,6 +331,8 @@ int				builtin_unset(char **args, t_env **env);
 // setup_signals_prompt
 void	setup_signals_prompt(void);
 t_sig	setup_sigint_prompt(void);
+void	handle_sigint_exec(int sig);
+void	handle_sigquit_exec(int sig);
 
 // setup_signals_exec
 void	setup_signals_exec(void);

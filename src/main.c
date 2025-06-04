@@ -15,6 +15,7 @@
 void	prompt(t_shell *shell);
 void	minishell(char *input, t_shell *shell);
 void	parser(t_token_list *tokens, t_shell *shell);
+volatile int g_signal_status;
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -40,6 +41,7 @@ void	prompt(t_shell *shell)
 	{
 		pmt = make_prompt(shell);
 		// set_std_sig();
+		g_signal_status = -1;
 		setup_signals_prompt();
 		input = readline(pmt);
 		free(pmt);
