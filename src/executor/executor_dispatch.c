@@ -17,16 +17,22 @@ int	exec_dispatch(char **args, t_env *env, char **envp)
 	int		status;
 	pid_t	pid;
 
-	if (is_builtin(args[0]))
-		return (run_builtin(args, env));
-	pid = fork();
-	if (pid < 0)
-		exit_perror("fork failed");
-	if (pid == 0)
-		execve_with_path(args, env, envp);
-	if (waitpid(pid, &status, 0) < 0)
-		exit_perror("waitpid failed");
-	return (WEXITSTATUS(status));
+        if (is_builtin(args[0]))
+                return (run_builtin(args, env));
+        signal(SIGINT, SIG_IGN);
+        signal(SIGQUIT, SIG_IGN);
+        pid = fork();
+        if (pid < 0)
+                exit_perror("fork failed");
+        if (pid == 0)
+        {
+                setup_signals_exec();
+                execve_with_path(args, env, envp);
+        }
+        if (waitpid(pid, &status, 0) < 0)
+                exit_perror("waitpid failed");
+        setup_signals_prompt();
+        return (WEXITSTATUS(status));
 }
 
 void	execve_with_path(char **args, t_env *env, char **envp)

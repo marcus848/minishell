@@ -88,12 +88,13 @@ void	exec_subshell(t_token_list *tokens, t_shell *shell, t_ast *node)
 	pid = fork();
 	if (pid < 0)
 		exit_perror("fork");
-	if (pid == 0)
-	{
-		executor(tokens, shell, node);
-		clean_all(shell->tokens, shell->ast, &shell->env);
-		exit(shell->last_status);
-	}
+        if (pid == 0)
+        {
+                setup_signals_exec();
+                executor(tokens, shell, node);
+                clean_all(shell->tokens, shell->ast, &shell->env);
+                exit(shell->last_status);
+        }
 	if (waitpid(pid, &status, 0) < 0)
 		exit_perror("waitpid");
 	shell->last_status = WEXITSTATUS(status);

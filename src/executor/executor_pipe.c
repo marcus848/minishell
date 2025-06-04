@@ -14,6 +14,7 @@
 
 void	handle_left_child(int *fd, t_shell *shell, t_ast *node)
 {
+        setup_signals_exec();
 	dup2(fd[1], STDOUT_FILENO);
 	close(fd[0]);
 	close(fd[1]);
@@ -24,6 +25,7 @@ void	handle_left_child(int *fd, t_shell *shell, t_ast *node)
 
 void	handle_right_child(int *fd, t_shell *shell, t_ast *node)
 {
+        setup_signals_exec();
 	dup2(fd[0], STDIN_FILENO);
 	close(fd[1]);
 	close(fd[0]);
