@@ -23,7 +23,7 @@ t_args	*expand_env(char **args, t_env *env, t_shell *sh)
 		return (NULL);
 	head = expand_token(args[0], env, sh);
 	i = 1;
-	while (!head)
+	while (!head && args[i])
 		head = expand_token(args[i++], env, sh);
 	cur = head;
 	while (args[i])
