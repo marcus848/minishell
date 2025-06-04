@@ -29,10 +29,12 @@ int	exec_dispatch(char **args, t_env *env, char **envp)
                 setup_signals_exec();
                 execve_with_path(args, env, envp);
         }
-        if (waitpid(pid, &status, 0) < 0)
-                exit_perror("waitpid failed");
-        setup_signals_prompt();
-        return (WEXITSTATUS(status));
+       if (waitpid(pid, &status, 0) < 0)
+               exit_perror("waitpid failed");
+       if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+               ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
+       setup_signals_prompt();
+       return (exit_status_from_wait(status));
 }
 
 void	execve_with_path(char **args, t_env *env, char **envp)

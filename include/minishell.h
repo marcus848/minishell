@@ -311,6 +311,7 @@ void			free_string_array(char **arr);
 // last status
 void			set_last_status(t_shell *shell, int status);
 int				get_last_status(t_shell *shell);
+int	exit_status_from_wait(int status);
 
 // executor pipe
 void			handle_left_child(int *fd, t_shell *shell, t_ast *node);

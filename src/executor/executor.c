@@ -72,9 +72,11 @@ void	exec_pipe(t_shell *shell, t_ast *node)
 		handle_right_child(fd, shell, node->right);
 	close(fd[0]);
 	close(fd[1]);
-	waitpid(left_pid, &shell->last_status, 0);
-	waitpid(right_pid, &shell->last_status, 0);
-	set_last_status(shell, WEXITSTATUS(shell->last_status));
+       waitpid(left_pid, &shell->last_status, 0);
+       waitpid(right_pid, &shell->last_status, 0);
+       if (WIFSIGNALED(shell->last_status) && WTERMSIG(shell->last_status) == SIGQUIT)
+               ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
+       set_last_status(shell, exit_status_from_wait(shell->last_status));
 }
 
 // Child: execute the subtree, then exit with its status
@@ -95,7 +97,9 @@ void	exec_subshell(t_token_list *tokens, t_shell *shell, t_ast *node)
                 clean_all(shell->tokens, shell->ast, &shell->env);
                 exit(shell->last_status);
         }
-	if (waitpid(pid, &status, 0) < 0)
-		exit_perror("waitpid");
-	shell->last_status = WEXITSTATUS(status);
+       if (waitpid(pid, &status, 0) < 0)
+               exit_perror("waitpid");
+       if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+               ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
+       shell->last_status = exit_status_from_wait(status);
 }

@@ -21,3 +21,10 @@ int	get_last_status(t_shell *shell)
 {
 	return (shell->last_status);
 }
+
+int	exit_status_from_wait(int status)
+{
+	if (WIFSIGNALED(status))
+		return (128 + WTERMSIG(status));
+	return (WEXITSTATUS(status));
+}
