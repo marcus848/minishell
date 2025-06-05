@@ -36,6 +36,7 @@ t_sig	setup_sigint_prompt(void)
 void	handle_sigint_prompt(int sig)
 {
 	(void) sig;
+	g_signal_status = 130;
 	write(1, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();

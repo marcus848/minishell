@@ -45,6 +45,8 @@ void	prompt(t_shell *shell)
 		setup_signals_prompt();
 		input = readline(pmt);
 		free(pmt);
+		if (g_signal_status == 130)
+			shell->last_status = 130;
 		if (!input)
 			break ;
 		if (input[0] == '\0' || is_all_whitespace(input))
