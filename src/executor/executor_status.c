@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 20:54:16 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/23 03:18:55 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/06/06 11:08:25 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 
 void	set_last_status(t_shell *shell, int status)
 {
+	if (g_signal_status >= 0)
+	{
+		shell->last_status = g_signal_status;
+		g_signal_status = -2;
+		return ;
+	}
 	shell->last_status = status & 0xFF;
 }
 

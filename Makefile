@@ -20,6 +20,7 @@ EXEC_DIR	= ${SRC_DIR}/executor
 ENV_DIR		= ${SRC_DIR}/env
 BUILTIN_DIR	= ${SRC_DIR}/builtin
 PROMPT_DIR	= ${SRC_DIR}/prompt
+SIGNAL_DIR	= ${SRC_DIR}/signal
 HEREDOC_DIR	= ${SRC_DIR}/heredoc
 
 SRCS		= ${SRC_DIR}/main.c \
@@ -72,6 +73,9 @@ SRCS		= ${SRC_DIR}/main.c \
 		  ${PROMPT_DIR}/prompt.c \
 		  ${PROMPT_DIR}/prompt_utils.c \
 		  ${PROMPT_DIR}/prompt_colors.c \
+		  ${SIGNAL_DIR}/setup_signals_prompt.c \
+		  ${SIGNAL_DIR}/setup_signals_exec.c \
+		  ${SIGNAL_DIR}/setup_signals_heredoc.c \
 		  ${HEREDOC_DIR}/heredoc.c \
 		  ${HEREDOC_DIR}/heredoc_utils.c \
 
