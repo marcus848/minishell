@@ -36,7 +36,7 @@ void	executor(t_token_list *tokens, t_shell *sh, t_ast *node)
 	else if (node->type == NODE_OR)
 	{
 		executor(tokens, sh, node->left);
-		if (get_last_status(sh) != 0 && g_signal_status == -1) 
+		if (get_last_status(sh) != 0 && g_signal_status == -1)
 			executor(tokens, sh, node->right);
 	}
 	else if (node->type == NODE_SUBSHELL)

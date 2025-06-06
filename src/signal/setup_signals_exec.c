@@ -34,7 +34,7 @@ t_sig	setup_sigint_exec(void)
 	t_sig	sa_int;
 
 	sa_int.sa_handler = handle_sigint_exec;
-	sigemptyset(&sa_int.sa_mask);	
+	sigemptyset(&sa_int.sa_mask);
 	sa_int.sa_flags = 0;
 	return (sa_int);
 }
@@ -62,7 +62,7 @@ t_sig	setup_sigquit_exec(void)
 	t_sig	sa_quit;
 
 	sa_quit.sa_handler = SIG_DFL;
-	sigemptyset(&sa_quit.sa_mask);	
+	sigemptyset(&sa_quit.sa_mask);
 	sa_quit.sa_flags = 0;
 	return (sa_quit);
 }

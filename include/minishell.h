@@ -163,7 +163,7 @@ typedef struct s_shell
 	int				last_status;
 }	t_shell;
 
-extern volatile int	g_signal_status;
+extern volatile int			g_signal_status;
 // tokenizer
 t_token_list	*tokenizer(char *input);
 int				handle_operators(char *input, int *i, t_token_list *tokens);
@@ -329,17 +329,15 @@ void			print_exported(t_env *env);
 int				builtin_unset(char **args, t_env **env);
 
 // setup_signals_prompt
-void	setup_signals_prompt(void);
-t_sig	setup_sigint_prompt(void);
-void	handle_sigint_exec(int sig);
-void	handle_sigquit_exec(int sig);
-void	handle_sigeof_heredoc(char *delim);
-void	handle_sigint_heredoc(int sig);
+void			setup_signals_prompt(void);
+t_sig			setup_sigint_prompt(void);
+void			handle_sigint_exec(int sig);
+void			handle_sigquit_exec(int sig);
+void			handle_sigeof_heredoc(char *delim);
+void			handle_sigint_heredoc(int sig);
 
 // setup_signals_exec
-void	setup_signals_exec(void);
-//
-void	set_std_sig();
+void			setup_signals_exec(void);
 
 // prompt
 char			*make_prompt(t_shell *shell);

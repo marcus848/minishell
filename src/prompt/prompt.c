@@ -28,6 +28,7 @@ char	*make_prompt(t_shell *shell)
 	cwd = get_cwd(shell);
 	len = ft_strlen(user) + 1 + ft_strlen(host) + 1 + ft_strlen(cwd) + 3;
 	prompt = assemble_prompt(user, host, cwd, len);
+	setup_signals_prompt();
 	return (prompt);
 }
 

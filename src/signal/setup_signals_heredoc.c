@@ -12,10 +12,10 @@
 
 #include "../../include/minishell.h"
 
-void	setup_signals_heredoc(void)
-{
-
-}
+// void	setup_signals_heredoc(void)
+// {
+//
+// }
 
 void	handle_sigeof_heredoc(char *delim)
 {

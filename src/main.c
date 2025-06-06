@@ -15,7 +15,8 @@
 void	prompt(t_shell *shell);
 void	minishell(char *input, t_shell *shell);
 void	parser(t_token_list *tokens, t_shell *shell);
-volatile int g_signal_status;
+int		handle_all_white_spaces(char *input);
+volatile int		g_signal_status;
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -40,20 +41,15 @@ void	prompt(t_shell *shell)
 	while (1)
 	{
 		pmt = make_prompt(shell);
-		// set_std_sig();
 		g_signal_status = -1;
-		setup_signals_prompt();
 		input = readline(pmt);
 		free(pmt);
 		if (g_signal_status == 130)
 			shell->last_status = 130;
 		if (!input)
 			break ;
-		if (input[0] == '\0' || is_all_whitespace(input))
-		{
-			free(input);
+		if (handle_all_white_spaces(input))
 			continue ;
-		}
 		if (ft_strcmp(input, "exit") == 0)
 		{
 			printf("exit\n");
@@ -94,4 +90,14 @@ void	parser(t_token_list *tokens, t_shell *shell)
 	ast_free(shell->ast);
 	shell->ast = NULL;
 	shell->tokens = NULL;
+}
+
+int	handle_all_white_spaces(char *input)
+{
+	if (input[0] == '\0' || is_all_whitespace(input))
+	{
+		free(input);
+		return (1);
+	}
+	return (0);
 }
