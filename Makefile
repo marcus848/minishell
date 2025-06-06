@@ -72,6 +72,7 @@ SRCS		= ${SRC_DIR}/main.c \
 		  ${PROMPT_DIR}/prompt_colors.c \
 		  ${SIGNAL_DIR}/setup_signals_prompt.c \
 		  ${SIGNAL_DIR}/setup_signals_exec.c \
+		  ${SIGNAL_DIR}/setup_signals_heredoc.c \
 		  ${SIGNAL_DIR}/signals.c \
 		  ${HEREDOC_DIR}/heredoc.c \
 		  ${HEREDOC_DIR}/heredoc_utils.c \

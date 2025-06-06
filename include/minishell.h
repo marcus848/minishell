@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/06/03 20:19:43 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/06/06 11:14:22 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -333,6 +333,8 @@ void	setup_signals_prompt(void);
 t_sig	setup_sigint_prompt(void);
 void	handle_sigint_exec(int sig);
 void	handle_sigquit_exec(int sig);
+void	handle_sigeof_heredoc(char *delim);
+void	handle_sigint_heredoc(int sig);
 
 // setup_signals_exec
 void	setup_signals_exec(void);

@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 00:01:06 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/29 04:24:07 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/06/06 11:15:52 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	prepare_heredocs(t_ast *node, t_shell *sh)
 	{
 		final_fd = -1;
 		hd = node->cmd->heredocs;
-		while (hd)
+		while (hd && g_signal_status != 130)
 		{
 			no_expand = hd->quoted_delim;
 			tmp_fd = process_heredoc(hd->delimiter, no_expand,
@@ -62,6 +62,8 @@ int	process_heredoc(char *delim, int no_expand, t_env *env, t_shell *sh)
 		line = readline("> ");
 		if (!line || ft_strcmp(line, delim) == 0)
 		{
+			if (!line)
+				handle_sigeof_heredoc(delim);
 			free(line);
 			break ;
 		}
