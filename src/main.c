@@ -52,7 +52,7 @@ void	prompt(t_shell *shell)
 			continue ;
 		if (ft_strcmp(input, "exit") == 0)
 		{
-			printf("exit\n");
+			ft_putstr_fd("exit\n", STDERR_FILENO);
 			free(input);
 			break ;
 		}
