@@ -12,13 +12,13 @@
 
 #include "../../include/minishell.h"
 
-int	exec_dispatch(char **args, t_env *env, char **envp)
+int	exec_dispatch(char **args, t_shell *shell, char **envp)
 {
 	int		status;
 	pid_t	pid;
 
 	if (is_builtin(args[0]))
-		return (run_builtin(args, env));
+		return (run_builtin(args, shell));
 	signal(SIGINT, handle_sigint_exec);
 	signal(SIGQUIT, handle_sigquit_exec);
 	pid = fork();
@@ -27,7 +27,7 @@ int	exec_dispatch(char **args, t_env *env, char **envp)
 	if (pid == 0)
 	{
 		setup_signals_exec();
-		execve_with_path(args, env, envp);
+		execve_with_path(args, shell->env, envp);
 	}
 	if (waitpid(pid, &status, 0) < 0)
 		exit_perror("waitpid failed");
