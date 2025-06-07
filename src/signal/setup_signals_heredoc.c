@@ -31,8 +31,12 @@ void	handle_sigeof_heredoc(char *delim)
 	write(1, "')\n", 3);
 }
 
-void	handle_sigint_heredoc(int sig)
+void    handle_sigint_heredoc(int sig)
 {
-	(void) sig;
-	g_signal_status = 130;
+        (void) sig;
+        g_signal_status = 130;
+        write(1, "\n", 1);
+        rl_replace_line("", 0);
+        rl_on_new_line();
+        rl_redisplay();
 }
