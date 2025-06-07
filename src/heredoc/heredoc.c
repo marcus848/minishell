@@ -57,8 +57,14 @@ int	process_heredoc(char *delim, int no_expand, t_env *env, t_shell *sh)
 
 	if (pipe(fds) < 0)
 		exit_perror("pipe");
+        setup_signals_heredoc();
 	while (1)
 	{
+                if (g_signal_status == 130)
+                {
+                        close(fds[1]);
+                        return (-1);
+                }
 		line = readline("> ");
 		if (!line || ft_strcmp(line, delim) == 0)
 		{
