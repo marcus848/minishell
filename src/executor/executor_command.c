@@ -31,7 +31,7 @@ int	try_other_builtin(char **args, t_command *cmd, t_shell *shell)
 	{
 		save_fds(&save_stdin, &save_stdout);
 		handle_redirections(cmd);
-		status = run_builtin(args, shell->env);
+		status = run_builtin(args, shell);
 		restore_fds(save_stdin, save_stdout);
 		set_last_status(shell, status);
 		return (1);
@@ -58,7 +58,7 @@ void	run_external_cmd(char **args, t_command *cmd, t_shell *sh)
 	envp = env_list_to_array(sh->env);
 	if (!envp)
 		exit_perror("env array failed");
-	status = exec_dispatch(args, sh->env, envp);
+	status = exec_dispatch(args, sh, envp);
 	free_string_array(envp);
 	restore_fds(save_stdin, save_stdout);
 	set_last_status(sh, status);

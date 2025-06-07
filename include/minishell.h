@@ -301,11 +301,11 @@ int				is_all_whitespace(const char *s);
 
 // executor
 void			executor(t_token_list *tokens, t_shell *sh, t_ast *node);
-int				exec_dispatch(char **args, t_env *env, char **envp);
+int				exec_dispatch(char **args, t_shell *shell, char **envp);
 void			execve_with_path(char **args, t_env *env, char **envp);
 void			try_exec_explicit(char *cmd, char **args, char **envp);
 int				is_builtin(char *cmd);
-int				run_builtin(char **args, t_env *env);
+int				run_builtin(char **args, t_shell *shell);
 int				is_executable_command(char *cmd, t_env *env);
 int				is_explicit_executable(char *cmd);
 int				search_in_path(char *cmd, t_env *env);
