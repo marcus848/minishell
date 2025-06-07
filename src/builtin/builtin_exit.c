@@ -21,7 +21,7 @@ void	builtin_exit(t_token_list *tokens, t_shell *shell)
 	{
 		if (shell->ast->cmd->args[2][0])
 		{
-			ft_putstr_fd("exit\nminishell: exit: ", STDERR_FILENO);
+			ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 			ft_putstr_fd("too many arguments\n", STDERR_FILENO);
 			clean_all(tokens, shell->ast, &shell->env);
 			exit(1);
@@ -53,14 +53,13 @@ int	parse_exit_code(char *arg_str, t_shell *shell)
 	{
 		if (!ft_isdigit(arg_str[i]))
 		{
-			ft_putstr_fd("exit\nminishell: exit: ", STDERR_FILENO);
+			ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 			ft_putstr_fd(arg_str, STDERR_FILENO);
 			ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 			return (-1);
 		}
 		i++;
 	}
-	ft_putstr_fd("exit\n", STDERR_FILENO);
 	code = ft_atoi(arg_str);
 	return (code & 0xFF);
 }
