@@ -12,10 +12,16 @@
 
 #include "../../include/minishell.h"
 
-// void	setup_signals_heredoc(void)
-// {
-//
-// }
+void    setup_signals_heredoc(void)
+{
+        t_sig   sa_int;
+
+        sa_int.sa_handler = handle_sigint_heredoc;
+        sigemptyset(&sa_int.sa_mask);
+        sa_int.sa_flags = 0;
+        sigaction(SIGINT, &sa_int, NULL);
+        signal(SIGQUIT, SIG_IGN);
+}
 
 void	handle_sigeof_heredoc(char *delim)
 {

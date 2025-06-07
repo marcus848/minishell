@@ -357,6 +357,7 @@ void			handle_sigint_exec(int sig);
 void			handle_sigquit_exec(int sig);
 void			handle_sigeof_heredoc(char *delim);
 void			handle_sigint_heredoc(int sig);
+void			setup_signals_heredoc(void);
 
 // setup_signals_exec
 void			setup_signals_exec(void);
