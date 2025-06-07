@@ -25,6 +25,7 @@ void    setup_signals_heredoc(void)
 
 void	handle_sigeof_heredoc(char *delim)
 {
+	write(1, "\n", 1);
 	write(1, "minishell: warning: here-document delimited by end-of-file", 58);
 	write(1, " (wanted '", 10);
 	write(1, delim, ft_strlen(delim));

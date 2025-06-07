@@ -45,7 +45,10 @@ void	prompt(t_shell *shell)
 		input = readline(pmt);
 		free(pmt);
 		if (g_signal_status == 130)
+		{
+			g_signal_status = -1;
 			shell->last_status = 130;
+		}
 		if (!input)
 			break ;
 		if (handle_all_white_spaces(input))
@@ -85,7 +88,8 @@ void	parser(t_token_list *tokens, t_shell *shell)
 	ast = parse_logical(&tokens->head);
 	shell->ast = ast;
 	prepare_heredocs(shell->ast, shell);
-	executor(tokens, shell, ast);
+	if (g_signal_status != -3)
+		executor(tokens, shell, ast);
 	token_list_free(tokens);
 	ast_free(shell->ast);
 	shell->ast = NULL;

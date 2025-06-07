@@ -66,6 +66,7 @@ int	process_heredoc(char *delim, int no_expand, t_env *env, t_shell *sh)
 		if (g_signal_status == 130)
 		{
 			sh->last_status = 130;
+			g_signal_status = -3;
 			break ;
 		}
 		if (!line || ft_strncmp(line, delim, ft_strlen(delim)) == 0)
