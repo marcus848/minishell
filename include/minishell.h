@@ -232,7 +232,6 @@ void			handle_next_token(t_exp *exp, char *input, t_shell *sh);
 // expand_env_utils
 char			*extract_key(char *input, int *i);
 void			update_state_quote(t_quote *state, char c);
-int				update_state_quote_i(char *input, int *i, t_quote *state);
 char			*find_env_value(char *key, t_env *env);
 char			*ft_strjoin_free(char *s1, char *s2);
 
@@ -253,13 +252,21 @@ int				only_asterisk(char *arg);
 int				match_middle(char *pos, t_wild *wild, int i, int limit);
 int				match_end(const char *filename, const char *end);
 int				match_pattern(const char *filename, t_wild *wild);
+int				handle_opening_quote(char *input, int *i, t_quote *state);
+int				update_state_quote_i(char *input, int *i, t_quote *state);
 
 // expand_wild_split
 char			**split_wildcard(char *input);
 void			add_token_to_array(char ***array, char *token);
+
+// handle_quotes
 char			*rem_quotes(char *str, int free_str);
 
 // sort_wildcard
+void			swap_args(t_args *a, t_args *b);
+int				ft_tolower(int c);
+int				ft_strcasecmp(const char *s1, const char *s2);
+void			sort_args_list(t_args *list);
 void			sort_append(t_args **head, t_args *list);
 
 // ast
@@ -353,15 +360,20 @@ int				builtin_unset(char **args, t_env **env);
 // setup_signals_prompt
 void			setup_signals_prompt(void);
 t_sig			setup_sigint_prompt(void);
-void			handle_sigint_exec(int sig);
-void			handle_sigquit_exec(int sig);
+void			handle_sigint_prompt(int sig);
+void			actualize_sh_last_status(t_shell *sh, int new_value);
+
+// setup_signals_heredoc
 void			handle_sigeof_heredoc(char *delim);
 void			handle_sigint_heredoc(int sig);
 void			setup_signals_heredoc(void);
-void			actualize_sh_last_status(t_shell *sh, int new_value);
 
 // setup_signals_exec
 void			setup_signals_exec(void);
+t_sig			setup_sigint_exec(void);
+t_sig			setup_sigquit_exec(void);
+void			handle_sigint_exec(int sig);
+void			handle_sigquit_exec(int sig);
 
 // prompt
 char			*make_prompt(t_shell *shell);

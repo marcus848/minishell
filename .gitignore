@@ -2,6 +2,7 @@
 *.out
 *.swp
 minishell
+minishell_bonus
 obj/
 .nfs*
 *.txt

@@ -12,11 +12,6 @@
 
 #include "../../include/minishell.h"
 
-t_sig	setup_sigint_exec(void);
-t_sig	setup_sigquit_exec(void);
-void	handle_sigint_exec(int sig);
-void	handle_sigquit_exec(int sig);
-
 void	setup_signals_exec(void)
 {
 	t_sig	sa_int;

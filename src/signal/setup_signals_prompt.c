@@ -12,8 +12,6 @@
 
 #include "../../include/minishell.h"
 
-void	handle_sigint_prompt(int sig);
-
 void	setup_signals_prompt(void)
 {
 	struct sigaction	sa_int;	
