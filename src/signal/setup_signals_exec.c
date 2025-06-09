@@ -16,7 +16,6 @@ t_sig	setup_sigint_exec(void);
 t_sig	setup_sigquit_exec(void);
 void	handle_sigint_exec(int sig);
 void	handle_sigquit_exec(int sig);
-// volatile int g_signal_status;
 
 void	setup_signals_exec(void)
 {
