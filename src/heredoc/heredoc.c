@@ -15,6 +15,7 @@
 int		process_heredoc(char *delim, int no_expand, t_env *env, t_shell *sh);
 char	*get_expanded(char *line, int no_expand, t_env *env, t_shell *sh);
 char	*heredoc_expand_vars(char *line, t_env *env, int last_status);
+void	write_and_free_line(int fd, char *line, char *expanded);
 
 // Recursively prepare all heredocs in the AST before forking, so readline()
 // runs in the parent shell.
@@ -31,7 +32,7 @@ void	prepare_heredocs(t_ast *node, t_shell *sh)
 	{
 		final_fd = -1;
 		hd = node->cmd->heredocs;
-		while (hd && g_signal_status != 130)
+		while (hd && g_signal_status != 130 && g_signal_status != -3)
 		{
 			no_expand = hd->quoted_delim;
 			tmp_fd = process_heredoc(hd->delimiter, no_expand,
@@ -57,24 +58,33 @@ int	process_heredoc(char *delim, int no_expand, t_env *env, t_shell *sh)
 
 	if (pipe(fds) < 0)
 		exit_perror("pipe");
+	setup_signals_heredoc();
 	while (1)
 	{
-		line = readline("> ");
-		if (!line || ft_strcmp(line, delim) == 0)
+		write(1, "> ", 2);
+		line = get_next_line(0);
+		if (g_signal_status == 130 && (actualize_sh_last_status(sh, -3), 1))
+			break ;
+		if (!line || ft_strncmp(line, delim, ft_strlen(delim)) == 0)
 		{
 			if (!line)
 				handle_sigeof_heredoc(delim);
 			free(line);
 			break ;
 		}
+		line[ft_strlen(line) - 1] = '\0';
 		expanded = get_expanded(line, no_expand, env, sh);
-		write(fds[1], expanded, ft_strlen(expanded));
-		write(fds[1], "\n", 1);
-		free(expanded);
-		free(line);
+		write_and_free_line(fds[1], line, expanded);
 	}
-	close(fds[1]);
-	return (fds[0]);
+	return (close(fds[1]), fds[0]);
+}
+
+void	write_and_free_line(int fd, char *line, char *expanded)
+{
+	write(fd, expanded, ft_strlen(expanded));
+	write(fd, "\n", 1);
+	free(expanded);
+	free(line);
 }
 
 char	*get_expanded(char *line, int no_expand, t_env *env, t_shell *sh)
