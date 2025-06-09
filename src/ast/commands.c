@@ -52,17 +52,18 @@ void	parse_redirect(t_token **token, t_command **command)
 	}
 	if ((*token)->type == REDIR_IN)
 	{
-		(*command)->infile = ft_strdup((*token)->next->value);
+		(*command)->infile = rem_quotes(ft_strdup((*token)->next->value), 1);
 		(*token) = (*token)->next->next;
 	}
 	else if ((*token)->type == REDIR_OUT)
 	{
-		(*command)->outfile = ft_strdup((*token)->next->value);
+		(*command)->outfile = rem_quotes(ft_strdup((*token)->next->value), 1);
 		(*token) = (*token)->next->next;
 	}
 	else if ((*token)->type == REDIR_APPEND)
 	{
-		(*command)->appendfile = ft_strdup((*token)->next->value);
+		(*command)->appendfile = rem_quotes(
+				ft_strdup((*token)->next->value), 1);
 		(*token) = (*token)->next->next;
 	}
 	else if ((*token)->type == HEREDOC)
