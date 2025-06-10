@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:03:20 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/29 00:11:15 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/06/10 00:52:05 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,19 @@ void	handle_redirections(t_command *cmd, t_shell *shell)
 
 int	apply_input_redir(t_command *cmd, t_shell *shell)
 {
-	int	fd;
+	int		fd;
+	char	*last_filename;
 
-	if (cmd->infile)
-	{
-		fd = open(cmd->infile, O_RDONLY);
-		if (fd < 0)
-		{
-			ft_putstr_fd("-minishell: ", STDERR_FILENO);
-			ft_putstr_fd(cmd->infile, STDERR_FILENO);
-			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
-			shell->last_status = 1;
-			return (-1);
-		}
-		dup2(fd, STDIN_FILENO);
-		close(fd);
-	}
+	if (!cmd->infiles)
+		return (0);
+	if (validate_infiles(cmd->infiles, shell) < 0)
+		return (-1);
+	last_filename = get_last_infile(cmd->infiles);
+	fd = open(last_filename, O_RDONLY);
+	if (fd < 0)
+		exit_perror("open infile");
+	dup2(fd, STDIN_FILENO);
+	close(fd);
 	if (cmd->heredocs)
 	{
 		fd = cmd->heredoc_fd;

@@ -47,12 +47,14 @@ SRCS		= ${SRC_DIR}/main.c \
 		  ${AST_DIR}/ast_utils.c \
 		  ${AST_DIR}/ast.c \
 		  ${AST_DIR}/commands.c \
+		  ${AST_DIR}/commands_utils.c \
 		  ${SYNTAX_DIR}/syntax_analysis.c \
 		  ${SYNTAX_DIR}/syntax_analysis_utils.c \
 		  ${SYNTAX_DIR}/syntax_errors.c \
 		  ${EXEC_DIR}/executor.c \
 		  ${EXEC_DIR}/executor_fds.c \
 		  ${EXEC_DIR}/executor_redirs.c \
+		  ${EXEC_DIR}/executor_redirs_utils.c \
 		  ${EXEC_DIR}/executor_utils.c \
 		  ${EXEC_DIR}/executor_status.c \
 		  ${EXEC_DIR}/executor_dispatch.c \

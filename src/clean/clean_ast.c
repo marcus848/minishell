@@ -6,13 +6,14 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 18:42:03 by marcudos          #+#    #+#             */
-/*   Updated: 2025/05/29 04:30:32 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/06/10 00:35:43 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 void	free_heredocs(t_heredoc *hd);
+void	free_redirs(t_redir *redir);
 
 void	ast_free(t_ast *root)
 {
@@ -31,8 +32,8 @@ void	command_free(t_command *command)
 		close(command->heredoc_fd);
 	if (command->args)
 		free_args(command);
-	if (command->infile)
-		free(command->infile);
+	if (command->infiles)
+		free_redirs(command->infiles);
 	if (command->outfile)
 		free(command->outfile);
 	if (command->appendfile)
@@ -62,5 +63,18 @@ void	free_heredocs(t_heredoc *hd)
 		free(hd->delimiter);
 		free(hd);
 		hd = next;
+	}
+}
+
+void	free_redirs(t_redir *redir)
+{
+	t_redir	*next;
+
+	while (redir)
+	{
+		next = redir->next;
+		free(redir->filename);
+		free(redir);
+		redir = next;
 	}
 }

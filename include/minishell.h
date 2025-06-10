@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/06/06 11:14:22 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/06/10 00:51:07 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,17 @@ typedef struct s_heredoc
 	struct s_heredoc	*next;
 }	t_heredoc;
 
+typedef struct s_redir
+{
+	char				*filename;
+	struct s_redir		*next;
+}	t_redir;
+
 typedef struct s_command
 {
 	char			**args;
 	int				arg_count;
-	char			*infile;
+	t_redir			*infiles;
 	char			*outfile;
 	char			*appendfile;
 	t_heredoc		*heredocs;
@@ -280,6 +286,7 @@ t_ast			*parse_subshell(t_token **token);
 t_command		*make_command(t_token **token);
 t_command		*init_command(void);
 void			parse_redirect(t_token **token, t_command **command);
+void			parse_infile(t_token **token, t_command **command);
 void			parse_heredoc(t_token **token, t_command **command);
 char			**get_args(t_token **token, int size_args);
 
@@ -324,6 +331,8 @@ void			run_external_cmd(char **args, t_command *cmd, t_shell *shell);
 void			handle_redirections(t_command *cmd, t_shell *shell);
 int				apply_input_redir(t_command *cmd, t_shell *shell);
 void			apply_output_redir(t_command *cmd);
+int				validate_infiles(t_redir *head, t_shell *shell);
+char			*get_last_infile(t_redir *head);
 
 // heredoc
 void			prepare_heredocs(t_ast *node, t_shell *sh);

@@ -64,6 +64,13 @@ t_ast	*parse_pipe(t_token **token)
 	return (left);
 }
 
+t_ast	*parse_simple_command(t_token **token)
+{
+	if ((*token)->type == PAREN_OPEN)
+		return (parse_subshell(token));
+	return (parse_command(token));
+}
+
 t_ast	*parse_subshell(t_token **token)
 {
 	t_ast	*subtree;
@@ -91,13 +98,6 @@ t_ast	*parse_subshell(t_token **token)
 	node->cmd = NULL;
 	node->type = NODE_SUBSHELL;
 	return ((*token) = t, node);
-}
-
-t_ast	*parse_simple_command(t_token **token)
-{
-	if ((*token)->type == PAREN_OPEN)
-		return (parse_subshell(token));
-	return (parse_command(token));
 }
 
 t_ast	*parse_command(t_token **token)
