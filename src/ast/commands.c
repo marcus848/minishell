@@ -68,7 +68,6 @@ void	parse_redirect(t_token **token, t_command **command)
 	}
 	if ((*token)->type == REDIR_IN)
 		parse_redir(token, &(*command)->infiles);
-		// parse_infile(token, command);
 	else if ((*token)->type == REDIR_OUT)
 	{
 		(*command)->outfile = rem_quotes(ft_strdup((*token)->next->value), 1);
