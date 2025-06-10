@@ -318,11 +318,11 @@ int				is_explicit_executable(char *cmd);
 int				search_in_path(char *cmd, t_env *env);
 int				try_exit(t_token_list *toks, char **args, t_shell *shell);
 int				try_other_builtin(char **args, t_command *cmd, t_shell *shell);
-void			run_external_cmd(char **args, t_command *cmd, t_shell *sh);
+void			run_external_cmd(char **args, t_command *cmd, t_shell *shell);
 
 // redir
-void			handle_redirections(t_command *cmd);
-void			apply_input_redir(t_command *cmd);
+void			handle_redirections(t_command *cmd, t_shell *shell);
+int				apply_input_redir(t_command *cmd, t_shell *shell);
 void			apply_output_redir(t_command *cmd);
 
 // heredoc

@@ -30,7 +30,12 @@ int	try_other_builtin(char **args, t_command *cmd, t_shell *shell)
 	if (is_builtin(args[0]))
 	{
 		save_fds(&save_stdin, &save_stdout);
-		handle_redirections(cmd);
+		if (apply_input_redir(cmd, shell) < 0)
+		{
+			restore_fds(save_stdin, save_stdout);
+			return (1);
+		}
+		apply_output_redir(cmd);
 		status = run_builtin(args, shell);
 		restore_fds(save_stdin, save_stdout);
 		set_last_status(shell, status);
@@ -39,27 +44,30 @@ int	try_other_builtin(char **args, t_command *cmd, t_shell *shell)
 	return (0);
 }
 
-void	run_external_cmd(char **args, t_command *cmd, t_shell *sh)
+void	run_external_cmd(char **args, t_command *cmd, t_shell *shell)
 {
 	char	**envp;
 	int		status;
 	int		save_stdin;
 	int		save_stdout;
 
-	if (!is_executable_command(args[0], sh->env))
+	if (!is_executable_command(args[0], shell->env))
 	{
 		ft_putstr_fd(args[0], STDERR_FILENO);
 		ft_putstr_fd(": command not found\n", STDERR_FILENO);
-		set_last_status(sh, 127);
+		set_last_status(shell, 127);
 		return ;
 	}
 	save_fds(&save_stdin, &save_stdout);
-	handle_redirections(cmd);
-	envp = env_list_to_array(sh->env);
-	if (!envp)
-		exit_perror("env array failed");
-	status = exec_dispatch(args, sh, envp);
+	if (apply_input_redir(cmd, shell) < 0)
+	{
+		restore_fds(save_stdin, save_stdout);
+		return ;
+	}
+	apply_output_redir(cmd);
+	envp = env_list_to_array(shell->env);
+	status = exec_dispatch(args, shell, envp);
 	free_string_array(envp);
 	restore_fds(save_stdin, save_stdout);
-	set_last_status(sh, status);
+	set_last_status(shell, status);
 }

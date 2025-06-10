@@ -12,13 +12,13 @@
 
 #include "../../include/minishell.h"
 
-void	handle_redirections(t_command *cmd)
+void	handle_redirections(t_command *cmd, t_shell *shell)
 {
-	apply_input_redir(cmd);
+	apply_input_redir(cmd, shell);
 	apply_output_redir(cmd);
 }
 
-void	apply_input_redir(t_command *cmd)
+int	apply_input_redir(t_command *cmd, t_shell *shell)
 {
 	int	fd;
 
@@ -26,7 +26,13 @@ void	apply_input_redir(t_command *cmd)
 	{
 		fd = open(cmd->infile, O_RDONLY);
 		if (fd < 0)
-			exit_perror("open infile");
+		{
+			ft_putstr_fd("-minishell: ", STDERR_FILENO);
+			ft_putstr_fd(cmd->infile, STDERR_FILENO);
+			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+			shell->last_status = 1;
+			return (-1);
+		}
 		dup2(fd, STDIN_FILENO);
 		close(fd);
 	}
@@ -36,6 +42,7 @@ void	apply_input_redir(t_command *cmd)
 		dup2(fd, STDIN_FILENO);
 		close(fd);
 	}
+	return (0);
 }
 
 void	apply_output_redir(t_command *cmd)

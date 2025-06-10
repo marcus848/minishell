@@ -48,6 +48,8 @@ void	exec_command(t_token_list *tokens, t_shell *shell, t_ast *node)
 {
 	char	**args;
 
+	if (apply_input_redir(node->cmd, shell) < 0)
+		return ;
 	args = node->cmd->args;
 	if (try_exit(tokens, args, shell))
 		return ;
