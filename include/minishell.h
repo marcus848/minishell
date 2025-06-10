@@ -334,6 +334,8 @@ int				apply_input_redir(t_command *cmd, t_shell *shell);
 void			apply_output_redir(t_command *cmd);
 int				validate_infiles(t_redir *head, t_shell *shell);
 char			*get_last_infile(t_redir *head);
+int				validate_out_append(t_redir *head, int flags);
+char			*get_last_out_append(t_redir *head);
 
 // heredoc
 void			prepare_heredocs(t_ast *node, t_shell *sh);
