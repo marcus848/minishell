@@ -51,8 +51,8 @@ t_command	*init_command(void)
 	command->args = NULL;
 	command->arg_count = 0;
 	command->infiles = NULL;
-	command->outfile = NULL;
-	command->appendfile = NULL;
+	command->outfiles = NULL;
+	command->appendfiles = NULL;
 	command->heredocs = NULL;
 	command->heredoc_fd = -1;
 	command->is_builtin = 0;
@@ -67,18 +67,11 @@ void	parse_redirect(t_token **token, t_command **command)
 		return ;
 	}
 	if ((*token)->type == REDIR_IN)
-		parse_infile(token, command);
+		parse_redir(token, &(*command)->infiles);
 	else if ((*token)->type == REDIR_OUT)
-	{
-		(*command)->outfile = rem_quotes(ft_strdup((*token)->next->value), 1);
-		(*token) = (*token)->next->next;
-	}
+		parse_redir(token, &(*command)->outfiles);
 	else if ((*token)->type == REDIR_APPEND)
-	{
-		(*command)->appendfile = rem_quotes(
-				ft_strdup((*token)->next->value), 1);
-		(*token) = (*token)->next->next;
-	}
+		parse_redir(token, &(*command)->appendfiles);
 	else if ((*token)->type == HEREDOC)
 		parse_heredoc(token, command);
 }
