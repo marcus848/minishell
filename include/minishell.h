@@ -289,6 +289,7 @@ void			parse_redirect(t_token **token, t_command **command);
 void			parse_infile(t_token **token, t_command **command);
 void			parse_heredoc(t_token **token, t_command **command);
 char			**get_args(t_token **token, int size_args);
+void			parse_redir(t_token **token, t_redir **redir);
 
 // ast_utils
 int				is_pipe_or_logical(t_token *token);

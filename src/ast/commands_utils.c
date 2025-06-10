@@ -21,6 +21,12 @@ void	parse_infile(t_token **token, t_command **command)
 	*token = (*token)->next->next;
 }
 
+void	parse_redir(t_token **token, t_redir **redir)
+{
+	append_redir(redir, (*token)->next->value);
+	*token = (*token)->next->next;
+}
+
 void	append_redir(t_redir **head, char *filename)
 {
 	t_redir	*redir;
