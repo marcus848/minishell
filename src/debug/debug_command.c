@@ -24,8 +24,6 @@ void	print_command(t_command *cmd)
 		printf("  args[%d]: [%s]\n", i, cmd->args[i]);
 		i++;
 	}
-	if (cmd->infile)
-		printf("Infile: [%s]\n", cmd->infile);
 	if (cmd->outfile)
 		printf("Outfile: [%s]\n", cmd->outfile);
 	if (cmd->appendfile)
