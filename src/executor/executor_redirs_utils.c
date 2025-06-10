@@ -45,3 +45,31 @@ char	*get_last_infile(t_redir *head)
 	}
 	return (last_filename);
 }
+
+int	validate_out_append(t_redir *head, int flags)
+{
+	int	fd;
+
+	while (head)
+	{
+		fd = open(head->filename, flags, 0644);
+		if (fd < 0)
+			exit_perror("open redirect");
+		close(fd);
+		head = head->next;
+	}
+	return (0);
+}
+
+char	*get_last_out_append(t_redir *head)
+{
+	char	*last_filename;
+
+	last_filename = NULL;
+	while (head)
+	{
+		last_filename = head->filename;
+		head = head->next;
+	}
+	return (last_filename);
+}
