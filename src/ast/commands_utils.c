@@ -15,15 +15,15 @@
 void	append_redir(t_redir **head, char *filename);
 void	append_heredoc(t_heredoc **head, t_heredoc *new_hd);
 
-void	parse_infile(t_token **token, t_command **command)
-{
-	append_redir(&(*command)->infiles, (*token)->next->value);
-	*token = (*token)->next->next;
-}
-
 void	parse_redir(t_token **token, t_redir **redir)
 {
 	append_redir(redir, (*token)->next->value);
+	*token = (*token)->next->next;
+}
+
+void	parse_infile(t_token **token, t_command **command)
+{
+	append_redir(&(*command)->infiles, (*token)->next->value);
 	*token = (*token)->next->next;
 }
 

@@ -102,8 +102,8 @@ typedef struct s_command
 	char			**args;
 	int				arg_count;
 	t_redir			*infiles;
-	char			*outfile;
-	char			*appendfile;
+	t_redir			*outfiles;
+	t_redir			*appendfiles;
 	t_heredoc		*heredocs;
 	int				heredoc_fd;
 	int				is_builtin;

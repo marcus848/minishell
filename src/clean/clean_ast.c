@@ -34,10 +34,10 @@ void	command_free(t_command *command)
 		free_args(command);
 	if (command->infiles)
 		free_redirs(command->infiles);
-	if (command->outfile)
-		free(command->outfile);
-	if (command->appendfile)
-		free(command->appendfile);
+	if (command->outfiles)
+		free_redirs(command->outfiles);
+	if (command->appendfiles)
+		free_redirs(command->appendfiles);
 	if (command->heredocs)
 		free_heredocs(command->heredocs);
 	free(command);

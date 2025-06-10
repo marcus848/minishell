@@ -24,10 +24,6 @@ void	print_command(t_command *cmd)
 		printf("  args[%d]: [%s]\n", i, cmd->args[i]);
 		i++;
 	}
-	if (cmd->outfile)
-		printf("Outfile: [%s]\n", cmd->outfile);
-	if (cmd->appendfile)
-		printf("Appendfile: [%s]\n", cmd->appendfile);
 	printf("Is builtin: %d\n", cmd->is_builtin);
 	printf("===============\n");
 }
