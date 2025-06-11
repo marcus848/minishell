@@ -62,6 +62,59 @@ void	prompt(t_shell *shell)
 	}
 }
 
+/*
+// uncomment this and comment the other prompt function
+// to use 42_minishell_tester
+void	prompt(t_shell *shell)
+{
+	char	*input;
+	char	*pmt;
+	char	*line;
+
+	while (1)
+	{
+		if (isatty(fileno(stdin)))
+		{
+			// interactive: show prompt on stderr and read with readline()
+			pmt = make_prompt(shell);
+			g_signal_status = -1;
+			input = readline(pmt);
+			free(pmt);
+			if (g_signal_status == 130)
+				actualize_sh_last_status(shell, -1);
+		}
+		else
+		{
+			// non-interactive: read from stdin without printing any prompt
+			line = get_next_line(fileno(stdin));
+			if (!line)
+				break ;
+			input = ft_strtrim(line, "\n");
+			free(line);
+		}
+		if (!input)
+			break ;
+		if (handle_all_white_spaces(input))
+		{
+			free(input);
+			continue ;
+		}
+		if (ft_strcmp(input, "exit") == 0)
+		{
+			// in non-interactive, you still print "exit\n" to stdout
+			// because bash does it; the tester expects it on stdout
+			ft_putstr_fd("exit\n", STDOUT_FILENO);
+			free(input);
+			break ;
+		}
+		if (isatty(fileno(stdin)))
+			add_history(input);
+		minishell(input, shell);
+		free(input);
+	}
+}
+*/
+
 void	minishell(char *input, t_shell *shell)
 {
 	t_token_list	*tokens;
