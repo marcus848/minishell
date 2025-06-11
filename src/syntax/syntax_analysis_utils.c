@@ -13,11 +13,14 @@
 #include "../../include/minishell.h"
 
 // Pipe token must have valid neighbors: WORD or PAREN_CLOSE or PAREN_OPEN
+// after a pipe, allow: WORD, PAREN_OPEN, or any redirection
 int	check_pipe(t_token *prev, t_token *next)
 {
 	if (!prev || (prev->type != WORD && prev->type != PAREN_CLOSE))
 		return (report_unexpected("|"));
-	if (!next || (next->type != WORD && next->type != PAREN_OPEN))
+	if (!next || (next->type != WORD && next->type != PAREN_OPEN
+			&& next->type != REDIR_IN && next->type != REDIR_OUT
+			&& next->type != REDIR_APPEND && next->type != HEREDOC))
 		return (report_unexpected("|"));
 	return (1);
 }
