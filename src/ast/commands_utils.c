@@ -55,8 +55,8 @@ char	*strip_quotes(char *raw, int *no_expand)
 		*no_expand = 1;
 		return (ft_substr(raw, 1, len - 2));
 	}
-	*no_expand = 0;
-	return (ft_strdup(raw));
+	*no_expand = have_quotes(raw);
+	return (rem_quotes(ft_strdup(raw), 0));
 }
 
 void	build_redir_list(t_redir **head, t_redir *node)
