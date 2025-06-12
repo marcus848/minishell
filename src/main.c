@@ -133,6 +133,7 @@ void	parser(t_token_list *tokens, t_shell *shell)
 	if (!syntax_analysis(tokens))
 	{
 		token_list_free(tokens);
+		shell->last_status = 2;
 		return ;
 	}
 	ast = parse_logical(&tokens->head, shell);
