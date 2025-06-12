@@ -33,34 +33,34 @@ int	main(int argc, char **argv, char **envp)
 	return (0);
 }
 
-void	prompt(t_shell *shell)
-{
-	char	*input;
-	char	*pmt;
-
-	while (1)
-	{
-		pmt = make_prompt(shell);
-		g_signal_status = -1;
-		input = readline(pmt);
-		free(pmt);
-		if (g_signal_status == 130)
-			actualize_sh_last_status(shell, -1);
-		if (!input)
-			break ;
-		if (handle_all_white_spaces(input))
-			continue ;
-		if (ft_strcmp(input, "exit") == 0)
-		{
-			ft_putstr_fd("exit\n", STDERR_FILENO);
-			free(input);
-			break ;
-		}
-		add_history(input);
-		minishell(input, shell);
-		free(input);
-	}
-}
+// void	prompt(t_shell *shell)
+// {
+// 	char	*input;
+// 	char	*pmt;
+//
+// 	while (1)
+// 	{
+// 		pmt = make_prompt(shell);
+// 		g_signal_status = -1;
+// 		input = readline(pmt);
+// 		free(pmt);
+// 		if (g_signal_status == 130)
+// 			actualize_sh_last_status(shell, -1);
+// 		if (!input)
+// 			break ;
+// 		if (handle_all_white_spaces(input))
+// 			continue ;
+// 		if (ft_strcmp(input, "exit") == 0)
+// 		{
+// 			ft_putstr_fd("exit\n", STDERR_FILENO);
+// 			free(input);
+// 			break ;
+// 		}
+// 		add_history(input);
+// 		minishell(input, shell);
+// 		free(input);
+// 	}
+// }
 
 /*
 // uncomment this and comment the other prompt function

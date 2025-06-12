@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdio.h>
+
 void	validate_exec_path(char *path);
 
 int	exec_dispatch(char **args, t_shell *shell, char **envp)

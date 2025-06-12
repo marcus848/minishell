@@ -14,8 +14,19 @@
 
 int	is_executable_command(char *cmd, t_env *env)
 {
+	struct stat	sb;
+
 	if (is_explicit_executable(cmd))
 		return (1);
+	if (access(cmd, F_OK) == 0)
+	{
+		if (stat(cmd, &sb) == 0)
+		{
+			if (S_ISDIR(sb.st_mode))
+				return (0);
+			return (1);
+		}
+	}
 	return (search_in_path(cmd, env));
 }
 
@@ -23,7 +34,7 @@ int	is_explicit_executable(char *cmd)
 {
 	if (ft_strchr(cmd, '/') == NULL)
 		return (0);
-	return (access(cmd, X_OK) == 0);
+	return (1);
 }
 
 int	search_in_path(char *cmd, t_env *env)
@@ -51,7 +62,5 @@ int	search_in_path(char *cmd, t_env *env)
 		i++;
 	}
 	free_string_array(dirs);
-	if (access(cmd, F_OK) == 0)
-		return (1);
 	return (0);
 }
