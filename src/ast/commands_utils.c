@@ -46,17 +46,8 @@ t_redir	*create_heredoc_node(char *raw, t_shell *shell)
 
 char	*strip_quotes(char *raw, int *no_expand)
 {
-	size_t	len;
-
-	len = ft_strlen(raw);
-	if ((raw[0] == '\'' && raw[len - 1] == '\'')
-		|| (raw[0] == '"' && raw[len - 1] == '"'))
-	{
-		*no_expand = 1;
-		return (ft_substr(raw, 1, len - 2));
-	}
 	*no_expand = have_quotes(raw);
-	return (rem_quotes(ft_strdup(raw), 0));
+	return (rem_quotes(ft_strdup(raw), 1));
 }
 
 void	build_redir_list(t_redir **head, t_redir *node)
