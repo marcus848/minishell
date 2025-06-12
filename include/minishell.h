@@ -52,6 +52,9 @@
 // to use signal functions
 # include <signal.h>
 
+// to use stat
+# include <sys/stat.h>
+
 typedef struct sigaction	t_sig;
 
 typedef enum e_token_type

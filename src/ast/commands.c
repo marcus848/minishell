@@ -60,6 +60,7 @@ void	parse_redirect(t_token **token, t_command **cmd, t_shell *sh)
 {
 	t_redir_type	type;
 
+	type = -1;
 	if (!(*token)->next)
 	{
 		*token = (*token)->next;

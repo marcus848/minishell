@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <stdio.h>
+void	validate_exec_path(char *path);
 
 int	exec_dispatch(char **args, t_shell *shell, char **envp)
 {
@@ -51,6 +53,7 @@ void	execve_with_path(char **args, t_env *env, char **envp)
 	while (dirs[i])
 	{
 		candidate = ft_strjoin3(dirs[i], "/", args[0]);
+		validate_exec_path(candidate);
 		execve(candidate, args, envp);
 		free(candidate);
 		if (errno != ENOENT)
@@ -66,8 +69,38 @@ void	try_exec_explicit(char *cmd, char **args, char **envp)
 {
 	if (ft_strchr(cmd, '/') != NULL)
 	{
+		if (access(cmd, F_OK) == -1)
+		{
+			perror(cmd);
+			exit(127);
+		}
+		validate_exec_path(args[0]);
 		execve(cmd, args, envp);
 		perror("execve failed");
 		exit(127);
+	}
+}
+
+void	validate_exec_path(char *path)
+{
+	struct stat	sb;
+
+	if (access(path, F_OK) == -1)
+		return ;
+	if (stat(path, &sb) == -1)
+	{
+		perror(path);
+		exit(127);
+	}
+	if (S_ISDIR(sb.st_mode))
+	{
+		write(2, path, ft_strlen(path));
+		write(2, ": Is a directory\n", 17);
+		exit(126);
+	}
+	if (access(path, X_OK) == -1)
+	{
+		perror(path);
+		exit(126);
 	}
 }

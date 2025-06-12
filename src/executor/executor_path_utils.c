@@ -51,5 +51,7 @@ int	search_in_path(char *cmd, t_env *env)
 		i++;
 	}
 	free_string_array(dirs);
+	if (access(cmd, F_OK) == 0)
+		return (1);
 	return (0);
 }
