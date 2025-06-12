@@ -65,3 +65,17 @@ int	get_size_args(t_token **token)
 	}
 	return (i);
 }
+
+int	have_quotes(char *raw)
+{
+	int	i;
+
+	i = 0;
+	while (raw[i])
+	{
+		if (raw[i] == '\'' || raw[i] == '\"')
+			return (1);
+		i++;
+	}
+	return (0);
+}

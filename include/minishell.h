@@ -297,6 +297,7 @@ void			append_redir(t_redir **head, t_redir_type type, char *filename);
 int				is_pipe_or_logical(t_token *token);
 int				is_redirect(t_token *token);
 int				get_size_args(t_token **token);
+int				have_quotes(char *raw);
 
 // debug functions
 void			print_env(t_env *env);
