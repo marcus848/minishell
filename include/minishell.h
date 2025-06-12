@@ -84,27 +84,27 @@ typedef enum s_node_type
 	NODE_SUBSHELL
 }	t_node_type;
 
-typedef struct s_heredoc
+typedef enum s_redir_type
 {
-	char				*delimiter;
-	int					quoted_delim;
-	struct s_heredoc	*next;
-}	t_heredoc;
+	R_IN,
+	R_OUT,
+	R_APPEND,
+	R_HEREDOC
+}	t_redir_type;
 
 typedef struct s_redir
 {
-	char				*filename;
-	struct s_redir		*next;
+	t_redir_type	type;
+	char			*filename;
+	int				heredoc_fd;
+	struct s_redir	*next;
 }	t_redir;
 
 typedef struct s_command
 {
 	char			**args;
 	int				arg_count;
-	t_redir			*infiles;
-	t_redir			*outfiles;
-	t_redir			*appendfiles;
-	t_heredoc		*heredocs;
+	t_redir			*redirs;
 	int				heredoc_fd;
 	int				is_builtin;
 }	t_command;
@@ -276,20 +276,19 @@ void			sort_args_list(t_args *list);
 void			sort_append(t_args **head, t_args *list);
 
 // ast
-t_ast			*parse_command(t_token **token);
-t_ast			*parse_logical(t_token **token);
-t_ast			*parse_pipe(t_token **token);
-t_ast			*parse_simple_command(t_token **token);
-t_ast			*parse_subshell(t_token **token);
+t_ast			*parse_command(t_token **token, t_shell *shell);
+t_ast			*parse_logical(t_token **token, t_shell *shell);
+t_ast			*parse_pipe(t_token **token, t_shell *shell);
+t_ast			*parse_simple_command(t_token **token, t_shell *shell);
+t_ast			*parse_subshell(t_token **token, t_shell *shell);
 
 // commands
-t_command		*make_command(t_token **token);
+t_command		*make_command(t_token **token, t_shell *shell);
 t_command		*init_command(void);
-void			parse_redirect(t_token **token, t_command **command);
-void			parse_infile(t_token **token, t_command **command);
-void			parse_heredoc(t_token **token, t_command **command);
+void			parse_redirect(t_token **token, t_command **cmd, t_shell *sh);
+void			parse_heredoc(t_token **token, t_command **cmd, t_shell *shell);
 char			**get_args(t_token **token, int size_args);
-void			parse_redir(t_token **token, t_redir **redir);
+void			append_redir(t_redir **head, t_redir_type type, char *filename);
 
 // ast_utils
 int				is_pipe_or_logical(t_token *token);
@@ -329,16 +328,15 @@ int				try_other_builtin(char **args, t_command *cmd, t_shell *shell);
 void			run_external_cmd(char **args, t_command *cmd, t_shell *shell);
 
 // redir
-void			handle_redirections(t_command *cmd, t_shell *shell);
-int				apply_input_redir(t_command *cmd, t_shell *shell);
-void			apply_output_redir(t_command *cmd);
-int				validate_infiles(t_redir *head, t_shell *shell);
-char			*get_last_infile(t_redir *head);
-int				validate_out_append(t_redir *head, int flags);
-char			*get_last_out_append(t_redir *head);
+int				apply_redirections(t_command *cmd, t_shell *sh);
+int				handle_in_redir(t_redir *redir, int *in_fd, t_shell *sh);
+int				handle_heredoc(t_redir *redir, int *in_fd);
+int				handle_out_redir(t_redir *redir, int *out_fd, t_shell *sh);
+void			dup2_close(int fd, int std_fd);
 
 // heredoc
 void			prepare_heredocs(t_ast *node, t_shell *sh);
+int				process_hd(char *delim, int no_expand, t_env *env, t_shell *sh);
 char			*get_var_value(char *line, int *ip, t_env *env, int last_sts);
 char			*ft_strjoin_char_free(char *str, char c);
 

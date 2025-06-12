@@ -12,45 +12,13 @@
 
 #include "../../include/minishell.h"
 
-int		process_heredoc(char *delim, int no_expand, t_env *env, t_shell *sh);
 char	*get_expanded(char *line, int no_expand, t_env *env, t_shell *sh);
 char	*heredoc_expand_vars(char *line, t_env *env, int last_status);
 void	write_and_free_line(int fd, char *line, char *expanded);
 
-// Recursively prepare all heredocs in the AST before forking, so readline()
-// runs in the parent shell.
-void	prepare_heredocs(t_ast *node, t_shell *sh)
-{
-	t_heredoc	*hd;
-	int			final_fd;
-	int			no_expand;
-	int			tmp_fd;
-
-	if (!node)
-		return ;
-	if (node->type == NODE_COMMAND && node->cmd->heredocs)
-	{
-		final_fd = -1;
-		hd = node->cmd->heredocs;
-		while (hd && g_signal_status != 130 && g_signal_status != -3)
-		{
-			no_expand = hd->quoted_delim;
-			tmp_fd = process_heredoc(hd->delimiter, no_expand,
-					sh->env, sh);
-			if (final_fd >= 0)
-				close(final_fd);
-			final_fd = tmp_fd;
-			hd = hd->next;
-		}
-		node->cmd->heredoc_fd = final_fd;
-	}
-	prepare_heredocs(node->left, sh);
-	prepare_heredocs(node->right, sh);
-}
-
 // Read lines until "DELIMITER", expand each, write into a pipe, then return
 // the read-end fd for dup2().
-int	process_heredoc(char *delim, int no_expand, t_env *env, t_shell *sh)
+int	process_hd(char *delim, int no_expand, t_env *env, t_shell *sh)
 {
 	int		fds[2];
 	char	*line;

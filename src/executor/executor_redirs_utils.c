@@ -12,64 +12,67 @@
 
 #include "../../include/minishell.h"
 
-int	validate_infiles(t_redir *head, t_shell *shell)
+int	open_file_with_error(char *filename, int flags, int mode, t_shell *sh);
+
+int	handle_in_redir(t_redir *redir, int *in_fd, t_shell *sh)
 {
 	int	fd;
 
-	while (head)
-	{
-		fd = open(head->filename, O_RDONLY);
-		if (fd < 0)
-		{
-			ft_putstr_fd("-minishell: ", STDERR_FILENO);
-			ft_putstr_fd(head->filename, STDERR_FILENO);
-			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
-			shell->last_status = 1;
-			return (-1);
-		}
-		close(fd);
-		head = head->next;
-	}
+	fd = open_file_with_error(redir->filename, O_RDONLY, 0, sh);
+	if (fd < 0)
+		return (-1);
+	if (*in_fd != -1)
+		close(*in_fd);
+	*in_fd = fd;
 	return (0);
 }
 
-char	*get_last_infile(t_redir *head)
-{
-	char	*last_filename;
-
-	last_filename = NULL;
-	while (head)
-	{
-		last_filename = head->filename;
-		head = head->next;
-	}
-	return (last_filename);
-}
-
-int	validate_out_append(t_redir *head, int flags)
+int	open_file_with_error(char *filename, int flags, int mode, t_shell *sh)
 {
 	int	fd;
 
-	while (head)
+	fd = open(filename, flags, mode);
+	if (fd < 0)
 	{
-		fd = open(head->filename, flags, 0644);
-		if (fd < 0)
-			exit_perror("open redirect");
-		close(fd);
-		head = head->next;
+		ft_putstr_fd("-minishell: ", STDERR_FILENO);
+		ft_putstr_fd(filename, STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+		ft_putstr_fd(strerror(errno), STDERR_FILENO);
+		ft_putstr_fd("\n", STDERR_FILENO);
+		sh->last_status = 1;
 	}
+	return (fd);
+}
+
+int	handle_heredoc(t_redir *redir, int *in_fd)
+{
+	if (*in_fd != -1)
+		close(*in_fd);
+	*in_fd = redir->heredoc_fd;
 	return (0);
 }
 
-char	*get_last_out_append(t_redir *head)
+int	handle_out_redir(t_redir *redir, int *out_fd, t_shell *sh)
 {
-	char	*last_filename;
+	int	flags;
+	int	fd;
 
-	last_filename = NULL;
-	while (head)
-	{
-		last_filename = head->filename;
-		head = head->next;
-	}
-	return (last_filename);
+	flags = O_CREAT | O_WRONLY;
+	if (redir->type == R_OUT)
+		flags |= O_TRUNC;
+	else
+		flags |= O_APPEND;
+	fd = open_file_with_error(redir->filename, flags, 0644, sh);
+	if (fd < 0)
+		return (-1);
+	if (*out_fd != -1)
+		close(*out_fd);
+	*out_fd = fd;
+	return (0);
+}
+
+void	dup2_close(int fd, int std_fd)
+{
+	dup2(fd, std_fd);
+	close(fd);
 }

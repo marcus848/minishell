@@ -135,9 +135,8 @@ void	parser(t_token_list *tokens, t_shell *shell)
 		token_list_free(tokens);
 		return ;
 	}
-	ast = parse_logical(&tokens->head);
+	ast = parse_logical(&tokens->head, shell);
 	shell->ast = ast;
-	prepare_heredocs(shell->ast, shell);
 	if (g_signal_status != -3)
 		executor(tokens, shell, ast);
 	token_list_free(tokens);

@@ -30,12 +30,11 @@ int	try_other_builtin(char **args, t_command *cmd, t_shell *shell)
 	if (is_builtin(args[0]))
 	{
 		save_fds(&save_stdin, &save_stdout);
-		if (apply_input_redir(cmd, shell) < 0)
+		if (apply_redirections(cmd, shell) < 0)
 		{
 			restore_fds(save_stdin, save_stdout);
 			return (1);
 		}
-		apply_output_redir(cmd);
 		status = run_builtin(args, shell);
 		restore_fds(save_stdin, save_stdout);
 		set_last_status(shell, status);
@@ -59,12 +58,11 @@ void	run_external_cmd(char **args, t_command *cmd, t_shell *shell)
 		return ;
 	}
 	save_fds(&save_stdin, &save_stdout);
-	if (apply_input_redir(cmd, shell) < 0)
+	if (apply_redirections(cmd, shell) < 0)
 	{
 		restore_fds(save_stdin, save_stdout);
 		return ;
 	}
-	apply_output_redir(cmd);
 	envp = env_list_to_array(shell->env);
 	status = exec_dispatch(args, shell, envp);
 	free_string_array(envp);

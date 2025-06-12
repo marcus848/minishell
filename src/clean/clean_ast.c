@@ -12,7 +12,6 @@
 
 #include "../../include/minishell.h"
 
-void	free_heredocs(t_heredoc *hd);
 void	free_redirs(t_redir *redir);
 
 void	ast_free(t_ast *root)
@@ -32,14 +31,8 @@ void	command_free(t_command *command)
 		close(command->heredoc_fd);
 	if (command->args)
 		free_args(command);
-	if (command->infiles)
-		free_redirs(command->infiles);
-	if (command->outfiles)
-		free_redirs(command->outfiles);
-	if (command->appendfiles)
-		free_redirs(command->appendfiles);
-	if (command->heredocs)
-		free_heredocs(command->heredocs);
+	if (command->redirs)
+		free_redirs(command->redirs);
 	free(command);
 }
 
@@ -53,6 +46,7 @@ void	free_args(t_command *command)
 	free(command->args);
 }
 
+/*
 void	free_heredocs(t_heredoc *hd)
 {
 	t_heredoc	*next;
@@ -65,6 +59,7 @@ void	free_heredocs(t_heredoc *hd)
 		hd = next;
 	}
 }
+*/
 
 void	free_redirs(t_redir *redir)
 {

@@ -12,58 +12,46 @@
 
 #include "../../include/minishell.h"
 
-void	handle_redirections(t_command *cmd, t_shell *shell)
+int	finish_redirections(int ret, int in_fd, int out_fd);
+
+int	apply_redirections(t_command *cmd, t_shell *sh)
 {
-	apply_input_redir(cmd, shell);
-	apply_output_redir(cmd);
+	t_redir	*redir;
+	int		in_fd;
+	int		out_fd;
+	int		ret;
+
+	redir = cmd->redirs;
+	in_fd = -1;
+	out_fd = -1;
+	ret = 0;
+	while (redir && ret >= 0)
+	{
+		if (redir->type == R_IN)
+			ret = handle_in_redir(redir, &in_fd, sh);
+		else if (redir->type == R_HEREDOC)
+			ret = handle_heredoc(redir, &in_fd);
+		else if (redir->type == R_OUT || redir->type == R_APPEND)
+			ret = handle_out_redir(redir, &out_fd, sh);
+		if (ret >= 0)
+			redir = redir->next;
+	}
+	return (finish_redirections(ret, in_fd, out_fd));
 }
 
-int	apply_input_redir(t_command *cmd, t_shell *shell)
+int	finish_redirections(int ret, int in_fd, int out_fd)
 {
-	int		fd;
-	char	*last_filename;
-
-	if (cmd->infiles)
+	if (ret < 0)
 	{
-		if (validate_infiles(cmd->infiles, shell) < 0)
-			return (-1);
-		last_filename = get_last_infile(cmd->infiles);
-		fd = open(last_filename, O_RDONLY);
-		if (fd < 0)
-			exit_perror("open infile");
-		dup2(fd, STDIN_FILENO);
-		close(fd);
+		if (in_fd != -1)
+			close(in_fd);
+		if (out_fd != -1)
+			close(out_fd);
+		return (-1);
 	}
-	if (cmd->heredocs)
-	{
-		fd = cmd->heredoc_fd;
-		dup2(fd, STDIN_FILENO);
-		close(fd);
-	}
+	if (in_fd != -1)
+		dup2_close(in_fd, STDIN_FILENO);
+	if (out_fd != -1)
+		dup2_close(out_fd, STDOUT_FILENO);
 	return (0);
-}
-
-void	apply_output_redir(t_command *cmd)
-{
-	int		fd;
-	char	*last_filename;
-
-	if (cmd->outfiles)
-		validate_out_append(cmd->outfiles, O_CREAT | O_WRONLY | O_TRUNC);
-	if (cmd->appendfiles)
-		validate_out_append(cmd->outfiles, O_CREAT | O_WRONLY | O_APPEND);
-	if (cmd->appendfiles)
-		last_filename = get_last_out_append(cmd->appendfiles);
-	else if (cmd->outfiles)
-		last_filename = get_last_out_append(cmd->outfiles);
-	else
-		return ;
-	if (cmd->appendfiles)
-		fd = open(last_filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
-	else
-		fd = open(last_filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (fd < 0)
-		exit_perror("open redirect");
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
 }

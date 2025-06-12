@@ -42,6 +42,7 @@ void	print_operator(t_token_type type)
 		printf("Operador: PAREN CLOSE )\n");
 }
 
+/*
 void	test_commands_from_tokens(t_token_list *tokens)
 {
 	t_token		*current;
@@ -70,3 +71,4 @@ void	test_commands_from_tokens(t_token_list *tokens)
 		}
 	}
 }
+*/
