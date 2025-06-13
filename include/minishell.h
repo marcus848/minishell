@@ -386,9 +386,12 @@ void			handle_sigint_prompt(int sig);
 void			update_sh_last_status(t_shell *sh, int new_value);
 
 // setup_signals_heredoc
+// void			handle_sigeof_heredoc(char *delim);
 void			handle_sigeof_heredoc(char *delim);
 void			handle_sigint_heredoc(int sig);
 void			setup_signals_heredoc(void);
+void			disable_echoctl(void);
+void			enable_echoctl(void);
 
 // setup_signals_exec
 void			setup_signals_exec(void);
