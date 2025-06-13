@@ -45,7 +45,7 @@ void	prompt(t_shell *shell)
 		input = readline(pmt);
 		free(pmt);
 		if (g_signal_status == 130)
-			actualize_sh_last_status(shell, -1);
+			update_sh_last_status(shell, -1);
 		if (!input)
 			break ;
 		if (handle_all_white_spaces(input))
@@ -81,7 +81,7 @@ void	prompt(t_shell *shell)
 			input = readline(pmt);
 			free(pmt);
 			if (g_signal_status == 130)
-				actualize_sh_last_status(shell, -1);
+				update_sh_last_status(shell, -1);
 		}
 		else
 		{

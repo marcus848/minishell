@@ -41,7 +41,7 @@ void	handle_sigint_prompt(int sig)
 	rl_redisplay();
 }
 
-void	actualize_sh_last_status(t_shell *sh, int new_value)
+void	update_sh_last_status(t_shell *sh, int new_value)
 {
 	sh->last_status = g_signal_status;
 	g_signal_status = new_value;

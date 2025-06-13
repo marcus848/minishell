@@ -31,7 +31,7 @@ int	process_hd(char *delim, int no_expand, t_env *env, t_shell *sh)
 	{
 		write(1, "> ", 2);
 		line = get_next_line(0);
-		if (g_signal_status == 130 && (actualize_sh_last_status(sh, -3), 1))
+		if (g_signal_status == 130 && (update_sh_last_status(sh, -3), 1))
 			break ;
 		if (!line || ft_strncmp(line, delim, ft_strlen(delim)) == 0)
 		{

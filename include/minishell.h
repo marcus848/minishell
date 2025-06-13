@@ -55,6 +55,9 @@
 // to use stat
 # include <sys/stat.h>
 
+// to use tcsetattr, tcgetattr
+# include <termios.h>
+
 typedef struct sigaction	t_sig;
 
 typedef enum e_token_type
@@ -380,7 +383,7 @@ int				builtin_unset(char **args, t_env **env);
 void			setup_signals_prompt(void);
 t_sig			setup_sigint_prompt(void);
 void			handle_sigint_prompt(int sig);
-void			actualize_sh_last_status(t_shell *sh, int new_value);
+void			update_sh_last_status(t_shell *sh, int new_value);
 
 // setup_signals_heredoc
 void			handle_sigeof_heredoc(char *delim);

@@ -16,7 +16,7 @@ void	set_last_status(t_shell *shell, int status)
 {
 	if (g_signal_status >= 0)
 	{
-		actualize_sh_last_status(shell, -2);
+		update_sh_last_status(shell, -2);
 		return ;
 	}
 	shell->last_status = status & 0xFF;
