@@ -24,6 +24,7 @@ int	is_explicit_dir(char *cmd)
 
 void	handle_dir_case(char *cmd, t_shell *shell)
 {
+	ft_putstr_fd("-minishell: ", STDERR_FILENO);
 	ft_putstr_fd(cmd, STDERR_FILENO);
 	ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
 	set_last_status(shell, 126);

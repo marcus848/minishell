@@ -95,6 +95,7 @@ void	validate_exec_path(char *path)
 	}
 	if (S_ISDIR(sb.st_mode))
 	{
+		write(2, "-minishell: ", 12);
 		write(2, path, ft_strlen(path));
 		write(2, ": Is a directory\n", 17);
 		exit(126);
