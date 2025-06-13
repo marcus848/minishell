@@ -29,8 +29,7 @@ int	process_hd(char *delim, int no_expand, t_env *env, t_shell *sh)
 	setup_signals_heredoc();
 	while (1)
 	{
-		write(1, "> ", 2);
-		line = get_next_line(0);
+		line = readline("> ");
 		if (g_signal_status == 130 && (update_sh_last_status(sh, -3), 1))
 			break ;
 		if (!line || ft_strncmp(line, delim, ft_strlen(delim)) == 0)
@@ -40,11 +39,11 @@ int	process_hd(char *delim, int no_expand, t_env *env, t_shell *sh)
 			free(line);
 			break ;
 		}
-		line[ft_strlen(line) - 1] = '\0';
 		expanded = get_expanded(line, no_expand, env, sh);
 		write_and_free_line(fds[1], line, expanded);
 	}
-	return (close(fds[1]), fds[0]);
+	close(fds[1]);
+	return (fds[0]);
 }
 
 void	write_and_free_line(int fd, char *line, char *expanded)
