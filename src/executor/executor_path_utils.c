@@ -16,7 +16,7 @@ int	is_executable_command(char *cmd, t_env *env)
 {
 	struct stat	sb;
 
-	if (is_explicit_dir(cmd))
+	if (is_explicit_executable(cmd))
 		return (1);
 	if (access(cmd, F_OK) == 0)
 	{

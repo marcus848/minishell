@@ -20,8 +20,11 @@ void	parse_heredoc(t_token **token, t_command **cmd, t_shell *shell)
 {
 	t_redir	*redir;
 
-	redir = create_heredoc_node((*token)->next->value, shell);
-	build_redir_list(&(*cmd)->redirs, redir);
+	if (g_signal_status == -1)
+	{
+		redir = create_heredoc_node((*token)->next->value, shell);
+		build_redir_list(&(*cmd)->redirs, redir);
+	}
 	(*token) = (*token)->next->next;
 }
 
