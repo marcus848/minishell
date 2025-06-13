@@ -61,6 +61,7 @@ SRCS		= ${SRC_DIR}/main.c \
 		  ${EXEC_DIR}/executor_builtin.c \
 		  ${EXEC_DIR}/executor_path_utils.c \
 		  ${EXEC_DIR}/executor_command.c \
+		  ${EXEC_DIR}/executor_command_external_utils.c \
 		  ${EXEC_DIR}/executor_pipe.c \
 		  ${ENV_DIR}/env_init.c \
 		  ${ENV_DIR}/env_utils.c \
@@ -109,6 +110,8 @@ ${LIBFT_LIB}:
 
 leak:
 			valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=readline.supp ./${NAME}
+leakfile:
+			valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=readline.supp --log-file=valgrind.log ./${NAME}
 
 clean:
 			@echo "${RED}[  CLEANING  ]${RESET} Removing object files..."

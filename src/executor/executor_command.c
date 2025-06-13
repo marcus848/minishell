@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 21:00:59 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/23 03:38:27 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/06/13 04:03:01 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,27 +45,15 @@ int	try_other_builtin(char **args, t_command *cmd, t_shell *shell)
 
 void	run_external_cmd(char **args, t_command *cmd, t_shell *shell)
 {
-	char	**envp;
-	int		status;
-	int		save_stdin;
-	int		save_stdout;
-
+	if (is_explicit_dir(args[0]))
+	{
+		handle_dir_case(args[0], shell);
+		return ;
+	}
 	if (!is_executable_command(args[0], shell->env))
 	{
-		ft_putstr_fd(args[0], STDERR_FILENO);
-		ft_putstr_fd(": command not found\n", STDERR_FILENO);
-		set_last_status(shell, 127);
+		handle_not_found(args[0], shell);
 		return ;
 	}
-	save_fds(&save_stdin, &save_stdout);
-	if (apply_redirections(cmd, shell) < 0)
-	{
-		restore_fds(save_stdin, save_stdout);
-		return ;
-	}
-	envp = env_list_to_array(shell->env);
-	status = exec_dispatch(args, shell, envp);
-	free_string_array(envp);
-	restore_fds(save_stdin, save_stdout);
-	set_last_status(shell, status);
+	exec_with_redirs(args, cmd, shell);
 }

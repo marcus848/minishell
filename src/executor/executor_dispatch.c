@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 15:56:30 by caide-so          #+#    #+#             */
-/*   Updated: 2025/06/03 20:18:39 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/06/13 04:31:28 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	try_exec_explicit(char *cmd, char **args, char **envp)
 		if (access(cmd, F_OK) == -1)
 		{
 			perror(cmd);
+			free_string_array(envp);
 			exit(127);
 		}
 		validate_exec_path(args[0]);

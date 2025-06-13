@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/06/10 00:51:07 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/06/13 04:02:44 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,6 +187,7 @@ extern volatile int			g_signal_status;
 // tokenizer
 t_token_list	*tokenizer(char *input);
 int				handle_operators(char *input, int *i, t_token_list *tokens);
+int				in(const char *s, char c);
 
 // token
 t_token			*new_token(t_token_type type, char *value);
@@ -330,6 +331,10 @@ int				search_in_path(char *cmd, t_env *env);
 int				try_exit(t_token_list *toks, char **args, t_shell *shell);
 int				try_other_builtin(char **args, t_command *cmd, t_shell *shell);
 void			run_external_cmd(char **args, t_command *cmd, t_shell *shell);
+int				is_explicit_dir(char *cmd);
+void			handle_dir_case(char *cmd, t_shell *shell);
+void			handle_not_found(char *cmd, t_shell *shell);
+int				exec_with_redirs(char **args, t_command *cmd, t_shell *shell);
 
 // redir
 int				apply_redirections(t_command *cmd, t_shell *sh);

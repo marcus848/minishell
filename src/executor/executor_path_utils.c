@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 23:00:32 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/18 23:03:19 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/06/13 04:37:56 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	is_executable_command(char *cmd, t_env *env)
 {
 	struct stat	sb;
 
-	if (is_explicit_executable(cmd))
+	if (is_explicit_dir(cmd))
 		return (1);
 	if (access(cmd, F_OK) == 0)
 	{
