@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/06/13 04:02:44 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/06/15 14:04:31 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,6 +271,15 @@ int				update_state_quote_i(char *input, int *i, t_quote *state);
 // expand_wild_split
 char			**split_wildcard(char *input);
 void			add_token_to_array(char ***array, char *token);
+
+// expand redirs
+void			expand_redirs(t_redir *redirs, t_shell *sh);
+void			expand_redir(t_redir *redir, t_shell *sh);
+t_args			*expand_redir_wild(t_args *envs);
+int				count_args(t_args *list);
+void			handle_no_match(t_shell *sh, t_redir *redir);
+void			handle_ambiguous(t_shell *sh, t_redir *redir);
+void			handle_single_match(t_redir *redir, t_args *expanded_list);
 
 // handle_quotes
 char			*rem_quotes(char *str, int free_str);

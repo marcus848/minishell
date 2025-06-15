@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 21:46:29 by caide-so          #+#    #+#             */
-/*   Updated: 2025/05/27 17:10:59 by marcudos         ###   ########.fr       */
+/*   Updated: 2025/06/15 14:04:59 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	exec_command(t_token_list *tokens, t_shell *shell, t_ast *node)
 	char	**args;
 
 	args = node->cmd->args;
+	expand_redirs(node->cmd->redirs, shell);
 	if (try_exit(tokens, args, shell))
 		return ;
 	if (try_other_builtin(args, node->cmd, shell))

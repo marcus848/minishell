@@ -18,6 +18,8 @@ int	handle_in_redir(t_redir *redir, int *in_fd, t_shell *sh)
 {
 	int	fd;
 
+	if (redir->filename == NULL)
+		return (-1);
 	fd = open_file_with_error(redir->filename, O_RDONLY, 0, sh);
 	if (fd < 0)
 		return (-1);
@@ -57,6 +59,8 @@ int	handle_out_redir(t_redir *redir, int *out_fd, t_shell *sh)
 	int	flags;
 	int	fd;
 
+	if (redir->filename == NULL)
+		return (-1);
 	flags = O_CREAT | O_WRONLY;
 	if (redir->type == R_OUT)
 		flags |= O_TRUNC;
