@@ -12,19 +12,32 @@
 
 #include "../../include/minishell.h"
 
-static int	is_two_char_op(char *input, t_token_type *type, int *len);
-static int	is_one_char_op_1(char input, t_token_type *type, int *len);
-static int	is_one_char_op_2(char input, t_token_type *type);
+int	is_two_char_op(char *input, t_token_type *type, int *len);
+int	is_one_char_op_1(char input, t_token_type *type, int *len);
+int	is_one_char_op_2(char input, t_token_type *type);
+int	create_operator_token(char *input, int *i, t_token_list *tokens);
 
 int	handle_operators(char *input, int *i, t_token_list *tokens)
+{
+	if (!in("()&|<>", input[*i]))
+		return (-1);
+	if (create_operator_token(input, i, tokens))
+		return (1);
+	if (input[*i] == '&')
+	{
+		report_unexpected("&");
+		return (0);
+	}
+	return (-1);
+}
+
+int	create_operator_token(char *input, int *i, t_token_list *tokens)
 {
 	int				len;
 	char			*value;
 	t_token			*token;
 	t_token_type	type;
 
-	if (!in("()&|<>", input[*i]))
-		return (0);
 	if (is_two_char_op(input + *i, &type, &len)
 		|| is_one_char_op_1(input[*i], &type, &len))
 	{
@@ -44,7 +57,7 @@ int	handle_operators(char *input, int *i, t_token_list *tokens)
 	return (0);
 }
 
-static int	is_two_char_op(char *input, t_token_type *type, int *len)
+int	is_two_char_op(char *input, t_token_type *type, int *len)
 {
 	*len = 2;
 	if (input[0] == '>' && input[1] == '>')
@@ -70,7 +83,7 @@ static int	is_two_char_op(char *input, t_token_type *type, int *len)
 	return (0);
 }
 
-static int	is_one_char_op_1(char input, t_token_type *type, int *len)
+int	is_one_char_op_1(char input, t_token_type *type, int *len)
 {
 	*len = 1;
 	if (input == '>')
@@ -91,7 +104,7 @@ static int	is_one_char_op_1(char input, t_token_type *type, int *len)
 	return (is_one_char_op_2(input, type));
 }
 
-static int	is_one_char_op_2(char input, t_token_type *type)
+int	is_one_char_op_2(char input, t_token_type *type)
 {
 	if (input == '(')
 	{

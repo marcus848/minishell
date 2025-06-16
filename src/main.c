@@ -121,7 +121,10 @@ void	minishell(char *input, t_shell *shell)
 
 	tokens = tokenizer(input);
 	if (!tokens)
+	{
+		shell->last_status = 2;
 		return ;
+	}
 	shell->tokens = tokens;
 	parser(tokens, shell);
 }
