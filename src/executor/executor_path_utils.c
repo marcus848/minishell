@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 23:00:32 by caide-so          #+#    #+#             */
-/*   Updated: 2025/06/13 04:37:56 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/06/16 00:24:13 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,14 @@ int	is_executable_command(char *cmd, t_env *env)
 	struct stat	sb;
 
 	if (is_explicit_executable(cmd))
-		return (1);
-	if (access(cmd, F_OK) == 0)
 	{
-		if (stat(cmd, &sb) == 0)
-		{
-			if (S_ISDIR(sb.st_mode))
-				return (0);
+		if (access(cmd, F_OK) != 0)
+			return (0);
+		if (stat(cmd, &sb) == 0 && S_ISDIR(sb.st_mode))
+			return (0);
+		if (access(cmd, X_OK) == 0)
 			return (1);
-		}
+		return (-1);
 	}
 	return (search_in_path(cmd, env));
 }

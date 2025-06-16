@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/06/15 14:04:31 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/06/16 00:27:24 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -346,6 +346,7 @@ void			run_external_cmd(char **args, t_command *cmd, t_shell *shell);
 int				is_explicit_dir(char *cmd);
 void			handle_dir_case(char *cmd, t_shell *shell);
 void			handle_not_found(char *cmd, t_shell *shell);
+void			handle_permission_denied(char *cmd, t_shell *shell);
 int				exec_with_redirs(char **args, t_command *cmd, t_shell *shell);
 
 // redir
