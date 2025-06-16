@@ -16,6 +16,7 @@ void	setup_signals_heredoc(void)
 {
 	t_sig	sa_int;
 
+	disable_echoctl();
 	sa_int.sa_handler = handle_sigint_heredoc;
 	sigemptyset(&sa_int.sa_mask);
 	sa_int.sa_flags = 0;
@@ -37,4 +38,22 @@ void	handle_sigint_heredoc(int sig)
 	(void)sig;
 	g_signal_status = 130;
 	write(1, "\n", 1);
+}
+
+void	disable_echoctl(void)
+{
+	struct termios	term;
+
+	tcgetattr(0, &term);
+	term.c_lflag &= ~ECHOCTL;
+	tcsetattr(0, TCSANOW, &term);
+}
+
+void	enable_echoctl(void)
+{
+	struct termios	term;
+
+	tcgetattr(0, &term);
+	term.c_lflag |= ECHOCTL;
+	tcsetattr(0, TCSANOW, &term);
 }

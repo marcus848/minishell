@@ -12,45 +12,15 @@
 
 #include "../../include/minishell.h"
 
-int		process_heredoc(char *delim, int no_expand, t_env *env, t_shell *sh);
 char	*get_expanded(char *line, int no_expand, t_env *env, t_shell *sh);
 char	*heredoc_expand_vars(char *line, t_env *env, int last_status);
 void	write_and_free_line(int fd, char *line, char *expanded);
-
-// Recursively prepare all heredocs in the AST before forking, so readline()
-// runs in the parent shell.
-void	prepare_heredocs(t_ast *node, t_shell *sh)
-{
-	t_heredoc	*hd;
-	int			final_fd;
-	int			no_expand;
-	int			tmp_fd;
-
-	if (!node)
-		return ;
-	if (node->type == NODE_COMMAND && node->cmd->heredocs)
-	{
-		final_fd = -1;
-		hd = node->cmd->heredocs;
-		while (hd && g_signal_status != 130 && g_signal_status != -3)
-		{
-			no_expand = hd->quoted_delim;
-			tmp_fd = process_heredoc(hd->delimiter, no_expand,
-					sh->env, sh);
-			if (final_fd >= 0)
-				close(final_fd);
-			final_fd = tmp_fd;
-			hd = hd->next;
-		}
-		node->cmd->heredoc_fd = final_fd;
-	}
-	prepare_heredocs(node->left, sh);
-	prepare_heredocs(node->right, sh);
-}
+int		handle_end_heredoc(char *line, char *delim);
 
 // Read lines until "DELIMITER", expand each, write into a pipe, then return
 // the read-end fd for dup2().
-int	process_heredoc(char *delim, int no_expand, t_env *env, t_shell *sh)
+
+int	process_hd(char *delim, int no_expand, t_env *env, t_shell *sh)
 {
 	int		fds[2];
 	char	*line;
@@ -63,20 +33,39 @@ int	process_heredoc(char *delim, int no_expand, t_env *env, t_shell *sh)
 	{
 		write(1, "> ", 2);
 		line = get_next_line(0);
-		if (g_signal_status == 130 && (actualize_sh_last_status(sh, -3), 1))
+		if (g_signal_status == 130 && (update_sh_last_status(sh, -3), 1))
 			break ;
-		if (!line || ft_strncmp(line, delim, ft_strlen(delim)) == 0)
-		{
-			if (!line)
-				handle_sigeof_heredoc(delim);
-			free(line);
+		if (handle_end_heredoc(line, delim))
 			break ;
-		}
-		line[ft_strlen(line) - 1] = '\0';
+		if (line[ft_strlen(line) - 1] == '\n')
+			line[ft_strlen(line) - 1] = '\0';
 		expanded = get_expanded(line, no_expand, env, sh);
 		write_and_free_line(fds[1], line, expanded);
 	}
-	return (close(fds[1]), fds[0]);
+	enable_echoctl();
+	close(fds[1]);
+	return (fds[0]);
+}
+
+int	handle_end_heredoc(char *line, char *delim)
+{
+	if (line && ft_strncmp(line, delim, ft_strlen(delim)) == 0)
+	{
+		free(line);
+		return (1);
+	}
+	else if (line && line[ft_strlen(line) - 1] != '\n')
+	{
+		handle_sigeof_heredoc(delim);
+		free(line);
+		return (1);
+	}
+	else if (!line)
+	{
+		handle_sigeof_heredoc(delim);
+		return (1);
+	}
+	return (0);
 }
 
 void	write_and_free_line(int fd, char *line, char *expanded)

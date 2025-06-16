@@ -12,18 +12,18 @@
 
 #include "../../include/minishell.h"
 
-t_command	*make_command(t_token **token)
+t_command	*make_command(t_token **token, t_shell *shell)
 {
-	t_command	*command;
+	t_command	*cmd;
 	t_token		*t;
 	int			arg;
 
-	command = init_command();
-	if (!command)
+	cmd = init_command();
+	if (!cmd)
 		return (NULL);
-	command->arg_count = get_size_args(token);
-	command->args = (char **) malloc(sizeof(char *) * (command->arg_count + 1));
-	if (!command->args)
+	cmd->arg_count = get_size_args(token);
+	cmd->args = (char **) malloc(sizeof(char *) * (cmd->arg_count + 1));
+	if (!cmd->args)
 		return (NULL);
 	t = *token;
 	arg = 0;
@@ -31,47 +31,52 @@ t_command	*make_command(t_token **token)
 	{
 		if (t->type == WORD)
 		{
-			command->args[arg++] = ft_strdup(t->value);
+			cmd->args[arg++] = ft_strdup(t->value);
 			t = t->next;
 		}
 		else if (is_redirect(t))
-			parse_redirect(&t, &command);
+			parse_redirect(&t, &cmd, shell);
 	}
-	command->args[arg] = NULL;
-	return ((*token) = t, command);
+	cmd->args[arg] = NULL;
+	return ((*token) = t, cmd);
 }
 
 t_command	*init_command(void)
 {
-	t_command	*command;
+	t_command	*cmd;
 
-	command = (t_command *) malloc(sizeof(t_command));
-	if (!command)
+	cmd = (t_command *) malloc(sizeof(t_command));
+	if (!cmd)
 		return (NULL);
-	command->args = NULL;
-	command->arg_count = 0;
-	command->infiles = NULL;
-	command->outfiles = NULL;
-	command->appendfiles = NULL;
-	command->heredocs = NULL;
-	command->heredoc_fd = -1;
-	command->is_builtin = 0;
-	return (command);
+	cmd->args = NULL;
+	cmd->arg_count = 0;
+	cmd->redirs = NULL;
+	cmd->heredoc_fd = -1;
+	cmd->is_builtin = 0;
+	return (cmd);
 }
 
-void	parse_redirect(t_token **token, t_command **command)
+void	parse_redirect(t_token **token, t_command **cmd, t_shell *sh)
 {
+	t_redir_type	type;
+
+	type = -1;
 	if (!(*token)->next)
 	{
 		*token = (*token)->next;
 		return ;
 	}
-	if ((*token)->type == REDIR_IN)
-		parse_redir(token, &(*command)->infiles);
-	else if ((*token)->type == REDIR_OUT)
-		parse_redir(token, &(*command)->outfiles);
-	else if ((*token)->type == REDIR_APPEND)
-		parse_redir(token, &(*command)->appendfiles);
-	else if ((*token)->type == HEREDOC)
-		parse_heredoc(token, command);
+	if ((*token)->type == HEREDOC)
+		parse_heredoc(token, cmd, sh);
+	else
+	{
+		if ((*token)->type == REDIR_IN)
+			type = R_IN;
+		else if ((*token)->type == REDIR_OUT)
+			type = R_OUT;
+		else if ((*token)->type == REDIR_APPEND)
+			type = R_APPEND;
+		append_redir(&(*cmd)->redirs, type, (*token)->next->value);
+		*token = (*token)->next->next;
+	}
 }

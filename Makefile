@@ -1,4 +1,5 @@
 NAME		= minishell
+NAME_BONUS	= minishell_bonus
 CC		= cc
 CFLAGS		= -Wall -Wextra -Werror -g
 RM		= rm -rf
@@ -39,6 +40,8 @@ SRCS		= ${SRC_DIR}/main.c \
 		  ${EXPANSION_DIR}/expand_wild.c \
 		  ${EXPANSION_DIR}/expand_wild_utils.c \
 		  ${EXPANSION_DIR}/expand_wild_split.c \
+		  ${EXPANSION_DIR}/expand_redir.c \
+		  ${EXPANSION_DIR}/expand_redir_utils.c \
 		  ${EXPANSION_DIR}/handle_quotes.c \
 		  ${EXPANSION_DIR}/sort_wildcard.c \
 		  ${DEBUG_DIR}/debug_functions.c \
@@ -61,6 +64,7 @@ SRCS		= ${SRC_DIR}/main.c \
 		  ${EXEC_DIR}/executor_builtin.c \
 		  ${EXEC_DIR}/executor_path_utils.c \
 		  ${EXEC_DIR}/executor_command.c \
+		  ${EXEC_DIR}/executor_command_external_utils.c \
 		  ${EXEC_DIR}/executor_pipe.c \
 		  ${ENV_DIR}/env_init.c \
 		  ${ENV_DIR}/env_utils.c \
@@ -109,6 +113,12 @@ ${LIBFT_LIB}:
 
 leak:
 			valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=readline.supp ./${NAME}
+leakfile:
+			valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=readline.supp --log-file=valgrind.log ./${NAME}
+
+bonus:
+			@make re
+			@cp ${NAME} ${NAME_BONUS} 
 
 clean:
 			@echo "${RED}[  CLEANING  ]${RESET} Removing object files..."

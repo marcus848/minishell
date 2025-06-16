@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:11:14 by caide-so          #+#    #+#             */
-/*   Updated: 2025/06/10 00:51:07 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/06/16 00:27:24 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,12 @@
 // to use signal functions
 # include <signal.h>
 
+// to use stat
+# include <sys/stat.h>
+
+// to use tcsetattr, tcgetattr
+# include <termios.h>
+
 typedef struct sigaction	t_sig;
 
 typedef enum e_token_type
@@ -84,27 +90,27 @@ typedef enum s_node_type
 	NODE_SUBSHELL
 }	t_node_type;
 
-typedef struct s_heredoc
+typedef enum s_redir_type
 {
-	char				*delimiter;
-	int					quoted_delim;
-	struct s_heredoc	*next;
-}	t_heredoc;
+	R_IN,
+	R_OUT,
+	R_APPEND,
+	R_HEREDOC
+}	t_redir_type;
 
 typedef struct s_redir
 {
-	char				*filename;
-	struct s_redir		*next;
+	t_redir_type	type;
+	char			*filename;
+	int				heredoc_fd;
+	struct s_redir	*next;
 }	t_redir;
 
 typedef struct s_command
 {
 	char			**args;
 	int				arg_count;
-	t_redir			*infiles;
-	t_redir			*outfiles;
-	t_redir			*appendfiles;
-	t_heredoc		*heredocs;
+	t_redir			*redirs;
 	int				heredoc_fd;
 	int				is_builtin;
 }	t_command;
@@ -184,6 +190,7 @@ extern volatile int			g_signal_status;
 // tokenizer
 t_token_list	*tokenizer(char *input);
 int				handle_operators(char *input, int *i, t_token_list *tokens);
+int				in(const char *s, char c);
 
 // token
 t_token			*new_token(t_token_type type, char *value);
@@ -265,6 +272,15 @@ int				update_state_quote_i(char *input, int *i, t_quote *state);
 char			**split_wildcard(char *input);
 void			add_token_to_array(char ***array, char *token);
 
+// expand redirs
+void			expand_redirs(t_redir *redirs, t_shell *sh);
+void			expand_redir(t_redir *redir, t_shell *sh);
+t_args			*expand_redir_wild(t_args *envs);
+int				count_args(t_args *list);
+void			handle_no_match(t_shell *sh, t_redir *redir);
+void			handle_ambiguous(t_shell *sh, t_redir *redir);
+void			handle_single_match(t_redir *redir, t_args *expanded_list);
+
 // handle_quotes
 char			*rem_quotes(char *str, int free_str);
 
@@ -276,25 +292,25 @@ void			sort_args_list(t_args *list);
 void			sort_append(t_args **head, t_args *list);
 
 // ast
-t_ast			*parse_command(t_token **token);
-t_ast			*parse_logical(t_token **token);
-t_ast			*parse_pipe(t_token **token);
-t_ast			*parse_simple_command(t_token **token);
-t_ast			*parse_subshell(t_token **token);
+t_ast			*parse_command(t_token **token, t_shell *shell);
+t_ast			*parse_logical(t_token **token, t_shell *shell);
+t_ast			*parse_pipe(t_token **token, t_shell *shell);
+t_ast			*parse_simple_command(t_token **token, t_shell *shell);
+t_ast			*parse_subshell(t_token **token, t_shell *shell);
 
 // commands
-t_command		*make_command(t_token **token);
+t_command		*make_command(t_token **token, t_shell *shell);
 t_command		*init_command(void);
-void			parse_redirect(t_token **token, t_command **command);
-void			parse_infile(t_token **token, t_command **command);
-void			parse_heredoc(t_token **token, t_command **command);
+void			parse_redirect(t_token **token, t_command **cmd, t_shell *sh);
+void			parse_heredoc(t_token **token, t_command **cmd, t_shell *shell);
 char			**get_args(t_token **token, int size_args);
-void			parse_redir(t_token **token, t_redir **redir);
+void			append_redir(t_redir **head, t_redir_type type, char *filename);
 
 // ast_utils
 int				is_pipe_or_logical(t_token *token);
 int				is_redirect(t_token *token);
 int				get_size_args(t_token **token);
+int				have_quotes(char *raw);
 
 // debug functions
 void			print_env(t_env *env);
@@ -327,18 +343,22 @@ int				search_in_path(char *cmd, t_env *env);
 int				try_exit(t_token_list *toks, char **args, t_shell *shell);
 int				try_other_builtin(char **args, t_command *cmd, t_shell *shell);
 void			run_external_cmd(char **args, t_command *cmd, t_shell *shell);
+int				is_explicit_dir(char *cmd);
+void			handle_dir_case(char *cmd, t_shell *shell);
+void			handle_not_found(char *cmd, t_shell *shell);
+void			handle_permission_denied(char *cmd, t_shell *shell);
+int				exec_with_redirs(char **args, t_command *cmd, t_shell *shell);
 
 // redir
-void			handle_redirections(t_command *cmd, t_shell *shell);
-int				apply_input_redir(t_command *cmd, t_shell *shell);
-void			apply_output_redir(t_command *cmd);
-int				validate_infiles(t_redir *head, t_shell *shell);
-char			*get_last_infile(t_redir *head);
-int				validate_out_append(t_redir *head, int flags);
-char			*get_last_out_append(t_redir *head);
+int				apply_redirections(t_command *cmd, t_shell *sh);
+int				handle_in_redir(t_redir *redir, int *in_fd, t_shell *sh);
+int				handle_heredoc(t_redir *redir, int *in_fd);
+int				handle_out_redir(t_redir *redir, int *out_fd, t_shell *sh);
+void			dup2_close(int fd, int std_fd);
 
 // heredoc
 void			prepare_heredocs(t_ast *node, t_shell *sh);
+int				process_hd(char *delim, int no_expand, t_env *env, t_shell *sh);
 char			*get_var_value(char *line, int *ip, t_env *env, int last_sts);
 char			*ft_strjoin_char_free(char *str, char c);
 
@@ -373,12 +393,15 @@ int				builtin_unset(char **args, t_env **env);
 void			setup_signals_prompt(void);
 t_sig			setup_sigint_prompt(void);
 void			handle_sigint_prompt(int sig);
-void			actualize_sh_last_status(t_shell *sh, int new_value);
+void			update_sh_last_status(t_shell *sh, int new_value);
 
 // setup_signals_heredoc
+// void			handle_sigeof_heredoc(char *delim);
 void			handle_sigeof_heredoc(char *delim);
 void			handle_sigint_heredoc(int sig);
 void			setup_signals_heredoc(void);
+void			disable_echoctl(void);
+void			enable_echoctl(void);
 
 // setup_signals_exec
 void			setup_signals_exec(void);
