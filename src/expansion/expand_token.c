@@ -65,7 +65,8 @@ int	handle_special_expand(t_exp *exp, char *input)
 	char	*temp;
 
 	if (input[exp->i + 1] == '\0' || input[exp->i + 1] == ' '
-		|| input[exp->i + 1] == '\"' || input[exp->i + 1] == '\'')
+		|| input[exp->i + 1] == '\"' || input[exp->i + 1] == '\''
+		|| input[exp->i + 1] == '/')
 	{
 		exp->cur = ft_strdup("$");
 		if (!exp->cur)
