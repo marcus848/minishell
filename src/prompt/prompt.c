@@ -15,6 +15,11 @@
 char	*assemble_prompt(char *user, char *host, char *cwd, size_t len);
 char	*get_cwd(t_shell *shell);
 
+// Constructs interactive shell prompt string.
+// 1. Gets user, hostname and current working directory.
+// 2. Calculates required buffer size.
+// 3. Assembles colored prompt components.
+// Returns formatted prompt string.
 char	*make_prompt(t_shell *shell)
 {
 	char	*user;
@@ -32,6 +37,12 @@ char	*make_prompt(t_shell *shell)
 	return (prompt);
 }
 
+// Assembles prompt components into formatted string.
+// 1. Allocates buffer including space for color codes.
+// 2. Builds user@host section.
+// 3. Adds current working directory.
+// 4. Appends prompt characters.
+// Returns complete prompt string.
 char	*assemble_prompt(char *user, char *host, char *cwd, size_t len)
 {
 	char	*prompt;
@@ -55,6 +66,11 @@ char	*assemble_prompt(char *user, char *host, char *cwd, size_t len)
 	return (prompt);
 }
 
+// Gets curent working directory for prompt display.
+// 1. Checks PWD environment variable.
+// 2. Shortens path if inside home directory.
+// 3. Fails back to system cwd if needed.
+// Returns formatted directory string.
 char	*get_cwd(t_shell *shell)
 {
 	char	*raw;
