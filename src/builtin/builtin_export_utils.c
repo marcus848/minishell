@@ -17,6 +17,12 @@ t_env	**env_to_array(t_env *env, size_t n);
 void	sort_env_array(t_env **arr, size_t n);
 void	print_env_array(t_env **arr, size_t n);
 
+// Prints all environment variables in sorted order.
+// 1. Counts environment variables.
+// 2. Converts linked list to array.
+// 3. Sorts the array alphabetically by key.
+// 4. Prints variables in "declare -x key=value" format.
+// 5. Frees the array.
 void	print_exported(t_env *env)
 {
 	size_t	n;
@@ -33,6 +39,9 @@ void	print_exported(t_env *env)
 	free(arr);
 }
 
+// Counts the number of environment variables in the list.
+// 1. Iterates over linked list counting nodes.
+// 2. Returns the count.
 size_t	env_count(t_env *env)
 {
 	size_t	count;
@@ -48,6 +57,10 @@ size_t	env_count(t_env *env)
 	return (count);
 }
 
+// Converts environment linked list to an array of pointers.
+// 1. Allocates array for n elements.
+// 2. Copies pointers from list to array.
+// 3. Returns pointer to the array or NULL on failure.
 t_env	**env_to_array(t_env *env, size_t n)
 {
 	t_env	**arr;
@@ -68,6 +81,9 @@ t_env	**env_to_array(t_env *env, size_t n)
 	return (arr);
 }
 
+// Sorts environment array alphabetically by key using simple bubble sort.
+// 1. Compares each pair of elements.
+// 2. Swaps elements if out of order.
 void	sort_env_array(t_env **arr, size_t n)
 {
 	size_t	i;
@@ -92,6 +108,8 @@ void	sort_env_array(t_env **arr, size_t n)
 	}
 }
 
+// Prints environment variables from array in export format.
+// 1. Prints "declare -x key=value"
 void	print_env_array(t_env **arr, size_t n)
 {
 	size_t	i;

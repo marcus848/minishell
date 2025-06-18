@@ -16,6 +16,11 @@ int	handle_unset_arg(char *arg, t_env **env);
 int	is_valid_name(char *name);
 int	env_unset(char *arg, t_env **env);
 
+// Builtin implementation for the "unset" command.
+// 1. Iterates over all provided arguments.
+// 2. Validates each argument and attempts to unset it from environment.
+// 3. Tracks error status for invalid arguments.
+// 4. Returns 0 if all valid, 1 if any invalid argument.
 int	builtin_unset(char **args, t_env **env)
 {
 	int		status;
@@ -32,6 +37,11 @@ int	builtin_unset(char **args, t_env **env)
 	return (status);
 }
 
+// Handles a single unset argument
+// 1. Validates argument name.
+// 2. Prints error and usage if invalid option starting with '-'.
+// 3. Removes variable from environment if valid.
+// 4. Returns 0 on success, 1 on error.
 int	handle_unset_arg(char *arg, t_env **env)
 {
 	if (!is_valid_name(arg))
@@ -49,6 +59,11 @@ int	handle_unset_arg(char *arg, t_env **env)
 	return (0);
 }
 
+// Validates if name is a valid variable identifier for unset.
+// 1. Must not be NULL or empty.
+// 2. First character must be a letter or underscore.
+// 3. Remaining characters must be alphanumeric or underscore.
+// Returns 1 if valid, 0 otherwise.
 int	is_valid_name(char *name)
 {
 	int	i;
@@ -69,6 +84,10 @@ int	is_valid_name(char *name)
 	return (1);
 }
 
+// Removes the environment variable named arg from the list.
+// 1. Searches linked list for matching key.
+// 2. Removes node from list and frees memory if found.
+// 3. Returns 0 regardless of outcome.
 int	env_unset(char *arg, t_env **env)
 {
 	t_env	*curr;

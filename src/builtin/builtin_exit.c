@@ -12,6 +12,12 @@
 
 #include "../../include/minishell.h"
 
+// Builtin implementation for the "exit" command.
+// 1. Checks for too many arguments and errors out if present.
+// 2. Parses the optional exit cod argument.
+// 3. Frees all allocated resources.
+// 4. Exits with the parsed code on error code.
+// Note: Exits with status 2 on invalid numeric argument.
 void	builtin_exit(t_token_list *tokens, t_shell *shell)
 {
 	int		code;
@@ -35,10 +41,11 @@ void	builtin_exit(t_token_list *tokens, t_shell *shell)
 	exit(code);
 }
 
-// Check that arg_str consistis only of digits
-// (and optional leading +/-)
-// 	if not, print an error ("numeric argument required") and exit
-// 	with status 2
+// Parses and validates the exit code argument.
+// 1. Returns last shell status if no argument.
+// 2. Validates the string contains only digits (with optional +/-).
+// 3. Prints error and returns -1 on invalid input.
+// 4. Returns code masked to 8 bits.
 int	parse_exit_code(char *arg_str, t_shell *shell)
 {
 	int	code;
