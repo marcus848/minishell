@@ -12,6 +12,9 @@
 
 #include "../../include/minishell.h"
 
+// Frees a null-terminated array of pointers.
+// 1. Frees each element in the array.
+// 2. Frees the array itself.
 void	free_array(void **arr)
 {
 	int	i;
@@ -24,6 +27,10 @@ void	free_array(void **arr)
 	free(arr);
 }
 
+// Frees a null-terminated array of strings.
+// 1. Frees each string in the array.
+// 2. Frees the array itself.
+// Note: Specialized for char ** arrays.
 void	free_args_temp(char **args)
 {
 	int	i;
@@ -34,6 +41,9 @@ void	free_args_temp(char **args)
 	free(args);
 }
 
+// Frees a linked list of argument nodes.
+// 1. Frees each string in the list.
+// 2. Frees each list node.
 void	free_args_list(t_args *args)
 {
 	t_args	*temp;
