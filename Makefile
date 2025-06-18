@@ -117,7 +117,7 @@ leakfile:
 			valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=readline.supp --log-file=valgrind.log ./${NAME}
 
 bonus:
-			@make re
+			@make -s re
 			@cp ${NAME} ${NAME_BONUS} 
 
 clean:
@@ -128,7 +128,7 @@ clean:
 
 fclean:		clean
 			@echo "${RED}[  CLEANING  ]${RESET} Removing binary and libraries..."
-			@${RM} ${NAME}
+			@${RM} ${NAME} ${NAME_BONUS}
 			@make -s -C ${LIBFT_DIR} fclean --no-print-directory
 
 re:		fclean all
