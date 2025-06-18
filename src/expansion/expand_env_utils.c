@@ -54,7 +54,11 @@ char	*ft_strjoin_free(char *s1, char *s2)
 	if (!s1 && !s2)
 		return (NULL);
 	else if (!s1)
-		return (ft_strdup(s2));
+	{
+		res = ft_strdup(s2);
+		free(s2);
+		return (res);
+	}
 	else if (!s2)
 	{
 		res = ft_strdup(s1);
