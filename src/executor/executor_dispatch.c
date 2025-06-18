@@ -16,9 +16,12 @@ void	validate_exec_path(char *path);
 
 int	exec_dispatch(char **args, t_shell *shell, char **envp)
 {
-	int		status;
-	pid_t	pid;
+	struct termios	term_backup;
+	int				status;
+	pid_t			pid;
 
+	if (isatty(STDIN_FILENO))
+		tcgetattr(STDIN_FILENO, &term_backup);
 	if (is_builtin(args[0]))
 		return (run_builtin(args, shell));
 	signal(SIGINT, handle_sigint_exec);
@@ -33,6 +36,8 @@ int	exec_dispatch(char **args, t_shell *shell, char **envp)
 	}
 	if (waitpid(pid, &status, 0) < 0)
 		exit_perror("waitpid failed");
+	if (isatty(STDIN_FILENO))
+		tcsetattr(STDIN_FILENO, TCSANOW, &term_backup);
 	setup_signals_prompt();
 	return (WEXITSTATUS(status));
 }
