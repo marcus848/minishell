@@ -286,13 +286,4 @@ void			append_str(char *dst, size_t *i, const char *src);
 void			append_char(char *dst, size_t *i, char c);
 char			*replace_home(char *cwd, char *home);
 
-// debug functions
-void			print_env(t_env *env);
-void			print_envp(char **envp);
-void			print_tokens(t_token_list *tokens);
-void			print_token(char *str_type, t_token *token);
-void			test_expander(t_env *env);
-void			test_commands_from_tokens(t_token_list *tokens);
-void			print_ast(t_ast *node, int level, t_env *env, t_shell *sh);
-
 #endif
