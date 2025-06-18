@@ -22,8 +22,13 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
 
-	(void)argc;
-	(void)argv;
+	if (argc > 1 || argv[1])
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(argv[1], STDERR_FILENO);
+		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		return (127);
+	}
 	shell.env = init_env(envp);
 	shell.tokens = NULL;
 	shell.ast = NULL;
