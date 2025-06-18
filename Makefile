@@ -12,7 +12,6 @@ LIBFT_DIR	= libft
 LIBFT_LIB	= ${LIBFT_DIR}/libft.a
 
 CLEAN_DIR	= ${SRC_DIR}/clean
-DEBUG_DIR	= ${SRC_DIR}/debug
 EXPANSION_DIR	= ${SRC_DIR}/expansion
 TOKENIZER_DIR	= ${SRC_DIR}/tokenizer
 AST_DIR		= ${SRC_DIR}/ast
@@ -44,9 +43,6 @@ SRCS		= ${SRC_DIR}/main.c \
 		  ${EXPANSION_DIR}/expand_redir_utils.c \
 		  ${EXPANSION_DIR}/handle_quotes.c \
 		  ${EXPANSION_DIR}/sort_wildcard.c \
-		  ${DEBUG_DIR}/debug_functions.c \
-		  ${DEBUG_DIR}/debug_command.c \
-		  ${DEBUG_DIR}/debug_ast.c \
 		  ${AST_DIR}/ast_utils.c \
 		  ${AST_DIR}/ast.c \
 		  ${AST_DIR}/commands.c \
