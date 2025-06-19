@@ -12,6 +12,10 @@
 
 #include "../../include/minishell.h"
 
+// Sets the shell's last_status based on global signal status.
+// 1. If a signal was received (g_signal_status >= 0), updates status to
+// special value (-2).
+// 2. Otherwise, store exit status's lower 8 bits.
 void	set_last_status(t_shell *shell, int status)
 {
 	if (g_signal_status >= 0)
@@ -22,6 +26,7 @@ void	set_last_status(t_shell *shell, int status)
 	shell->last_status = status & 0xFF;
 }
 
+// Returns the last stored shell status.
 int	get_last_status(t_shell *shell)
 {
 	return (shell->last_status);
