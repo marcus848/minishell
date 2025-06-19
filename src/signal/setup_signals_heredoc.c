@@ -47,7 +47,8 @@ void	handle_sigint_heredoc(int sig)
 {
 	(void)sig;
 	g_signal_status = 130;
-	write(1, "\n", 1);
+	write(STDOUT_FILENO, "^C", 2);
+	write(STDOUT_FILENO, "\n", 1);
 }
 
 // Disables terminal echo control character display.
