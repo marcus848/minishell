@@ -12,12 +12,6 @@
 
 #include "../../include/minishell.h"
 
-int	env_process(char *entry, t_env **head, t_env **tail);
-
-// Initializes a linked list of environment variables from envp.
-// 1. Iterates over each entry in envp.
-// 2. Process each entry with env_process() to create a node.
-// 3. Returns the fully constructed list.
 t_env	*init_env(char **envp)
 {
 	t_env	*head;
@@ -39,9 +33,6 @@ t_env	*init_env(char **envp)
 	return (head);
 }
 
-// Process a single environment variable string.
-// 1. Splits the string into key and value at '=" character.
-// 2. Creates and appends a new node to the list.
 int	env_process(char *entry, t_env **head, t_env **tail)
 {
 	char	*sep;
@@ -59,9 +50,6 @@ int	env_process(char *entry, t_env **head, t_env **tail)
 	return (1);
 }
 
-// Creates new environment variable node.
-// 1. Allocates and initializes a new t_env node.
-// 2. Duplicates key and value strings.
 t_env	*env_new(const char *key, const char *value)
 {
 	t_env	*node;
@@ -82,9 +70,6 @@ t_env	*env_new(const char *key, const char *value)
 	return (node);
 }
 
-// Appends a node to the end of the t_env list.
-// 1. Adds to head if list is empty.
-// 2. Otherwise appends to tail.
 int	env_append(t_env **head, t_env **tail, t_env *node)
 {
 	if (!*head)
@@ -95,9 +80,6 @@ int	env_append(t_env **head, t_env **tail, t_env *node)
 	return (1);
 }
 
-// Creates empty environment variable if nonexistent.
-// 1. Checks if variable already exists.
-// 2. Appends new node with NULL value if not found.
 void	env_export_only(t_env **env_head, char *name)
 {
 	t_env	*curr;

@@ -73,32 +73,179 @@
 // to use ioctl
 # include <sys/ioctl.h>
 
-// tokenizer
+// =============================== main =======================================
+
+// Main interactive prompt loop.
+// 1. Generates and displays prompt.
+// 2. Reads user input.
+// 3. Handles signals and special commands.
+// 4. Processes valid input.
+void			prompt(t_shell *shell);
+
+// Core minishell processing function.
+// 1. Tokenizes input string.
+// 2. Stores tokens in shell structure.
+void			minishell(char *input, t_shell *shell);
+
+// Parses tokens into executable structure.
+// 1. Performs synxtax analysis.
+// 2. Builds abstract syntax tree (AST).
+// 3. Executes commands if no errors.
+void			parser(t_token_list *tokens, t_shell *shell);
+
+// Validates if input contains non-whitespace characters.
+int				handle_all_white_spaces(char *input);
+
+// =============================== tokenizer ==================================
+
+// Converts input string into a list of tokens.
+// 1. Initializes token list structure.
+// 2. Processes each character sequentially.
+// 3. Handles words, operators and whitespaces.
+// 4. Returns NULL on failure.
 t_token_list	*tokenizer(char *input);
+
+// Processes single input character and delegates handling.
+// 1. Skips whitespace characters.
+// 2. Handles operators via process_operator.
+// 3. Processes words via handle_word.
+// Returns 0 on error, 1 on success, 2 when operator handled.
+int				process_input_char(char *input, int *i, t_token_list *tokens);
+
+// Handles operator characters in input.
+// 1. Delegates to handle_operators.
+// 2. Returns appropriate status code.
+int				process_operator(char *input, int *i, t_token_list *tokens);
+
+// Processes and creates word tokens.
+// 1. Finds word boundaries.
+// 2. Handles quoted sections.
+// 3. Creates and appends new word token.
+int				handle_word(char *input, int *i, t_token_list *tokens);
+
+// Handles quoted sections within words.
+// 1. Detects quote start.
+// 2. Skips until matching quote.
+// 3. Validates proper quote termination.
+int				handle_quotes(char *input, int *j);
+
+// Handles operator characters in input.
+// 1. Checks if current character is an operator.
+// 2. Creates operator token if valid.
+// 3. Reports errors for invalid operators.
+// Returns 1 if operator handled, 0 on error, -1 if not operator.
 int				handle_operators(char *input, int *i, t_token_list *tokens);
+
+// Creates and appends operator token to list.
+// 1. Determines operator type and length.
+// 2. Extracts operator substring.
+// 3. Creates and appends new token.
+// Returns 1 on success, 0 if no operator found.
+int				create_op_token(char *input, int *i, t_token_list *tokens);
+
+// Checks for two-character operators.
+// 1. Tests for >>, <<, && and ||.
+// 2. Sets type and length if found.
+// Returns 1 if match found, 0 otherwise.
+int				is_two_char_op(char *input, t_token_type *type, int *len);
+
+// Checks for single-character operators (part 1).
+// 1. Tests for >, <, |.
+// 2. Sets type and length if found.
+// 3. Delegates remaining checks to is_one_char_op_2
+// Returns 1 if match found, 0 otherwise.
+int				is_one_char_op_1(char input, t_token_type *type, int *len);
+
+// Checks for single-character operators (part 1).
+// 1. Tests for (, ).
+// 2. Sets type if found.
+// Returns 1 if match found, 0 otherwise.
+int				is_one_char_op_2(char input, t_token_type *type);
+
+// Checks if a character exists in a string.
+// 1. Iterates through string s to find character c.
 int				in(const char *s, char c);
+
+// Creates a new token.
+// 1. Allocates a t_token.
+// 2. Sets type and value.
+// 3. Initializes next to NULL.
 t_token			*new_token(t_token_type type, char *value);
+
+// Initializes t_token list struct.
 void			token_list_init(t_token_list *list);
+
+// Appends token to the end of the list.
+// 1. Links new token to tail if list is not empty.
+// 2. Updates head if list was empty.
+// 3. Updates tail and increments size.
 void			token_list_append(t_token_list *list, t_token *token);
 
-// env
+// Frees all tokens in the list and the list itself.
+// 1. Iterates through each token.
+// 2. Frees token value and token struct.
+// 3. Frees the list structure.
+void			token_list_free(t_token_list *list);
+
+// =============================== env ========================================
+
+// Initializes a linked list of environment variables from envp.
+// 1. Iterates over each entry in envp.
+// 2. Process each entry with env_process() to create a node.
+// 3. Returns the fully constructed list.
 t_env			*init_env(char **envp);
-char			*get_env_value(t_env *env, const char *key);
-char			*get_env_path(t_env *env);
+
+// Process a single environment variable string.
+// 1. Splits the string into key and value at '=" character.
+// 2. Creates and appends a new node to the list.
+int				env_process(char *entry, t_env **head, t_env **tail);
+
+// Creates new environment variable node.
+// 1. Allocates and initializes a new t_env node.
+// 2. Duplicates key and value strings.
 t_env			*env_new(const char *key, const char *value);
+
+// Appends a node to the end of the t_env list.
+// 1. Adds to head if list is empty.
+// 2. Otherwise appends to tail.
 int				env_append(t_env **head, t_env **tail, t_env *node);
-void			env_update(t_env **env, char *key, char *value);
-char			**env_list_to_array(t_env *env);
-void			free_string_array(char **arr);
+
+// Creates empty environment variable if nonexistent.
+// 1. Checks if variable already exists.
+// 2. Appends new node with NULL value if not found.
 void			env_export_only(t_env **env_head, char *name);
 
-// clean
+// Retrieves value for environment variable key.
+char			*get_env_value(t_env *env, const char *key);
+
+// Gets PATH environment variable value.
+char			*get_env_path(t_env *env);
+
+// Updates existing environment variable or creates new.
+// 1. Finds and updates matching key.
+// 2. Creates new entry if key was not found.
+void			env_update(t_env **env, char *key, char *value);
+
+// Creates and appends new environment variable.
+void			env_createapnd(t_env **head, char *key, char *val, t_env *curr);
+
+// Converts environment linked list to a NULL-terminated array of strings.
+// 1. Counts exported variables (those with values).
+// 2. Allocates and fills array with "KEY=VALUE" strings.
+// 3. Returns the array for use with execve.
+// Note: Exits on malloc or ft_strjoin3 failure.
+char			**env_list_to_array(t_env *env);
+
+// Frees a NULL-terminated array of strings.
+// 1. Frees each string in the array.
+// 2. Frees the array pointer itself.
+void			free_string_array(char **arr);
+
+// =============================== clean ======================================
+
 void			clean_all(t_token_list *tokens, t_ast *node, t_env **env);
 void			report_unexpected_quotes(const char token_value);
 int				report_unexpected(const char *token_value);
-
-// clean token list
-void			token_list_free(t_token_list *list);
 
 // clean env
 void			env_free_all(t_env **head);
@@ -113,7 +260,8 @@ void			free_args_temp(char **args);
 void			free_args_list(t_args *args);
 void			free_array(void **ptr);
 
-// expansion
+// =============================== expansion ==================================
+
 void			expander(char ***args, t_env *env, int *size_args, t_shell *sh);
 char			**list_to_args(t_args *args, int *size_args);
 
@@ -169,11 +317,13 @@ void			handle_no_match(t_shell *sh, t_redir *redir);
 void			handle_ambiguous(t_shell *sh, t_redir *redir);
 void			handle_single_match(t_redir *redir, t_args *expanded_list);
 
-// utils
+// =============================== utils ======================================
+
 void			exit_perror(const char *msg);
 char			*rem_quotes(char *str, int free_str);
 
-// ast
+// =============================== ast ========================================
+
 t_ast			*parse_command(t_token **token, t_shell *shell);
 t_ast			*parse_logical(t_token **token, t_shell *shell);
 t_ast			*parse_pipe(t_token **token, t_shell *shell);
@@ -192,7 +342,8 @@ void			parse_heredoc(t_token **token, t_command **cmd, t_shell *shell);
 char			**get_args(t_token **token, int size_args);
 void			append_redir(t_redir **head, t_redir_type type, char *filename);
 
-// syntax analysis
+// ======================== syntax analysis ===================================
+
 int				syntax_analysis(t_token_list *tokens);
 int				check_pipe(t_token *prev, t_token *next);
 int				check_redir(t_token *next);
@@ -201,7 +352,8 @@ int				is_twochar(t_token *token);
 int				check_paren(t_token *p, t_token *t, t_token *n, int *depth);
 int				is_all_whitespace(const char *s);
 
-// executor
+// =============================== executor ===================================
+
 void			executor(t_token_list *tokens, t_shell *sh, t_ast *node);
 int				exec_dispatch(char **args, t_shell *shell, char **envp);
 void			execve_with_path(char **args, t_env *env, char **envp);
@@ -243,7 +395,8 @@ int				restore_fds(int save_stdin, int save_stdout);
 void			set_last_status(t_shell *shell, int status);
 int				get_last_status(t_shell *shell);
 
-// builtin
+// =============================== builtin ====================================
+
 void			builtin_exit(t_token_list *tokens, t_shell *shell);
 int				parse_exit_code(char *arg_str, t_shell *shell);
 int				builtin_pwd(t_env *env);
@@ -254,6 +407,8 @@ int				builtin_export(char **args, t_env **env);
 void			print_exported(t_env *env);
 int				builtin_unset(char **args, t_env **env);
 
+// =============================== signals ====================================
+
 // signals prompt
 void			setup_signals_prompt(void);
 t_sig			setup_sigint_prompt(void);
@@ -261,7 +416,6 @@ void			handle_sigint_prompt(int sig);
 void			update_sh_last_status(t_shell *sh, int new_value);
 
 // signals heredoc
-// void			handle_sigeof_heredoc(char *delim);
 void			handle_sigeof_heredoc(char *delim);
 void			handle_sigint_heredoc(int sig);
 void			setup_signals_heredoc(void);
@@ -275,7 +429,7 @@ t_sig			setup_sigquit_exec(void);
 void			handle_sigint_exec(int sig);
 void			handle_sigquit_exec(int sig);
 
-// prompt
+// =============================== prompt =====================================
 char			*make_prompt(t_shell *shell);
 char			*get_user(void);
 char			*read_hostname_file(void);

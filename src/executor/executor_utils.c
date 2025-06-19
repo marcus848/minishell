@@ -14,11 +14,6 @@
 
 int	count_exported(t_env *env);
 
-// Converts environment linked list to a NULL-terminated array of strings.
-// 1. Counts exported variables (those with values).
-// 2. Allocates and fills array with "KEY=VALUE" strings.
-// 3. Returns the array for use with execve.
-// Note: Exits on malloc or ft_strjoin3 failure.
 char	**env_list_to_array(t_env *env)
 {
 	int		count;
@@ -65,9 +60,6 @@ int	count_exported(t_env *env)
 	return (count);
 }
 
-// Frees a NULL-terminated array of strings.
-// 1. Frees each string in the array.
-// 2. Frees the array pointer itself.
 void	free_string_array(char **arr)
 {
 	int	i;
