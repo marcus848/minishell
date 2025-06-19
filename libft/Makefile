@@ -51,11 +51,13 @@ SRCS		= ${BOOLEAN_DIR}/ft_isalnum.c \
 		  ${STRING_DIR}/ft_strdup.c \
 		  ${STRING_DIR}/ft_striteri.c \
 		  ${STRING_DIR}/ft_strjoin.c \
+		  ${STRING_DIR}/ft_strjoin3.c \
 		  ${STRING_DIR}/ft_strlcat.c \
 		  ${STRING_DIR}/ft_strlcpy.c \
 		  ${STRING_DIR}/ft_strlen.c \
 		  ${STRING_DIR}/ft_strmapi.c \
 		  ${STRING_DIR}/ft_strncmp.c \
+		  ${STRING_DIR}/ft_strcmp.c \
 		  ${STRING_DIR}/ft_strnstr.c \
 		  ${STRING_DIR}/ft_strrchr.c \
 		  ${STRING_DIR}/ft_strtrim.c \

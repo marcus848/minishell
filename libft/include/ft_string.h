@@ -6,7 +6,7 @@
 /*   By: caide-so <caide-so@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 01:16:55 by caide-so          #+#    #+#             */
-/*   Updated: 2025/04/16 16:01:57 by caide-so         ###   ########.fr       */
+/*   Updated: 2025/05/14 14:44:14 by caide-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,16 @@ void	ft_striteri(char *s, void (*f)(unsigned int, char*));
  * @return The new string. NULL if the allocation fails.
 */
 char	*ft_strjoin(char const *s1, char const *s2);
+
+/* @brief Allocates with malloc and returns a new string, which is the result 
+ * of the concatenation of 's1' and 's2'.
+ * 
+ * @param s1 the prefix string
+ * @param s2 the middle string
+ * @param s3 the suffix string
+ * @return The new string. NULL if the allocation fails.
+*/
+char	*ft_strjoin3(char const *s1, char const *s2, char const *s3);
 
 /* @brief Appends the NULL-terminated string 'src' to the end of 'dst'.
  * NULL-terminating the result.
@@ -210,6 +220,20 @@ int		ft_atoi_base(char *str, int base);
  * @return The number of "words" in the string s.
 */
 size_t	ft_word_count(const char *s, char c);
+
+/* @brief Compares two strings lexicographically by unsigned char value.
+ * 
+ * The comparison is case-sensitive and stops at the first differing character
+ * or when both strings end. Returns the difference between the first pair of
+ * non-matching characters (s1[i] - s2[i]), allowing determination of:
+ * - Zero: identical strings
+ * - Positive: s1 > s2 at first difference
+ * - Negative: s1 < s2 at first difference
+ *
+ * @param s1 First string to compare
+ * @param s2 Second string to compare
+ * @return int < 0, 0, or > 0 if s1 is less than, equal to, or greater than s2
+*/
 int		ft_strcmp(const char *s1, const char *s2);
 
 #endif

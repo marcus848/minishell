@@ -2,4 +2,14 @@
 *.out
 *.swp
 minishell
+minishell_bonus
 obj/
+.nfs*
+*.txt
+*.log
+infile
+in
+out
+outfile
+minishell_tester/
+42_minishell_tester/
