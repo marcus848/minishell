@@ -13,7 +13,7 @@
 #include "../../include/minishell.h"
 
 int	handle_word(char *input, int *i, t_token_list *tokens);
-int	handle_quotes(char *input, int *j, t_token_list *tokens);
+int	handle_quotes(char *input, int *j);
 int	process_input_char(char *input, int *i, t_token_list *tokens);
 int	process_operator(char *input, int *i, t_token_list *tokens);
 
@@ -108,7 +108,7 @@ int	handle_word(char *input, int *i, t_token_list *tokens)
 	start = *i;
 	j = start;
 	while (input[j] && !in("()&|<>", input[j]) && !ft_isspace(input[j]))
-		if (!handle_quotes(input, &j, tokens))
+		if (!handle_quotes(input, &j))
 			return (0);
 	if (j == start)
 		return (0);
@@ -130,7 +130,7 @@ int	handle_word(char *input, int *i, t_token_list *tokens)
 // 1. Detects quote start.
 // 2. Skips until matching quote.
 // 3. Validates proper quote termination.
-int	handle_quotes(char *input, int *j, t_token_list *tokens)
+int	handle_quotes(char *input, int *j)
 {
 	char	type;
 
@@ -143,7 +143,7 @@ int	handle_quotes(char *input, int *j, t_token_list *tokens)
 		if (input[*j] != type)
 		{
 			report_unexpected_quotes((const char)type);
-			token_list_free(tokens);
+			//token_list_free(tokens);
 			return (0);
 		}
 		else

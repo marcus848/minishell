@@ -60,13 +60,20 @@ void	token_list_free(t_token_list *list)
 	t_token	*curr;
 	t_token	*next;
 
+	if (!list)
+		return ;
 	curr = list->head;
 	while (curr)
 	{
 		next = curr->next;
-		free(curr->value);
+		if (curr->value)
+		{
+			free(curr->value);
+			curr->value = NULL;
+		}
 		free(curr);
 		curr = next;
 	}
 	free(list);
+	list = NULL;
 }
