@@ -48,7 +48,7 @@ int	main(int argc, char **argv, char **envp)
 	shell.last_status = 0;
 	prompt(&shell);
 	clean_all(NULL, NULL, &shell.env);
-	return (shell.last_status);
+	return (0);
 }
 
 // Main interactive prompt loop.
