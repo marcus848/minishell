@@ -12,10 +12,15 @@
 
 #include "../../include/minishell.h"
 
-static char	*get_cd_target(char **args, t_env *env);
-static char	*do_chdir(const char *path, t_env *env);
-static void	update_env_vars(t_env *env, char *oldcwd);
+char	*get_cd_target(char **args, t_env *env);
+char	*do_chdir(const char *path, t_env *env);
+void	update_env_vars(t_env *env, char *oldcwd);
 
+// Builtin implementation for the 'cd' command.
+// 1. Determines the target directory (args[1] or $HOME).
+// 2. Attempts to change the current working directory.
+// 3. If successful, updates OLDPWD and PWD in the environment.
+// Returns 0 on succsess, 1 on failure.
 int	builtin_cd(char **args, t_env *env)
 {
 	char	*target;
@@ -31,7 +36,11 @@ int	builtin_cd(char **args, t_env *env)
 	return (0);
 }
 
-static char	*get_cd_target(char **args, t_env *env)
+// Determines the target directory for 'cd'.
+// - If no argument, returns $HOME from the environment.
+// - If more than one argument, prints error and returns NULL.
+// - Otherwise, returns args[1] (the target directory).
+char	*get_cd_target(char **args, t_env *env)
 {
 	char	*home;	
 
@@ -53,7 +62,11 @@ static char	*get_cd_target(char **args, t_env *env)
 	return (args[1]);
 }
 
-static char	*do_chdir(const char *path, t_env *env)
+// Attempts to change to the given path using chdir().
+// 1. Saves the current working directory in "oldcwd".
+// 2. If chdir fails, returns NULL and prints error.
+// 3. Otherwise returns the previous working directory.
+char	*do_chdir(const char *path, t_env *env)
 {
 	char	*oldpwd_env;
 	char	*oldcwd;
@@ -74,7 +87,11 @@ static char	*do_chdir(const char *path, t_env *env)
 	return (oldcwd);
 }
 
-static void	update_env_vars(t_env *env, char *oldcwd)
+// Updates the OLDPWD and PWD environment variables.
+// 1. Sets OLDPWD to previous working directory.
+// 2. Sets PWD to new current directory (if available).
+// 3. Frees memory after each update.
+void	update_env_vars(t_env *env, char *oldcwd)
 {
 	char	*newcwd;
 

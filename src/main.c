@@ -16,8 +16,16 @@ void	prompt(t_shell *shell);
 void	minishell(char *input, t_shell *shell);
 void	parser(t_token_list *tokens, t_shell *shell);
 int		handle_all_white_spaces(char *input);
+
+// Global signal status variable.
+// Tracks the current signal status for proper shell behavior.
 volatile int		g_signal_status;
 
+// Main minishell entry point.
+// 1. Validates no argumentes are passed.
+// 2. Initializes shell environment.
+// 3. Starts interactive prompt.
+// 4. Cleans up before exit.
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
@@ -30,6 +38,11 @@ int	main(int argc, char **argv, char **envp)
 		return (127);
 	}
 	shell.env = init_env(envp);
+	if (!shell.env)
+	{
+		ft_putstr_fd("minishell: failed to init environ\n", STDERR_FILENO);
+		return (1);
+	}
 	shell.tokens = NULL;
 	shell.ast = NULL;
 	shell.last_status = 0;
@@ -38,6 +51,11 @@ int	main(int argc, char **argv, char **envp)
 	return (0);
 }
 
+// Main interactive prompt loop.
+// 1. Generates and displays prompt.
+// 2. Reads user input.
+// 3. Handles signals and special commands.
+// 4. Processes valid input.
 void	prompt(t_shell *shell)
 {
 	char	*input;
@@ -68,8 +86,11 @@ void	prompt(t_shell *shell)
 }
 
 /*
-// uncomment this and comment the other prompt function
-// to use 42_minishell_tester
+// Alternative prompt supporting both interactive and non-interactive modes.
+// 1. Handles input differently based on terminal status.
+// 2. Processes input similarly to main prompt.
+// 3. Maintains history in interactive mode.
+// Uncomment this and comment other prompt function to use 42_minishell_tester.
 void	prompt(t_shell *shell)
 {
 	char	*input;
@@ -120,6 +141,9 @@ void	prompt(t_shell *shell)
 }
 */
 
+// Core minishell processing function.
+// 1. Tokenizes input string.
+// 2. Stores tokens in shell structure.
 void	minishell(char *input, t_shell *shell)
 {
 	t_token_list	*tokens;
@@ -134,6 +158,10 @@ void	minishell(char *input, t_shell *shell)
 	parser(tokens, shell);
 }
 
+// Parses tokens into executable structure.
+// 1. Performs synxtax analysis.
+// 2. Builds abstract syntax tree (AST).
+// 3. Executes commands if no errors.
 void	parser(t_token_list *tokens, t_shell *shell)
 {
 	t_ast	*ast;
@@ -154,6 +182,7 @@ void	parser(t_token_list *tokens, t_shell *shell)
 	shell->tokens = NULL;
 }
 
+// Validates if input contains non-whitespace characters.
 int	handle_all_white_spaces(char *input)
 {
 	if (input[0] == '\0' || is_all_whitespace(input))

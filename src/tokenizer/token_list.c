@@ -12,7 +12,7 @@
 
 #include "../../include/minishell.h"
 
-// Initializes t_token list struct
+// Initializes t_token list struct.
 void	token_list_init(t_token_list *list)
 {
 	list->head = NULL;
@@ -37,8 +37,10 @@ t_token	*new_token(t_token_type type, char *value)
 	return (token);
 }
 
-// Appends token to the end of the list
-// 1. Updates head, tail and size
+// Appends token to the end of the list.
+// 1. Links new token to tail if list is not empty.
+// 2. Updates head if list was empty.
+// 3. Updates tail and increments size.
 void	token_list_append(t_token_list *list, t_token *token)
 {
 	if (list->tail)
@@ -49,18 +51,29 @@ void	token_list_append(t_token_list *list, t_token *token)
 	list->size++;
 }
 
+// Frees all tokens in the list and the list itself.
+// 1. Iterates through each token.
+// 2. Frees token value and token struct.
+// 3. Frees the list structure.
 void	token_list_free(t_token_list *list)
 {
 	t_token	*curr;
 	t_token	*next;
 
+	if (!list)
+		return ;
 	curr = list->head;
 	while (curr)
 	{
 		next = curr->next;
-		free(curr->value);
+		if (curr->value)
+		{
+			free(curr->value);
+			curr->value = NULL;
+		}
 		free(curr);
 		curr = next;
 	}
 	free(list);
+	list = NULL;
 }

@@ -17,6 +17,14 @@ size_t	find_index(char *arg, char c);
 void	split_name_value(char *arg, size_t eq, char **name, char **value);
 int		is_valid_identifier(char *name);
 
+// Builtin implementation for the "export" command.
+// 1. If no arguments, prints current exported variables.
+// 2. For each argument:
+// 	- Finds '=' position.
+// 	- Splits into name and value.
+// 	- Validates and processes export argument.
+// 3. Frees allocated name and value.
+// 4. Returns 0 if all valid, 1 if any invalid argument.
 int	builtin_export(char **args, t_env **env)
 {
 	int		status;
@@ -46,6 +54,9 @@ int	builtin_export(char **args, t_env **env)
 	return (status);
 }
 
+// Finds the index of character c in the string arg.
+// 1. Returns position of first occurence of c.
+// 2. Returns length of arg if c not found.
 size_t	find_index(char *arg, char c)
 {
 	size_t	i;
@@ -56,6 +67,12 @@ size_t	find_index(char *arg, char c)
 	return (i);
 }
 
+// Handles a single export argument.
+// 1. Checks if name is a valid identifier.
+// 2. Prints error and returns 1 if valid.
+// 3. Updates environment with name and value if valid.
+// 4. Adds name to export list if value is NULL.
+// Returns 0 on success, 1 on error.
 int	handle_export_arg(char *arg, t_env **env, char *name, char *value)
 {
 	int		err;
@@ -75,7 +92,9 @@ int	handle_export_arg(char *arg, t_env **env, char *name, char *value)
 	return (err);
 }
 
-// No '=' in arg: export NAME with empty value
+// Splits argument into name and value parts.
+// 1. If '=' not found, name = whole arg, value = NULL.
+// 2. Otherwise, name = substring before '=', value = after '='.
 void	split_name_value(char *arg, size_t eq, char **name, char **value)
 {
 	size_t	len;
@@ -93,6 +112,11 @@ void	split_name_value(char *arg, size_t eq, char **name, char **value)
 	}
 }
 
+// Validates if name is a valid environment variable identifier.
+// 1. Must not be NULL or empty.
+// 2. First character must be a letter or underscore.
+// 3. Remaining characters must be alphanumeric or underscore.
+// Returns 1 if valid, 0 otherwise.
 int	is_valid_identifier(char *name)
 {
 	int	i;

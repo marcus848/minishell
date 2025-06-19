@@ -12,6 +12,13 @@
 
 #include "../../include/minishell.h"
 
+// Handles execution logic for the left side of a pipe.
+// 1. Sets execution signal handlers.
+// 2. Redirects STDOUT to pipe write end.
+// 3. Closes both pipe ends.
+// 4. Executes the AST node.
+// 5. Cleans up and exits with last status.
+// Note: Used in the left child process of a fork during piping;
 void	handle_left_child(int *fd, t_shell *shell, t_ast *node)
 {
 	setup_signals_exec();
@@ -23,6 +30,13 @@ void	handle_left_child(int *fd, t_shell *shell, t_ast *node)
 	exit(get_last_status(shell));
 }
 
+// Handles execution logic for the right side of a pipe.
+// 1. Sets execution signal handlers.
+// 2. Redirects STDIN to pipe read end.
+// 3. Closes both pipe ends.
+// 4. Executes the AST node.
+// 5. Cleans up and exits with last status.
+// Note: Used in the right child process of a fork during piping;
 void	handle_right_child(int *fd, t_shell *shell, t_ast *node)
 {
 	setup_signals_exec();

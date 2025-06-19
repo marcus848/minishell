@@ -12,6 +12,7 @@
 
 #include "../../include/minishell.h"
 
+// Initializes variables used in split_wildcard().
 void	init_vars_split_wildcard(t_quote *state, char ***parts, int *i, int *j)
 {
 	*state = NO_QUOTE;
@@ -20,6 +21,14 @@ void	init_vars_split_wildcard(t_quote *state, char ***parts, int *i, int *j)
 	*j = 0;
 }
 
+// Splits a wildcard pattern string into parts separated by unquoted asterisk.
+// 1. Initializes state and indices.
+// 2. Iterates over the input string updating quote state.
+// 3. On unquoted '*', extracts substring between indices and adds parts array 
+// after removing quotes.
+// 4. Adds final substring after loop if exists, or adds empty string if none
+// found.
+// 5. Returns array of substrings.
 char	**split_wildcard(char *input)
 {
 	t_quote	state;
@@ -47,6 +56,12 @@ char	**split_wildcard(char *input)
 	return (parts);
 }
 
+// Adds a new token string to a dinamically growing array of strings.
+// 1. Calculates current length of the array.
+// 2. Allocates a new array with space for the new token and NULL terminator.
+// 3. Copies existing pointers to new array.
+// 4. Adds new token pointer at the end and NULL terminator.
+// 5. Frees old array and updates pointer to new array.
 void	add_token_to_array(char ***array, char *token)
 {
 	char	**new_array;

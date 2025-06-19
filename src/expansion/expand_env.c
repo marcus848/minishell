@@ -12,6 +12,10 @@
 
 #include "../../include/minishell.h"
 
+// Expands environment variables from a string array of arguments.
+// 1. Starts expansion with the first valid token.
+// 2. Concatenates all expanded tokens into a linked list (t_args).
+// 3. Returns the list of expanded arguments.
 t_args	*expand_env(char **args, t_env *env, t_shell *sh)
 {
 	t_args	*head;
@@ -37,6 +41,10 @@ t_args	*expand_env(char **args, t_env *env, t_shell *sh)
 	return (head);
 }
 
+// Extracts the prefix (before '$') from input, respecting quote context.
+// 1. Scans input until '$' or null terminator (except inside single quotes).
+// 2. Builds prefix string character-by-character.
+// 3. Updates quote state for each character scanned.
 char	*start_prefix(char *input, int *i, t_quote *state)
 {
 	char	*prefix;
@@ -65,6 +73,11 @@ char	*start_prefix(char *input, int *i, t_quote *state)
 	return (prefix);
 }
 
+// Expands a variable key and appends its value to the current prefix.
+// 1. Looks up the variable in the environment.
+// 2. Skips empty values.
+// 3. Appends the value to 'exp->prefix'.
+// 4. If not quoted, splits and adds tokens individually.
 void	expand_variable(t_exp *exp, char *key)
 {
 	char	*temp;
@@ -88,6 +101,9 @@ void	expand_variable(t_exp *exp, char *key)
 		handle_no_quotes(exp);
 }
 
+// Expands the special variable '$?' using the last exit status.
+// 1. Converts status to string.
+// 2. Appends it to 'exp->prefix'.
 void	expand_status(t_exp *exp, int status)
 {
 	char	*temp;
@@ -104,6 +120,10 @@ void	expand_status(t_exp *exp, int status)
 	exp->cur = NULL;
 }
 
+// Handles variable expansion with no quotes (e.g., '$VAR').
+// 1. Splits prefix by spaces.
+// 2. If multiple parts, adds all but the last as individual args.
+// 3. The last part is kept as prefix for continued parsing.
 void	handle_no_quotes(t_exp *exp)
 {
 	char	**parts;

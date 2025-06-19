@@ -12,7 +12,11 @@
 
 #include "../../include/minishell.h"
 
-// Cleans all
+// Cleans up all shell resources.
+// 1. Clears command history.
+// 2. Frees token list if exists.
+// 3. Frees AST if exists.
+// 4. Frees environment variables list if exists.
 void	clean_all(t_token_list *tokens, t_ast *node, t_env **env)
 {
 	rl_clear_history();
@@ -24,7 +28,10 @@ void	clean_all(t_token_list *tokens, t_ast *node, t_env **env)
 		env_free_all(env);
 }
 
-// Free all nodes in the t_env linked list.
+// Frees entire environment variable list.
+// 1. Iterates through each node.
+// 2. Frees key, value and node struct.
+// 3. Sets head pointer to NULL.
 void	env_free_all(t_env **head)
 {
 	t_env	*curr;
@@ -42,7 +49,9 @@ void	env_free_all(t_env **head)
 	*head = NULL;
 }
 
-// Prints perror(msg) and exit with failure code
+// Handles fatal errors with system message.
+// 1. Prints error message to stderr.
+// 2. Exits with failure status.
 void	exit_perror(const char *msg)
 {
 	perror(msg);

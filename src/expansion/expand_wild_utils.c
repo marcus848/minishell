@@ -12,6 +12,11 @@
 
 #include "../../include/minishell.h"
 
+// Matches all middle parts of a wildcard pattern in a string.
+// 1. Iterates from index 'i' to 'limit' in the parts array.
+// 2. Uses ft_strnstr to check if each part appears in order in 'pos'.
+// 3. Advances the pointer past each match.
+// 4. Returns 0 on failure, 1 if all parts match in order.
 int	match_middle(char *pos, t_wild *wild, int i, int limit)
 {
 	size_t	part_len;
@@ -35,6 +40,10 @@ int	match_middle(char *pos, t_wild *wild, int i, int limit)
 	return (1);
 }
 
+// Checks if a string ends with a giben suffix.
+// 1. Gets lengths of filename and suffix.
+// 2. Returns 0 if filename is too short.
+// 3. Uses ft_strcmp to compare suffix with the end of filename.
 int	match_end(const char *filename, const char *end)
 {
 	size_t	file_len;
@@ -47,6 +56,13 @@ int	match_end(const char *filename, const char *end)
 	return (ft_strncmp(filename + file_len - end_len, end, end_len) == 0);
 }
 
+// Matches a filename against a wildcard pattern.
+// 1. Returns true if pattern is a full wildcard (*).
+// 2. Handles NULL checks and calculates number of pattern parts.
+// 3. If pattern has a start, checks and skips it.
+// 4. Verifies all middle parts appear in order.
+// 5. If pattern has an end, ensures filename ends with it.
+// 6. Returns 1 if pattern matches, 0 otherwise.
 int	match_pattern(const char *filename, t_wild *wild)
 {
 	char	*pos;
@@ -75,6 +91,10 @@ int	match_pattern(const char *filename, t_wild *wild)
 	return (1);
 }
 
+// Handles opening of quotes in input string.
+// 1. If single or double quote is found and state is NO_QUOTE, updates state.
+// 2. Increments index.
+// 3. Returns 1 if a quote was handled, 0 otherwise.
 int	handle_opening_quote(char *input, int *i, t_quote *state)
 {
 	if ((input[*i] == '\'' && *state == NO_QUOTE))
@@ -92,6 +112,10 @@ int	handle_opening_quote(char *input, int *i, t_quote *state)
 	return (0);
 }
 
+// Updates quote state while iterating through the input string.
+// 1. Handles both opening and closing of quotes.
+// 2. Advances index as needed.
+// 3. Returns 1 if a quote was handled, 0 otherwise.
 int	update_state_quote_i(char *input, int *i, t_quote *state)
 {
 	int	handled;

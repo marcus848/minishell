@@ -12,6 +12,12 @@
 
 #include "../../include/minishell.h"
 
+// Main function for expanding environment variables and wildcards.
+// 1. Returns early if args is empty or NULL.
+// 2. Expands environment variables using 'expand_env()'.
+// 3. Applies wildcard expansion on the result with 'expand_wild()'.
+// 4. Converts the resulting linked list into a string array.
+// 5. Frees old args and replaces with expanded result.
 void	expander(char ***args, t_env *env, int *size_args, t_shell *sh)
 {
 	t_args	*expanded_envs;
@@ -29,6 +35,12 @@ void	expander(char ***args, t_env *env, int *size_args, t_shell *sh)
 	free_args_list(head);
 }
 
+// Converts a liked list of arguments (t_args) to a NULL-terminated string
+// array.
+// 1. Counts size of the linked list.
+// 2. Allocates a new array of size + 1.
+// 3. Duplicates each string into the array using ft_strdup().
+// 4. Sets last element to NULL and returns the array.
 char	**list_to_args(t_args *args, int *size_args)
 {
 	t_args	*temp;

@@ -13,12 +13,15 @@
 #include "../../include/minishell.h"
 
 int	handle_word(char *input, int *i, t_token_list *tokens);
-int	handle_quotes(char *input, int *j, t_token_list *tokens);
+int	handle_quotes(char *input, int *j);
 int	process_input_char(char *input, int *i, t_token_list *tokens);
 int	process_operator(char *input, int *i, t_token_list *tokens);
 
-// TODO: testar essa frase - joao-"e"-'maria'""''se-"'aman'"'"alem"'-do-infinito
-
+// Converts input string into a list of tokens.
+// 1. Initializes token list structure.
+// 2. Processes each character sequentially.
+// 3. Handles words, operators and whitespaces.
+// 4. Returns NULL on failure.
 t_token_list	*tokenizer(char *input)
 {
 	int				i;
@@ -48,6 +51,11 @@ t_token_list	*tokenizer(char *input)
 	return (tokens);
 }
 
+// Processes single input character and delegates handling.
+// 1. Skips whitespace characters.
+// 2. Handles operators via process_operator.
+// 3. Processes words via handle_word.
+// Returns 0 on error, 1 on success, 2 when operator handled.
 int	process_input_char(char *input, int *i, t_token_list *tokens)
 {
 	int	result;
@@ -68,6 +76,9 @@ int	process_input_char(char *input, int *i, t_token_list *tokens)
 	return (1);
 }
 
+// Handles operator characters in input.
+// 1. Delegates to handle_operators.
+// 2. Returns appropriate status code.
 int	process_operator(char *input, int *i, t_token_list *tokens)
 {
 	int	op_result;
@@ -83,6 +94,10 @@ int	process_operator(char *input, int *i, t_token_list *tokens)
 	return (1);
 }
 
+// Processes and creates word tokens.
+// 1. Finds word boundaries.
+// 2. Handles quoted sections.
+// 3. Creates and appends new word token.
 int	handle_word(char *input, int *i, t_token_list *tokens)
 {
 	int		j;
@@ -93,7 +108,7 @@ int	handle_word(char *input, int *i, t_token_list *tokens)
 	start = *i;
 	j = start;
 	while (input[j] && !in("()&|<>", input[j]) && !ft_isspace(input[j]))
-		if (!handle_quotes(input, &j, tokens))
+		if (!handle_quotes(input, &j))
 			return (0);
 	if (j == start)
 		return (0);
@@ -111,7 +126,11 @@ int	handle_word(char *input, int *i, t_token_list *tokens)
 	return (1);
 }
 
-int	handle_quotes(char *input, int *j, t_token_list *tokens)
+// Handles quoted sections within words.
+// 1. Detects quote start.
+// 2. Skips until matching quote.
+// 3. Validates proper quote termination.
+int	handle_quotes(char *input, int *j)
 {
 	char	type;
 
@@ -124,7 +143,6 @@ int	handle_quotes(char *input, int *j, t_token_list *tokens)
 		if (input[*j] != type)
 		{
 			report_unexpected_quotes((const char)type);
-			token_list_free(tokens);
 			return (0);
 		}
 		else

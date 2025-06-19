@@ -12,8 +12,10 @@
 
 #include "../../include/minishell.h"
 
-// Pipe token must have valid neighbors: WORD or PAREN_CLOSE or PAREN_OPEN
-// after a pipe, allow: WORD, PAREN_OPEN, or any redirection
+// Validates pipe token placement.
+// 1. Checks previous token is WORD or PAREN_CLOSE.
+// 2. Checks next token is WORD, PAREN_OPEN, or any redirection.
+// Returns 1 if valid, 0 on error.
 int	check_pipe(t_token *prev, t_token *next)
 {
 	if (!prev || (prev->type != WORD && prev->type != PAREN_CLOSE))
@@ -25,7 +27,9 @@ int	check_pipe(t_token *prev, t_token *next)
 	return (1);
 }
 
-// Every redirection must be followed by a WORD
+// Validates redirection token placement.
+// 1. Ensures redirection is followed by WORD.
+// Returns 1 if valid, 0 on error.
 int	check_redir(t_token *next)
 {
 	const char	*off;
@@ -39,7 +43,10 @@ int	check_redir(t_token *next)
 	return (1);
 }
 
-// Logical AND/OR must have valid neighbors: WORD or PAREN_CLOSE or PAREN_OPEN
+// Validates logical operator placement.
+// 1. Checks previous token is WORD or PAREN_CLOSE.
+// 2. Ensures next token isn't another operator.
+// Returns 1 if valid, 0 on error.
 int	check_logical(t_token *prev, t_token *token, t_token *next)
 {
 	const char	*sym;
@@ -56,12 +63,19 @@ int	check_logical(t_token *prev, t_token *token, t_token *next)
 	return (1);
 }
 
+// Checks if token is a two-character operator.
+// Returns 1 for logical/redirection operators, 0 otherwise.
 int	is_twochar(t_token *token)
 {
 	return (token->type == LOGICAL_AND || token->type == LOGICAL_OR
 		|| token->type == REDIR_APPEND || token->type == HEREDOC);
 }
 
+// Validates parenthesis placement and nesting.
+// 1. Checks opening parenthesis has valid content.
+// 2. Validates closing parenthesis position.
+// 3. Tracks nesting depth.
+// Returns 1 if valid, 0 on error.
 int	check_paren(t_token *prev, t_token *token, t_token *next, int *depth)
 {
 	if (token->type == PAREN_OPEN)

@@ -12,6 +12,9 @@
 
 #include "../../include/minishell.h"
 
+// Checks if a command is an explicit directory path.
+// 1. Verifies if cmd contains a '/' and refers to a directory via stat.
+// 2. Returns 1 if cmd is a directory, 0 otherwise.
 int	is_explicit_dir(char *cmd)
 {
 	struct stat	sb;
@@ -22,6 +25,10 @@ int	is_explicit_dir(char *cmd)
 	return (0);
 }
 
+// Handles execution attempt on a directory.
+// 1. Prints "Is a directory" error.
+// 2. Sets last status to 126.
+// Note: Called when a directory path is mistakenly executed.
 void	handle_dir_case(char *cmd, t_shell *shell)
 {
 	ft_putstr_fd("-minishell: ", STDERR_FILENO);
@@ -31,6 +38,10 @@ void	handle_dir_case(char *cmd, t_shell *shell)
 	return ;
 }
 
+// Handles command not found errors.
+// 1. If cmd contains '/', prints "No such file or directory".
+// 2. Otherwise, prints "command not found".
+// 3. Sets last status to 127.
 void	handle_not_found(char *cmd, t_shell *shell)
 {
 	ft_putstr_fd(cmd, STDERR_FILENO);
@@ -41,6 +52,9 @@ void	handle_not_found(char *cmd, t_shell *shell)
 	set_last_status(shell, 127);
 }
 
+// Handles permission denied errors.
+// 1. Prints "Permission denied" message with command.
+// 2. Sets last status to 126.
 void	handle_permission_denied(char *cmd, t_shell *shell)
 {
 	ft_putstr_fd("minishell: ", 2);
@@ -49,6 +63,14 @@ void	handle_permission_denied(char *cmd, t_shell *shell)
 	shell->last_status = 126;
 }
 
+// Executes command with redirections applied.
+// 1. Saves current stdin and stdout.
+// 2. Applies redirections for the command.
+// 3. Converts env list to array.
+// 4. Calls exec_dispatch to execute command.
+// 5. Frees env array and restore fds.
+// 6. Sets last exit status and returns it.
+// Note: Wraps redirection logic around external execution.
 int	exec_with_redirs(char **args, t_command *cmd, t_shell *shell)
 {
 	char	**envp;
