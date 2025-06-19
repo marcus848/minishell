@@ -12,6 +12,8 @@
 
 #include "../../include/minishell.h"
 
+// Checks if the given command is a shell builtin.
+// Returns 1 if cmd is a builtin and 0 otherwise.
 int	is_builtin(char *cmd)
 {
 	if (ft_strcmp(cmd, "echo") == 0)
@@ -31,6 +33,10 @@ int	is_builtin(char *cmd)
 	return (0);
 }
 
+// Executes a builtin command if it matches.
+// 1. Dispaches the call to the appropriate builtin implementation.
+// Returns the result of the builtin function.
+// Returns 1 if the command is not a recognized builtin.
 int	run_builtin(char **args, t_shell *shell)
 {
 	char	*cmd;
