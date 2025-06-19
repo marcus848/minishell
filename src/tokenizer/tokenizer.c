@@ -143,7 +143,6 @@ int	handle_quotes(char *input, int *j)
 		if (input[*j] != type)
 		{
 			report_unexpected_quotes((const char)type);
-			//token_list_free(tokens);
 			return (0);
 		}
 		else
