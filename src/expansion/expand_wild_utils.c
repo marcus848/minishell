@@ -15,11 +15,18 @@
 int	match_middle(char *pos, t_wild *wild, int i, int limit)
 {
 	size_t	part_len;
+	size_t	end_len;
 
+	if (wild->have_end)
+		end_len = ft_strlen(wild->parts[limit]);
+	else
+		end_len = 0;
 	while (i < limit)
 	{
+		if (ft_strlen(pos) <= end_len)
+			return (0);
 		part_len = ft_strlen(wild->parts[i]);
-		pos = ft_strnstr(pos, wild->parts[i], ft_strlen(pos));
+		pos = ft_strnstr(pos, wild->parts[i], ft_strlen(pos) - end_len);
 		if (!pos)
 			return (0);
 		pos += part_len;
