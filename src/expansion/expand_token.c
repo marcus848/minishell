@@ -14,6 +14,11 @@
 
 int	handle_special_expand(t_exp *exp, char *input);
 
+// Expands environment variables and tokens in the input string.
+// 1. Initializes the expander state.
+// 2. Processes the input string token by token.
+// 3. Adds any remaining prefix as a token.
+// 4. Returns the linked list of expanded tokens.
 t_args	*expand_token(char *input, t_env *env, t_shell *sh)
 {
 	t_exp	exp;
@@ -31,6 +36,11 @@ t_args	*expand_token(char *input, t_env *env, t_shell *sh)
 	return (result);
 }
 
+// Handles the next token during expansion.
+// 1. If token starts with '$', handles special cases or extracts key and
+// expands variable.
+// 2. Otherwise, appends the next prefix substring.
+// 3. Advances parsing index accordingly.
 void	handle_next_token(t_exp *exp, char *input, t_shell *sh)
 {
 	char	*key;
@@ -60,6 +70,11 @@ void	handle_next_token(t_exp *exp, char *input, t_shell *sh)
 	}
 }
 
+// Handles special cases for '$' expansions where next char is non-variable.
+// 1. Checks if next character is end, space, quote, or '/'.
+// 2. Appends a literal '$' to prefix.
+// 3. Advances the parsing index.
+// 4. Returns 1 if handled, 0 otherwise.
 int	handle_special_expand(t_exp *exp, char *input)
 {
 	char	*temp;
@@ -84,6 +99,11 @@ int	handle_special_expand(t_exp *exp, char *input)
 	return (0);
 }
 
+// Initializes the expander structure.
+// 1. Sets initial index and quote state.
+// 2. Allocates token list head pointer.
+// 3. Initializes prefix by extracting starting characters.
+// 4. Sets environment pointer.
 void	init_expander(t_exp *exp, char *input, t_env *env)
 {
 	exp->i = 0;

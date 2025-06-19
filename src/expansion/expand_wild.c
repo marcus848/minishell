@@ -12,6 +12,12 @@
 
 #include "../../include/minishell.h"
 
+// Expands wildcards in a linked list of arguments.
+// 1. Iterates over each argument.
+// 2. If argument contains wildcard, parses pattern and finds matches.
+// 3. If no matches, adds argument without quotes.
+// 4. If matches found, appends them sorted to the result list.
+// 5. Returns the expanded list.
 t_args	*expand_wild(t_args *envs)
 {
 	t_args	*result;
@@ -38,6 +44,12 @@ t_args	*expand_wild(t_args *envs)
 	return (result);
 }
 
+// Parses a wildcard pattern into parts for matching.
+// 1. Checks if argumennt is only asterisks and sets full flag.
+// 2. Otherwise splits argument by wildcards into parts.
+// 3. Sets flags indicating if pattern has fixed start or end.
+// 4. Cleans empty parts if necessary.
+// 5. Returns the pattern struct.
 t_wild	parse_pattern(char *arg)
 {
 	t_wild	wild;
@@ -60,6 +72,12 @@ t_wild	parse_pattern(char *arg)
 	return (wild);
 }
 
+// Finds filenames in the current directory matching the wildcard pattern.
+// 1. Opens current directory.
+// 2. Iterates over directory entries.
+// 3. Skips hidden files unless pattern explicitly starts with '.'.
+// 4. Adds matching entries to the result list.
+// 5. Returns list of matched filenames.
 t_args	*wild_matches(t_wild *wild)
 {
 	struct dirent	*entry;
@@ -84,6 +102,9 @@ t_args	*wild_matches(t_wild *wild)
 	return (matches);
 }
 
+// Checks if a string contains an unquoted wildcards character.
+// 1. Iterates over string characters updating quotes state.
+// 2. Returns 1 if unquoted '*' found, else 0.
 int	is_wildcard(char *arg)
 {
 	t_quote	state;
@@ -101,6 +122,10 @@ int	is_wildcard(char *arg)
 	return (0);
 }
 
+// Checks if a string consists only of asterisks.
+// 1. Iterates through string characters.
+// 2. Returns 0 on any non-asterisk character found.
+// 3. Returns 1 if all characters are '*'.
 int	only_asterisk(char *arg)
 {
 	int	i;
