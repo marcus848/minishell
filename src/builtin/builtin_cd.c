@@ -16,11 +16,6 @@ char	*get_cd_target(char **args, t_env *env);
 char	*do_chdir(const char *path, t_env *env);
 void	update_env_vars(t_env *env, char *oldcwd);
 
-// Builtin implementation for the 'cd' command.
-// 1. Determines the target directory (args[1] or $HOME).
-// 2. Attempts to change the current working directory.
-// 3. If successful, updates OLDPWD and PWD in the environment.
-// Returns 0 on succsess, 1 on failure.
 int	builtin_cd(char **args, t_env *env)
 {
 	char	*target;

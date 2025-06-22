@@ -12,22 +12,6 @@
 
 #include "../../include/minishell.h"
 
-// Initializes loop indexes and quote state.
-void	init_vars_remove_quotes(int *i, int *j, t_quote *state)
-{
-	*i = 0;
-	*j = 0;
-	*state = NO_QUOTE;
-}
-
-// Removes quotes from the input string, respecting quote context.
-// 1. Allocates memory for the resulting string.
-// 2. Initializes variables and quotes state.
-// 3. Iterates through input, skipping handled quotes.
-// 4. Copies characters not part of outer quotes to result.
-// 5. Frees original string if free_str is true.
-// 6. NULL-terminates and returns the result.
-// Note: Respects nested an matched quote rules.
 char	*rem_quotes(char *str, int free_str)
 {
 	char	*result;
@@ -54,4 +38,11 @@ char	*rem_quotes(char *str, int free_str)
 		free(str);
 	result[j] = '\0';
 	return (result);
+}
+
+void	init_vars_remove_quotes(int *i, int *j, t_quote *state)
+{
+	*i = 0;
+	*j = 0;
+	*state = NO_QUOTE;
 }

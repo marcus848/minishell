@@ -12,12 +12,6 @@
 
 #include "../../include/minishell.h"
 
-// Builtin impltmentation for the "pwd" command.
-// 1. Attempts to get the PWD value from environment.
-// 2. Prints PWD if found.
-// 3. Otherwise, calls getcwd to get current working directory.
-// 4. Prints current directory or error message on failure.
-// 5. Frees allocated memory if getcwd is used.
 int	builtin_pwd(t_env *env)
 {
 	char	*pwd;

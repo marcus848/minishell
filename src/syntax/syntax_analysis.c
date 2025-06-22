@@ -12,14 +12,6 @@
 
 #include "../../include/minishell.h"
 
-int	token_analysis(t_token *prev, t_token *token, t_token *next, int *depth);
-
-// Performs syntax analysis on token list.
-// 1. Checks for empty input.
-// 2. Validates first token isn't a pipe/logical operator.
-// 3. Analyzes each token in sequence.
-// 4. Validates final token and parenthesis depth.
-// Returns 1 if valid, 0 on syntax error.
 int	syntax_analysis(t_token_list *tokens)
 {
 	t_token	*curr;
@@ -36,7 +28,7 @@ int	syntax_analysis(t_token_list *tokens)
 		return (report_unexpected(curr->value));
 	while (curr)
 	{
-		if (!token_analysis(prev, curr, curr->next, &depth))
+		if (!tk_analysis(prev, curr, curr->next, &depth))
 			return (0);
 		prev = curr;
 		curr = curr->next;
@@ -48,29 +40,20 @@ int	syntax_analysis(t_token_list *tokens)
 	return (1);
 }
 
-// Analyzes individual token in context.
-// 1. Checks redirections have valid targets.
-// 2. Validates pipe placement.
-// 3. Validates logical operators.
-// 4. Tracks parenthesis nesting.
-// Returns 1 if valid, 0 on error.
-int	token_analysis(t_token *prev, t_token *token, t_token *next, int *depth)
+int	tk_analysis(t_token *prev, t_token *tk, t_token *nxt, int *dpt)
 {
-	if (token->type == REDIR_IN || token->type == REDIR_OUT
-		|| token->type == REDIR_APPEND || token->type == HEREDOC)
-		return (check_redir(next));
-	else if (token->type == PIPE)
-		return (check_pipe(prev, next));
-	else if (token->type == LOGICAL_AND || token->type == LOGICAL_OR)
-		return (check_logical(prev, token, next));
-	else if (token->type == PAREN_OPEN || token->type == PAREN_CLOSE)
-		return (check_paren(prev, token, next, depth));
+	if (tk->type == REDIR_IN || tk->type == REDIR_OUT
+		|| tk->type == REDIR_APPEND || tk->type == HEREDOC)
+		return (check_redir(nxt));
+	else if (tk->type == PIPE)
+		return (check_pipe(prev, nxt));
+	else if (tk->type == LOGICAL_AND || tk->type == LOGICAL_OR)
+		return (check_logical(prev, tk, nxt));
+	else if (tk->type == PAREN_OPEN || tk->type == PAREN_CLOSE)
+		return (check_paren(prev, tk, nxt, dpt));
 	return (1);
 }
 
-// Checks if string contains only whitespace.
-// 1. Iterates through string.
-// 2. Returns 1 if all whitespace, 0 otherwise.
 int	is_all_whitespace(const char *s)
 {
 	int	i;

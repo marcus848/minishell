@@ -12,9 +12,6 @@
 
 #include "../../include/minishell.h"
 
-// Expands all redirections except heredocs.
-// 1. Iterates through all redirections.
-// 2. Calls expand_redir on each except type R_HEREDOC.
 void	expand_redirs(t_redir *redirs, t_shell *sh)
 {
 	t_redir	*cur;
@@ -28,14 +25,6 @@ void	expand_redirs(t_redir *redirs, t_shell *sh)
 	}
 }
 
-// Expands wildcards in a single redirection's filename.
-// 1. Converts filename into argument list.
-// 2. Expands wildcards in the argument list.
-// 3. Counts matches and handles:
-// 	- No match: calls handle_no_match().
-// 	- Multiple matches: calls handle_ambigous().
-// 	- Single match: calls handle_single_match().
-// 4. Frees temporary argument lists.
 void	expand_redir(t_redir *redir, t_shell *sh)
 {
 	t_args	*arg_list;
@@ -59,12 +48,6 @@ void	expand_redir(t_redir *redir, t_shell *sh)
 	free_args_list(expanded_list);
 }
 
-// Expands wildcards in an argument list.
-// 1. Iterates over args and detects wildcards.
-// 2. Parses wildcards patterns and finds matches.
-// 3. Sorts and appends matches to result list.
-// 4. Removes quotes from non-wildcard args and adds them directly.
-// 5. Returns the expanded argument list or NULL on failure.
 t_args	*expand_redir_wild(t_args *envs)
 {
 	t_args	*result;

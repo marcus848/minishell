@@ -12,13 +12,6 @@
 
 #include "../../include/minishell.h"
 
-// Checks if command is an executable file.
-// 1. If command contains '/', checks if file exists, is not a directory, and
-// is executable.
-// 2. Otherwise, searches in PATH via search_in_path().
-// 3. Returns 1 if executable, 0 if not found or not executable, -1 if
-// permission denied.
-// Note: Used to validate command before execve.
 int	is_executable_command(char *cmd, t_env *env)
 {
 	struct stat	sb;
@@ -36,10 +29,6 @@ int	is_executable_command(char *cmd, t_env *env)
 	return (search_in_path(cmd, env));
 }
 
-// Checks if command is an explicit path.
-// 1. Returns 1 if command contains '/'.
-// 2. Returns 0 otherwise.
-// Note: Distinguishes between absolute/relative and bare commands.
 int	is_explicit_executable(char *cmd)
 {
 	if (ft_strchr(cmd, '/') == NULL)
@@ -47,11 +36,6 @@ int	is_explicit_executable(char *cmd)
 	return (1);
 }
 
-// Searches PATH to check if command is executable.
-// 1. Splits PATH into directoreis.
-// 2. Appends command to each directory.
-// 3. Uses access to check if candidate is executable.
-// Returns 1 on success, 0 otherwise.
 int	search_in_path(char *cmd, t_env *env)
 {
 	char	**dirs;

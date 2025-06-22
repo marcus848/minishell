@@ -12,8 +12,6 @@
 
 #include "../../include/minishell.h"
 
-// Checks if a character exists in a string.
-// 1. Iterates through string s to find character c.
 int	in(const char *s, char c)
 {
 	if (s == NULL)

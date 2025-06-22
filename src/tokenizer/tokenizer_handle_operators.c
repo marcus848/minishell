@@ -12,21 +12,11 @@
 
 #include "../../include/minishell.h"
 
-int	is_two_char_op(char *input, t_token_type *type, int *len);
-int	is_one_char_op_1(char input, t_token_type *type, int *len);
-int	is_one_char_op_2(char input, t_token_type *type);
-int	create_operator_token(char *input, int *i, t_token_list *tokens);
-
-// Handles operator characters in input.
-// 1. Checks if current character is an operator.
-// 2. Creates operator token if valid.
-// 3. Reports errors for invalid operators.
-// Returns 1 if operator handled, 0 on error, -1 if not operator.
 int	handle_operators(char *input, int *i, t_token_list *tokens)
 {
 	if (!in("()&|<>", input[*i]))
 		return (-1);
-	if (create_operator_token(input, i, tokens))
+	if (create_op_token(input, i, tokens))
 		return (1);
 	if (input[*i] == '&')
 	{
@@ -36,12 +26,7 @@ int	handle_operators(char *input, int *i, t_token_list *tokens)
 	return (-1);
 }
 
-// Creates and appends operator token to list.
-// 1. Determines operator type and length.
-// 2. Extracts operator substring.
-// 3. Creates and appends new token.
-// Returns 1 on success, 0 if no operator found.
-int	create_operator_token(char *input, int *i, t_token_list *tokens)
+int	create_op_token(char *input, int *i, t_token_list *tokens)
 {
 	int				len;
 	char			*value;
@@ -67,10 +52,6 @@ int	create_operator_token(char *input, int *i, t_token_list *tokens)
 	return (0);
 }
 
-// Checks for two-character operators.
-// 1. Tests for >>, <<, && and ||.
-// 2. Sets type and length if found.
-// Returns 1 if match found, 0 otherwise.
 int	is_two_char_op(char *input, t_token_type *type, int *len)
 {
 	*len = 2;
@@ -97,11 +78,6 @@ int	is_two_char_op(char *input, t_token_type *type, int *len)
 	return (0);
 }
 
-// Checks for single-character operators (part 1).
-// 1. Tests for >, <, |.
-// 2. Sets type and length if found.
-// 3. Delegates remaining checks to is_one_char_op_2
-// Returns 1 if match found, 0 otherwise.
 int	is_one_char_op_1(char input, t_token_type *type, int *len)
 {
 	*len = 1;
@@ -123,10 +99,6 @@ int	is_one_char_op_1(char input, t_token_type *type, int *len)
 	return (is_one_char_op_2(input, type));
 }
 
-// Checks for single-character operators (part 1).
-// 1. Tests for (, ).
-// 2. Sets type if found.
-// Returns 1 if match found, 0 otherwise.
 int	is_one_char_op_2(char input, t_token_type *type)
 {
 	if (input == '(')

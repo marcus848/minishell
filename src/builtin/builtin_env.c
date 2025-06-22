@@ -12,9 +12,6 @@
 
 #include "../../include/minishell.h"
 
-// Builtin implementation for the "env" command.
-// 1. Iterates through the environment list.
-// 2. Prints key=value pairs where value is not NULL.
 int	builtin_env(t_env *env)
 {
 	while (env)

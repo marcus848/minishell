@@ -12,12 +12,6 @@
 
 #include "../../include/minishell.h"
 
-void	handle_permission_denied(char *cmd, t_shell *shell);
-
-// Checks if command is "exit" and runs builtin_exit if so.
-// 1. Returns 1 if args is NULL or "exit" is detected.
-// 2. Calls builtin_exit with toks and shell if "exit" is matched.
-// 3. Returns 0 otherwise.
 int	try_exit(t_token_list *toks, char **args, t_shell *shell)
 {
 	if (!args || !args[0])
@@ -27,15 +21,6 @@ int	try_exit(t_token_list *toks, char **args, t_shell *shell)
 	return (0);
 }
 
-// Runs built-in command with redirection if applicable.
-// 1. Checks if command is a builtin.
-// 2. Saves current stdin and stdout.
-// 3. Applies redirection via apply_redirections().
-// 4. Restores original fds if redirectoin fails.
-// 5. Runs builtin and restores fds.
-// 6. Updates last exit status.
-// 7. Returns 1 if builtin was executed, 0 otherwise.
-// Note: Manages redirections and builtin lifecycle.
 int	try_other_builtin(char **args, t_command *cmd, t_shell *shell)
 {
 	int	status;
@@ -58,12 +43,6 @@ int	try_other_builtin(char **args, t_command *cmd, t_shell *shell)
 	return (0);
 }
 
-// Executes external command if it is valid and executable.
-// 1. If path is an explicit directory, handles it with error.
-// 2. Checks if command is executable.
-// 3. Executes command if valid.
-// 4. Handles permission denied or not found cases.
-// Note: Dispatches final execution logic for non-builtins.
 void	run_external_cmd(char **args, t_command *cmd, t_shell *shell)
 {
 	int	exec_status;

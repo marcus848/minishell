@@ -12,16 +12,6 @@
 
 #include "../../include/minishell.h"
 
-char	*get_expanded(char *line, int no_expand, t_env *env, t_shell *sh);
-char	*heredoc_expand_vars(char *line, t_env *env, int last_status);
-void	write_and_free_line(int fd, char *line, char *expanded);
-int		handle_end_heredoc(char *line, char *delim);
-
-// Processes heredoc input until delimiter.
-// 1. Creates pipe for heredoc output.
-// 2. Reads lines with expansion handling.
-// 3. Writes results to pipe.
-// Returns read-end file descriptor.
 int	process_hd(char *delim, int no_expand, t_env *env, t_shell *sh)
 {
 	int		fds[2];
@@ -41,7 +31,7 @@ int	process_hd(char *delim, int no_expand, t_env *env, t_shell *sh)
 			break ;
 		if (line[ft_strlen(line) - 1] == '\n')
 			line[ft_strlen(line) - 1] = '\0';
-		expanded = get_expanded(line, no_expand, env, sh);
+		expanded = get_expnd(line, no_expand, env, sh);
 		write_and_free_line(fds[1], line, expanded);
 	}
 	enable_echoctl();
@@ -49,11 +39,6 @@ int	process_hd(char *delim, int no_expand, t_env *env, t_shell *sh)
 	return (fds[0]);
 }
 
-// Checks for heredoc termination conditions.
-// 1. Matches exact delimiter.
-// 2. Handles EOF without newline.
-// 3. Handles NULL input (EOF).
-// Returns 1 if heredoc should end, 0 otherwise.
 int	handle_end_heredoc(char *line, char *delim)
 {
 	if (line && ft_strncmp(line, delim, ft_strlen(delim)) == 0)
@@ -75,10 +60,6 @@ int	handle_end_heredoc(char *line, char *delim)
 	return (0);
 }
 
-// Writes expanded line to pipe and frees memory.
-// 1. Writes expanded content.
-// 2. Adds newline.
-// 3. Frees both original and expanded strings.
 void	write_and_free_line(int fd, char *line, char *expanded)
 {
 	write(fd, expanded, ft_strlen(expanded));
@@ -87,26 +68,17 @@ void	write_and_free_line(int fd, char *line, char *expanded)
 	free(line);
 }
 
-// Expands variables in heredoc content if enabled.
-// 1. Returns direct copy if expansion disabled.
-// 2. Otherwise performs variable expansion.
-// Returns expanded string.
-char	*get_expanded(char *line, int no_expand, t_env *env, t_shell *sh)
+char	*get_expnd(char *line, int no_expnd, t_env *env, t_shell *sh)
 {
 	char	*res;
 
-	if (no_expand)
+	if (no_expnd)
 		res = ft_strdup(line);
 	else
 		res = heredoc_expand_vars(line, env, sh->last_status);
 	return (res);
 }
 
-// Expands variables in heredoc content.
-// 1. Scans for $ variables.
-// 2. Expands each variable found.
-// 3. Preserves other characters literally.
-// Returns expanded string.
 char	*heredoc_expand_vars(char *line, t_env *env, int last_status)
 {
 	char	*out;

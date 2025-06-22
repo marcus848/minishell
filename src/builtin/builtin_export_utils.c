@@ -17,12 +17,6 @@ t_env	**env_to_array(t_env *env, size_t n);
 void	sort_env_array(t_env **arr, size_t n);
 void	print_env_array(t_env **arr, size_t n);
 
-// Prints all environment variables in sorted order.
-// 1. Counts environment variables.
-// 2. Converts linked list to array.
-// 3. Sorts the array alphabetically by key.
-// 4. Prints variables in "declare -x key=value" format.
-// 5. Frees the array.
 void	print_exported(t_env *env)
 {
 	size_t	n;

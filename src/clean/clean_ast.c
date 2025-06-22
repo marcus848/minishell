@@ -12,12 +12,6 @@
 
 #include "../../include/minishell.h"
 
-void	free_redirs(t_redir *redir);
-
-// Recursively frees the entire AST.
-// 1. Recursively frees left and right branches.
-// 2. Frees command node if present.
-// 3. Frees current AST node.
 void	ast_free(t_ast *root)
 {
 	if (!root)
@@ -29,11 +23,6 @@ void	ast_free(t_ast *root)
 	free(root);
 }
 
-// Frees command structure and its contents.
-// 1. Closes heredoc FD if open.
-// 2. Frees argument list.
-// 3. Frees redirection list.
-// 4. Frees the command struct.
 void	command_free(t_command *command)
 {
 	if (command->heredoc_fd >= 0)
@@ -45,9 +34,6 @@ void	command_free(t_command *command)
 	free(command);
 }
 
-// Frees all arguments of a command.
-// 1. Frees each argument string.
-// 2. Frees the argument array.
 void	free_args(t_command *command)
 {
 	int	i;
@@ -58,10 +44,6 @@ void	free_args(t_command *command)
 	free(command->args);
 }
 
-// Frees redirection list and associated resources.
-// 1. Closes heredoc FD if applicable.
-// 2. Frees redirection filename.
-// 3. Frees redirection node.
 void	free_redirs(t_redir *redir)
 {
 	t_redir	*next;

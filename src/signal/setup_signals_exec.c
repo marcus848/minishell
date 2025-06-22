@@ -12,9 +12,6 @@
 
 #include "../../include/minishell.h"
 
-// Configures signal handlers for child processes.
-// 1. Sets up SIGINT handler for graceful termination.
-// 2. Configures SIGQUIT to use default behavior.
 void	setup_signals_exec(void)
 {
 	t_sig	sa_int;
@@ -26,10 +23,6 @@ void	setup_signals_exec(void)
 	sigaction(SIGQUIT, &sa_quit, NULL);
 }
 
-// Prepares SIGINT handles configuraton for child processes.
-// 1. Sets custom handler function.
-// 2. Initializes empty signal mask.
-// 3. Clears special flags.
 t_sig	setup_sigint_exec(void)
 {
 	t_sig	sa_int;
@@ -40,9 +33,6 @@ t_sig	setup_sigint_exec(void)
 	return (sa_int);
 }
 
-// Handles SIGINT in child processes.
-// 1. Sets exit status to 130. (standard bash interrupt code).
-// 2. Prints newline for clean output.
 void	handle_sigint_exec(int sig)
 {
 	if (sig == SIGINT)
@@ -52,9 +42,6 @@ void	handle_sigint_exec(int sig)
 	}
 }
 
-// Handles SIGQUIT in child processes. (using default behavior).
-// 1. Sets exit status to 131. (standard bash quit code).
-// 2. Prints core dump message.
 void	handle_sigquit_exec(int sig)
 {
 	if (sig == SIGQUIT)
@@ -64,10 +51,6 @@ void	handle_sigquit_exec(int sig)
 	}
 }
 
-// Prepares SIGQUIT handler configuration for child processes.
-// 1. Uses default system handler.
-// 2. Initializes empty signal mask.
-// 3. Clears special flags.
 t_sig	setup_sigquit_exec(void)
 {
 	t_sig	sa_quit;

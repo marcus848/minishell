@@ -12,11 +12,6 @@
 
 #include "../../include/minishell.h"
 
-// Extracts and expands variable reference from input line.
-// 1. Handles special $? status variable.
-// 2. Reads valid variable name characters (alphanumeric + underscore).
-// 3. Looks up value in environment.
-// Returns expanded value or NULL if not found.
 char	*get_var_value(char *line, int *ip, t_env *env, int last_sts)
 {
 	char	*val;
@@ -39,12 +34,6 @@ char	*get_var_value(char *line, int *ip, t_env *env, int last_sts)
 	return (val);
 }
 
-// Joins characters to string with memory management.
-// 1. Allocates new string with space for additional character.
-// 2. Copies original string content.
-// 3. Appends new character.
-// 4. Frees original string.
-// Returns new combined string.
 char	*ft_strjoin_char_free(char *str, char c)
 {
 	size_t	len;

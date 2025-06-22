@@ -12,18 +12,6 @@
 
 #include "../../include/minishell.h"
 
-void	exec_command(t_token_list *tokens, t_shell *shell, t_ast *node);
-void	exec_pipe(t_shell *shell, t_ast *node);
-void	exec_subshell(t_token_list *tokens, t_shell *shell, t_ast *node);
-
-// Executes AST nodes based on their type.
-// 1. For NODE_COMMAND: expands arguments and executes the command.
-// 2. For NODE_PIPE: executes the pipe sequence.
-// 3. For NODE_AND: executes left node; if successful, executes right node.
-// 4. For NODE_OR: executes left node; if failed and no signal interrupt,
-// executes right node.
-// 5. For NODE_SUBSHELL: executes the subshell node.
-// Note: Recursively traverses AST to execute commands and control flow.
 void	executor(t_token_list *tokens, t_shell *sh, t_ast *node)
 {
 	if (!node)
@@ -52,11 +40,6 @@ void	executor(t_token_list *tokens, t_shell *sh, t_ast *node)
 	return ;
 }
 
-// Executes a simple command node.
-// 1. Expands redirections.
-// 2. Attempts to handle exit builtin.
-// 3. Attempts to handle other builtins.
-// 4. Executes external commands if no builtin mathched.
 void	exec_command(t_token_list *tokens, t_shell *shell, t_ast *node)
 {
 	char	**args;
@@ -70,12 +53,6 @@ void	exec_command(t_token_list *tokens, t_shell *shell, t_ast *node)
 	run_external_cmd(args, node->cmd, shell);
 }
 
-// Executes a pipe node connecting two commands.
-// 1. Creates a pipe.
-// 2. Forks two child processes for left and right nodes.
-// 3. Handles each child's execution and pipes.
-// 4. Closes pipe fds in parent.
-// 5. Waits for both children and updates last status.
 void	exec_pipe(t_shell *shell, t_ast *node)
 {
 	int		fd[2];
@@ -97,12 +74,7 @@ void	exec_pipe(t_shell *shell, t_ast *node)
 	set_last_status(shell, WEXITSTATUS(shell->last_status));
 }
 
-// Executes a subshell node.
-// Forks a child process to execute the subtree.
-// Child sets up signals, execute subtree, cleans up, and exits.
-// Parent waits for child and updates last_status.
-// Note: Subshell executes in separate process context.
-void	exec_subshell(t_token_list *tokens, t_shell *shell, t_ast *node)
+void	exec_subshell(t_token_list *tkns, t_shell *shell, t_ast *node)
 {
 	pid_t	pid;
 	int		status;
@@ -113,7 +85,7 @@ void	exec_subshell(t_token_list *tokens, t_shell *shell, t_ast *node)
 	if (pid == 0)
 	{
 		setup_signals_exec();
-		executor(tokens, shell, node);
+		executor(tkns, shell, node);
 		clean_all(shell->tokens, shell->ast, &shell->env);
 		exit(shell->last_status);
 	}

@@ -12,9 +12,6 @@
 
 #include "../../include/minishell.h"
 
-// Extracts an environment variable key starting at '$'.
-// 1. Starts after '$' and reads alphanumeric or '_' characters.
-// 2. Returns a new string with the extracted key.
 char	*extract_key(char *input, int *i)
 {
 	int		start;
@@ -28,8 +25,6 @@ char	*extract_key(char *input, int *i)
 	return (ft_substr(input, start, *i - start));
 }
 
-// Updates the current quote state based on the input character.
-// Handles transitions between NO_QUOTE, SINGLE_QUOTE, and DOUBLE_QUOTE.
 void	update_state_quote(t_quote *state, char c)
 {
 	if ((c == '\'' && *state == SINGLE_QUOTE)
@@ -41,9 +36,6 @@ void	update_state_quote(t_quote *state, char c)
 		*state = DOUBLE_QUOTE;
 }
 
-// Finds the value for a given environment variable key.
-// 1. Iterates through the env list.
-// 2. Returns a strdup of the value if found, or an empty string otherwise.
 char	*find_env_value(char *key, t_env *env)
 {
 	while (env)
@@ -55,10 +47,6 @@ char	*find_env_value(char *key, t_env *env)
 	return (ft_strdup(""));
 }
 
-// Joins two strings and frees both.
-// 1. Handles NULL safely.
-// 2. Frees both inputs regardless of which one is NULL.
-// 3. Returns the newly joined string.
 char	*ft_strjoin_free(char *s1, char *s2)
 {
 	char	*res;

@@ -51,11 +51,6 @@ int	main(int argc, char **argv, char **envp)
 	return (0);
 }
 
-// Main interactive prompt loop.
-// 1. Generates and displays prompt.
-// 2. Reads user input.
-// 3. Handles signals and special commands.
-// 4. Processes valid input.
 void	prompt(t_shell *shell)
 {
 	char	*input;
@@ -141,9 +136,6 @@ void	prompt(t_shell *shell)
 }
 */
 
-// Core minishell processing function.
-// 1. Tokenizes input string.
-// 2. Stores tokens in shell structure.
 void	minishell(char *input, t_shell *shell)
 {
 	t_token_list	*tokens;
@@ -158,10 +150,6 @@ void	minishell(char *input, t_shell *shell)
 	parser(tokens, shell);
 }
 
-// Parses tokens into executable structure.
-// 1. Performs synxtax analysis.
-// 2. Builds abstract syntax tree (AST).
-// 3. Executes commands if no errors.
 void	parser(t_token_list *tokens, t_shell *shell)
 {
 	t_ast	*ast;
@@ -182,7 +170,6 @@ void	parser(t_token_list *tokens, t_shell *shell)
 	shell->tokens = NULL;
 }
 
-// Validates if input contains non-whitespace characters.
 int	handle_all_white_spaces(char *input)
 {
 	if (input[0] == '\0' || is_all_whitespace(input))

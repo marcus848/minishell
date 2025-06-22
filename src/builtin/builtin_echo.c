@@ -15,10 +15,6 @@
 int		is_all_n_flag(const char *str);
 void	write_echo_args(char *arg);
 
-// Builtin implementation for the "echo" command.
-// 1. Checks and skips all leading -n flags.
-// 2. Prints all remaining arguments separated by spaces.
-// 3. Appends a newline unless -n flag was provided.
 int	builtin_echo(char **args)
 {
 	int	supress_nl;

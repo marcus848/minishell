@@ -12,9 +12,6 @@
 
 #include "../../include/minishell.h"
 
-void	env_create_append(t_env **env_head, char *key, char *val, t_env *curr);
-
-// Retrieves value for environment variable key.
 char	*get_env_value(t_env *env, const char *key)
 {
 	while (env)
@@ -26,7 +23,6 @@ char	*get_env_value(t_env *env, const char *key)
 	return (NULL);
 }
 
-// Gets PATH environment variable value.
 char	*get_env_path(t_env *env)
 {
 	char	*path;
@@ -35,9 +31,6 @@ char	*get_env_path(t_env *env)
 	return (path);
 }
 
-// Updates existing environment variable or creates new.
-// 1. Finds and updates matching key.
-// 2. Creates new entry if key was not found.
 void	env_update(t_env **env_head, char *key, char *value)
 {
 	t_env	*curr;
@@ -53,22 +46,21 @@ void	env_update(t_env **env_head, char *key, char *value)
 		}
 		curr = curr->next;
 	}
-	env_create_append(env_head, key, value, curr);
+	env_createapnd(env_head, key, value, curr);
 }
 
-// Creates and appends new environment variable.
-void	env_create_append(t_env **env_head, char *key, char *val, t_env *curr)
+void	env_createapnd(t_env **head, char *key, char *val, t_env *curr)
 {
 	t_env	*node;
 
 	node = env_new(key, val);
 	if (!node)
 		exit_perror("env_new failed");
-	if (*env_head == NULL)
-		*env_head = node;
+	if (*head == NULL)
+		*head = node;
 	else
 	{
-		curr = *env_head;
+		curr = *head;
 		while (curr->next)
 			curr = curr->next;
 		curr->next = node;
