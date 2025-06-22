@@ -732,7 +732,7 @@ int				syntax_analysis(t_token_list *tokens);
 // 3. Validates logical operators.
 // 4. Tracks parenthesis nesting.
 // Returns 1 if valid, 0 on error.
-int				token_analysis(t_token *prev, t_token *token, t_token *next, int *depth);
+int				tk_analysis(t_token *prev, t_token *tk, t_token *nxt, int *dpt);
 
 // Checks if string contains only whitespace.
 // 1. Iterates through string.
@@ -799,7 +799,7 @@ void			exec_pipe(t_shell *shell, t_ast *node);
 // Child sets up signals, execute subtree, cleans up, and exits.
 // Parent waits for child and updates last_status.
 // Note: Subshell executes in separate process context.
-void			exec_subshell(t_token_list *tokens, t_shell *shell, t_ast *node);
+void			exec_subshell(t_token_list *tkns, t_shell *shell, t_ast *node);
 
 // Checks if the given command is a shell builtin.
 // Returns 1 if cmd is a builtin and 0 otherwise.
@@ -968,7 +968,7 @@ int				handle_in_redir(t_redir *redir, int *in_fd, t_shell *sh);
 // 1. Tries to open file with given flags and mode.
 // 2. On failure, prints error and sets last_status to 1.
 // 3. Returns file descriptor or -1.
-int				open_file_with_error(char *filename, int flags, int mode, t_shell *sh);
+int				open_file_err(char *filename, int flags, int mode, t_shell *sh);
 
 // Sets input file descriptor from heredoc.
 // 1. Closes previously opened input FD, if any.
@@ -1262,7 +1262,7 @@ void			write_and_free_line(int fd, char *line, char *expanded);
 // 1. Returns direct copy if expansion disabled.
 // 2. Otherwise performs variable expansion.
 // Returns expanded string.
-char			*get_expanded(char *line, int no_expand, t_env *env, t_shell *sh);
+char			*get_expnd(char *line, int no_expnd, t_env *env, t_shell *sh);
 
 // Expands variables in heredoc content.
 // 1. Scans for $ variables.

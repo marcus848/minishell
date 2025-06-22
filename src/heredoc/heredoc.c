@@ -31,7 +31,7 @@ int	process_hd(char *delim, int no_expand, t_env *env, t_shell *sh)
 			break ;
 		if (line[ft_strlen(line) - 1] == '\n')
 			line[ft_strlen(line) - 1] = '\0';
-		expanded = get_expanded(line, no_expand, env, sh);
+		expanded = get_expnd(line, no_expand, env, sh);
 		write_and_free_line(fds[1], line, expanded);
 	}
 	enable_echoctl();
@@ -68,11 +68,11 @@ void	write_and_free_line(int fd, char *line, char *expanded)
 	free(line);
 }
 
-char	*get_expanded(char *line, int no_expand, t_env *env, t_shell *sh)
+char	*get_expnd(char *line, int no_expnd, t_env *env, t_shell *sh)
 {
 	char	*res;
 
-	if (no_expand)
+	if (no_expnd)
 		res = ft_strdup(line);
 	else
 		res = heredoc_expand_vars(line, env, sh->last_status);

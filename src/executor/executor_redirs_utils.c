@@ -18,7 +18,7 @@ int	handle_in_redir(t_redir *redir, int *in_fd, t_shell *sh)
 
 	if (redir->filename == NULL)
 		return (-1);
-	fd = open_file_with_error(redir->filename, O_RDONLY, 0, sh);
+	fd = open_file_err(redir->filename, O_RDONLY, 0, sh);
 	if (fd < 0)
 		return (-1);
 	if (*in_fd != -1)
@@ -27,7 +27,7 @@ int	handle_in_redir(t_redir *redir, int *in_fd, t_shell *sh)
 	return (0);
 }
 
-int	open_file_with_error(char *filename, int flags, int mode, t_shell *sh)
+int	open_file_err(char *filename, int flags, int mode, t_shell *sh)
 {
 	int	fd;
 
@@ -64,7 +64,7 @@ int	handle_out_redir(t_redir *redir, int *out_fd, t_shell *sh)
 		flags |= O_TRUNC;
 	else
 		flags |= O_APPEND;
-	fd = open_file_with_error(redir->filename, flags, 0644, sh);
+	fd = open_file_err(redir->filename, flags, 0644, sh);
 	if (fd < 0)
 		return (-1);
 	if (*out_fd != -1)

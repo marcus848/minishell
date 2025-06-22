@@ -16,6 +16,7 @@ size_t	env_count(t_env *env);
 t_env	**env_to_array(t_env *env, size_t n);
 void	sort_env_array(t_env **arr, size_t n);
 void	print_env_array(t_env **arr, size_t n);
+
 void	print_exported(t_env *env)
 {
 	size_t	n;

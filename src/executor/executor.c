@@ -74,7 +74,7 @@ void	exec_pipe(t_shell *shell, t_ast *node)
 	set_last_status(shell, WEXITSTATUS(shell->last_status));
 }
 
-void	exec_subshell(t_token_list *tokens, t_shell *shell, t_ast *node)
+void	exec_subshell(t_token_list *tkns, t_shell *shell, t_ast *node)
 {
 	pid_t	pid;
 	int		status;
@@ -85,7 +85,7 @@ void	exec_subshell(t_token_list *tokens, t_shell *shell, t_ast *node)
 	if (pid == 0)
 	{
 		setup_signals_exec();
-		executor(tokens, shell, node);
+		executor(tkns, shell, node);
 		clean_all(shell->tokens, shell->ast, &shell->env);
 		exit(shell->last_status);
 	}
