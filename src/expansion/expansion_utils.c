@@ -12,7 +12,6 @@
 
 #include "../../include/minishell.h"
 
-// Adds a new node with the given value to the end of the linked list.
 void	add_token(t_args **head, char *value)
 {
 	t_args	*new;
@@ -36,16 +35,12 @@ void	add_token(t_args **head, char *value)
 	}
 }
 
-// Adds a token and frees the given value.
 void	add_token_free(t_args **head, char *value)
 {
 	add_token(head, value);
 	free(value);
 }
 
-// Appends a list of tokens to the end of another list.
-// 1. If head is empty, assigns list to head.
-// 2. Otherwise, finds the last node and appends the list.
 void	append_list(t_args **head, t_args *list)
 {
 	t_args	*temp;
@@ -63,9 +58,6 @@ void	append_list(t_args **head, t_args *list)
 	temp->next = list;
 }
 
-// Counts number of elements in a NULL-terminated array.
-// 1. Iterates through the array until a NULL is found.
-// 2. Returns the count.
 int	count_array(void **arr)
 {
 	int	i;

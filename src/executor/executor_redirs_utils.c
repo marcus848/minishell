@@ -12,13 +12,6 @@
 
 #include "../../include/minishell.h"
 
-int	open_file_with_error(char *filename, int flags, int mode, t_shell *sh);
-
-// Handles input redirections from a file.
-// 1. Opens a file in read-only mode.
-// 2. Closes previously opened input FD, if any.
-// 3. Stores new FD in *in_fd.
-// Note: Returns -1 on failure, 0 on success.
 int	handle_in_redir(t_redir *redir, int *in_fd, t_shell *sh)
 {
 	int	fd;
@@ -34,10 +27,6 @@ int	handle_in_redir(t_redir *redir, int *in_fd, t_shell *sh)
 	return (0);
 }
 
-// Opens a file and prints error to stderr on failure.
-// 1. Tries to open file with given flags and mode.
-// 2. On failure, prints error and sets last_status to 1.
-// 3. Returns file descriptor or -1.
 int	open_file_with_error(char *filename, int flags, int mode, t_shell *sh)
 {
 	int	fd;
@@ -55,10 +44,6 @@ int	open_file_with_error(char *filename, int flags, int mode, t_shell *sh)
 	return (fd);
 }
 
-// Sets input file descriptor from heredoc.
-// 1. Closes previously opened input FD, if any.
-// 2. Uses heredoc_fd as new input.
-// Note: Assumes heredoc_fd is already valid.
 int	handle_heredoc(t_redir *redir, int *in_fd)
 {
 	if (*in_fd != -1)
@@ -67,12 +52,6 @@ int	handle_heredoc(t_redir *redir, int *in_fd)
 	return (0);
 }
 
-// Handles output or append redirection to a file.
-// 1. Computes flags based on redir type.
-// 2. Opens file with appropriate flags and mode.
-// 3. Closes previously opened output FD, if any.
-// 4. Stores new FD in *out_fd.
-// Note: Returns -1 on failure, 0 on success.
 int	handle_out_redir(t_redir *redir, int *out_fd, t_shell *sh)
 {
 	int	flags;
@@ -94,9 +73,6 @@ int	handle_out_redir(t_redir *redir, int *out_fd, t_shell *sh)
 	return (0);
 }
 
-// Replaces std_fd with fd and closes fd.
-// 1. Duplicates fd to std_fd using dup2.
-// 2. Closes original fd.
 void	dup2_close(int fd, int std_fd)
 {
 	dup2(fd, std_fd);

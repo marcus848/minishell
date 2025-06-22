@@ -12,11 +12,6 @@
 
 #include "../../include/minishell.h"
 
-char	*build_shortc(char *src, char *cwd);
-
-// Gets current username from environment.
-// 1. Checks USER environment variable.
-// 2. Returns "unknown" if now found.
 char	*get_user(void)
 {
 	char	*user;
@@ -27,11 +22,6 @@ char	*get_user(void)
 	return (user);
 }
 
-// Reads system hostname from /etc/hostname
-// 1. Opens the hostname file.
-// 2. Reads contents into buffer.
-// 3. Remove trailing newline if present.
-// 4. Returns "unknown" on error.
 char	*read_hostname_file(void)
 {
 	int		fd;
@@ -51,10 +41,6 @@ char	*read_hostname_file(void)
 	return (ft_strdup(buf));
 }
 
-// Gets current working directory for display.
-// 1. Retrieves full path using getcwd().
-// 2. Shortens path if in home directory.
-// 3. Returns "[deletes]" if directory inaccessible.
 char	*get_cwd_display(void)
 {
 	char	*cwd;
@@ -73,10 +59,6 @@ char	*get_cwd_display(void)
 	return (cwd);
 }
 
-// Shortens home directory path to ~/ notation.
-// 1. Calculates path segments after home.
-// 2. Preserves trailint path components.
-// 3. Returns "~" for empty home path.
 char	*replace_home(char *cwd, char *home)
 {
 	size_t	h_len;
@@ -95,9 +77,6 @@ char	*replace_home(char *cwd, char *home)
 	return (shortc);
 }
 
-// Constructs shortened path string with ~ prefix.
-// 1. Allocates space for ~, separator, and remainder.
-// 2. Handles both with and without trailing path.
 char	*build_shortc(char *src, char *cwd)
 {
 	size_t	tail;

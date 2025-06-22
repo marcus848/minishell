@@ -16,11 +16,6 @@ int	handle_unset_arg(char *arg, t_env **env);
 int	is_valid_name(char *name);
 int	env_unset(char *arg, t_env **env);
 
-// Builtin implementation for the "unset" command.
-// 1. Iterates over all provided arguments.
-// 2. Validates each argument and attempts to unset it from environment.
-// 3. Tracks error status for invalid arguments.
-// 4. Returns 0 if all valid, 1 if any invalid argument.
 int	builtin_unset(char **args, t_env **env)
 {
 	int		status;

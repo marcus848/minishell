@@ -12,10 +12,6 @@
 
 #include "../../include/minishell.h"
 
-// Reports unexpected quote syntax error.
-// 1. Prints to standard error prefix.
-// 2. Displays the problematic quotes character.
-// 3. Adds formatting suffix.
 void	report_unexpected_quotes(const char token_value)
 {
 	char	*str;
@@ -26,11 +22,6 @@ void	report_unexpected_quotes(const char token_value)
 	write(STDERR_FILENO, "'\n", 2);
 }
 
-// Reports general syntax error and returns failure.
-// 1. Prints to standard error prefix.
-// 2. Displays the unexpected token.
-// 3. Adds formatting suffix.
-// Returns 0 to indicate error.
 int	report_unexpected(const char *token_value)
 {
 	char	*str;

@@ -17,14 +17,6 @@ size_t	find_index(char *arg, char c);
 void	split_name_value(char *arg, size_t eq, char **name, char **value);
 int		is_valid_identifier(char *name);
 
-// Builtin implementation for the "export" command.
-// 1. If no arguments, prints current exported variables.
-// 2. For each argument:
-// 	- Finds '=' position.
-// 	- Splits into name and value.
-// 	- Validates and processes export argument.
-// 3. Frees allocated name and value.
-// 4. Returns 0 if all valid, 1 if any invalid argument.
 int	builtin_export(char **args, t_env **env)
 {
 	int		status;

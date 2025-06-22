@@ -12,14 +12,6 @@
 
 #include "../../include/minishell.h"
 
-int	token_analysis(t_token *prev, t_token *token, t_token *next, int *depth);
-
-// Performs syntax analysis on token list.
-// 1. Checks for empty input.
-// 2. Validates first token isn't a pipe/logical operator.
-// 3. Analyzes each token in sequence.
-// 4. Validates final token and parenthesis depth.
-// Returns 1 if valid, 0 on syntax error.
 int	syntax_analysis(t_token_list *tokens)
 {
 	t_token	*curr;
@@ -48,12 +40,6 @@ int	syntax_analysis(t_token_list *tokens)
 	return (1);
 }
 
-// Analyzes individual token in context.
-// 1. Checks redirections have valid targets.
-// 2. Validates pipe placement.
-// 3. Validates logical operators.
-// 4. Tracks parenthesis nesting.
-// Returns 1 if valid, 0 on error.
 int	token_analysis(t_token *prev, t_token *token, t_token *next, int *depth)
 {
 	if (token->type == REDIR_IN || token->type == REDIR_OUT
@@ -68,9 +54,6 @@ int	token_analysis(t_token *prev, t_token *token, t_token *next, int *depth)
 	return (1);
 }
 
-// Checks if string contains only whitespace.
-// 1. Iterates through string.
-// 2. Returns 1 if all whitespace, 0 otherwise.
 int	is_all_whitespace(const char *s)
 {
 	int	i;

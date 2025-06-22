@@ -12,17 +12,6 @@
 
 #include "../../include/minishell.h"
 
-void	validate_exec_path(char *path);
-
-// Dispatches execution of a command (builtin or external).
-// 1. Saves terminal settings if running interactivelly.
-// 2. Runs builtin directly if applicable.
-// 3. Sets signal handlers for execution.
-// 4. Forks process and calls execve_with_path in child.
-// 5. Waits for child process in parent.
-// 6. Restores terminal settings and signal handlers.
-// 7. Returns child's exit status.
-// Note: Central logic for command executions flow.
 int	exec_dispatch(char **args, t_shell *shell, char **envp)
 {
 	struct termios	term_backup;
@@ -51,13 +40,6 @@ int	exec_dispatch(char **args, t_shell *shell, char **envp)
 	return (WEXITSTATUS(status));
 }
 
-// Searches for command in PATH and executes it.
-// 1. Attempts direct execution if command contains '/'.
-// 2. Splits PATH into directories.
-// 3. Tries each candidate path using execve.
-// 4. Validates each candidate before execution.
-// 5. Exits with error if all candidates fail.
-// Note: Final fallback for external commands.
 void	execve_with_path(char **args, t_env *env, char **envp)
 {
 	char	**dirs;
@@ -86,10 +68,6 @@ void	execve_with_path(char **args, t_env *env, char **envp)
 	exit(127);
 }
 
-// Tries executing the command as an explicit path.
-// 1. Checks for '/' in command.
-// 2. If found, verifies access and runs execve.
-// 3. Exits with error if access or execve fails.
 void	try_exec_explicit(char *cmd, char **args, char **envp)
 {
 	if (ft_strchr(cmd, '/') != NULL)
@@ -107,11 +85,6 @@ void	try_exec_explicit(char *cmd, char **args, char **envp)
 	}
 }
 
-// Validates that the path is executable and not a directory.
-// 1. Returns silently if path does not exist.
-// 2. Exits if path is a directory.
-// 3. Exits if path is not executable.
-// Note: Prevents execution of invalid or restricted paths.
 void	validate_exec_path(char *path)
 {
 	struct stat	sb;

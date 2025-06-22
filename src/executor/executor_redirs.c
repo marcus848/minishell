@@ -12,15 +12,6 @@
 
 #include "../../include/minishell.h"
 
-int	finish_redirections(int ret, int in_fd, int out_fd);
-
-// Applies all I/O redirections for a command.
-// 1. Iterates through redirection list in cmd.
-// 2. Handles input redirection (R_IN) with handle_in_redir().
-// 3. Handles heredoc (R_HEREDOC) with handle_heredoc.
-// 4. Handles output/append redirection (R_OUT, R_APPEND) with handle_out_redir.
-// 5. Stops on error and proceeds to finish_redirections.
-// Note: All open FDs are managed and closed appropriately.
 int	apply_redirections(t_command *cmd, t_shell *sh)
 {
 	t_redir	*redir;
@@ -46,11 +37,6 @@ int	apply_redirections(t_command *cmd, t_shell *sh)
 	return (finish_redirections(ret, in_fd, out_fd));
 }
 
-// Finalizes redirections by duplicating or closing FDs.
-// 1. If error (ret < 0), closes any open FDs and returns -1.
-// 2. If input FD is valid, redirects STDIN using dup2_close().
-// 3. If output FD is valid, redirects STDOUT using dup2_close().
-// Returns 0 on success.
 int	finish_redirections(int ret, int in_fd, int out_fd)
 {
 	if (ret < 0)

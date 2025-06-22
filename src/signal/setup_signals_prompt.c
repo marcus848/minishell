@@ -12,9 +12,6 @@
 
 #include "../../include/minishell.h"
 
-// Configures signal handlers for interactive prompt.
-// 1. Sets up custom SIGINT handler with line editing support.
-// 2. Ignores SIGQUIT signals.
 void	setup_signals_prompt(void)
 {
 	struct sigaction	sa_int;	
@@ -24,10 +21,6 @@ void	setup_signals_prompt(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-// Prepares SIGQUIT handler configuration for internactive prompt.
-// 1. Sets custom handler function.
-// 2. Initializes empty signal mask.
-// 3. Enables system call restart flag.
 t_sig	setup_sigint_prompt(void)
 {
 	t_sig	sa_int;
@@ -38,10 +31,6 @@ t_sig	setup_sigint_prompt(void)
 	return (sa_int);
 }
 
-// Handles SIGINT during interactive prompt.
-// 1. Sets global signal status to 130 (interrupt).
-// 2. Prints newline and resets readline display.
-// 3. Preserves prompt functionality.
 void	handle_sigint_prompt(int sig)
 {
 	(void) sig;
@@ -52,9 +41,6 @@ void	handle_sigint_prompt(int sig)
 	rl_redisplay();
 }
 
-// Updates shell status values.
-// 1. Stores previous signal status in shell struct.
-// 2. Updates global signal status with new value.
 void	update_sh_last_status(t_shell *sh, int new_value)
 {
 	sh->last_status = g_signal_status;

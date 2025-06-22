@@ -12,11 +12,6 @@
 
 #include "../../include/minishell.h"
 
-// Parses logical AND/OR operations into AST.
-// 1. Parses left-hand side using parse_pipe().
-// 2. Loops over logical operators (||, &&) and builds tree.
-// 3. Creates new AST nodes for each logical operation.
-// Note: Left-associative for multiple logical operators.
 t_ast	*parse_logical(t_token **token, t_shell *shell)
 {
 	t_ast	*left;
@@ -45,10 +40,6 @@ t_ast	*parse_logical(t_token **token, t_shell *shell)
 	return (left);
 }
 
-// Parses pipe operations into AST.
-// 1. Parses left-hand side using parse_simple_command().
-// 2. Loops over PIPE tokens and builds binary tree.
-// 3. Updates token pointer after parseing.
 t_ast	*parse_pipe(t_token **token, t_shell *shell)
 {
 	t_ast	*left;
@@ -73,9 +64,6 @@ t_ast	*parse_pipe(t_token **token, t_shell *shell)
 	return (left);
 }
 
-// Parses either a command or a subshell.
-// 1. If token is PAREN_CLOSE, calls parse_subshell.
-// 2. Otherwise calls parse_command.
 t_ast	*parse_simple_command(t_token **token, t_shell *shell)
 {
 	if ((*token)->type == PAREN_OPEN)
@@ -83,11 +71,6 @@ t_ast	*parse_simple_command(t_token **token, t_shell *shell)
 	return (parse_command(token, shell));
 }
 
-// Parrses a subshell into an AST node.
-// 1. Skips opening parenthesis.
-// 2. Parses inner expression with parse_logical().
-// 3. Tracks nested parenthesis until closing.
-// 4. Creates subshell node wrapping the subtree.
 t_ast	*parse_subshell(t_token **token, t_shell *shell)
 {
 	t_ast	*subtree;
@@ -117,9 +100,6 @@ t_ast	*parse_subshell(t_token **token, t_shell *shell)
 	return ((*token) = t, node);
 }
 
-// Parses a simple command into an AST node.
-// 1. Creates NODE_COMMAND AST node.
-// 2. Populates node with parsed command via make_command().
 t_ast	*parse_command(t_token **token, t_shell *shell)
 {
 	t_ast	*new;
