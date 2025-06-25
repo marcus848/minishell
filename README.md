@@ -1,8 +1,12 @@
-# Minishell
+# Minishell - Meu projeto com nota máxima (125/125)
 
-Minishell é um projeto desenvolvido na [42 School](https://www.42.fr/) com o objetivo de implementar um shell simplificado em C. Apesar de enxuto, ele replica grande parte do comportamento do `bash` e serve como um exercício avançado de gerenciamento de processos, manipulação de arquivos e criação de um pipeline completo de parsing e execução de comandos.
+Este repositório apresenta a minha implementação do Minishell, um dos projetos mais desafiadores da 42 School.
 
-![screenshot](path/to/demo.png)
+O objetivo do projeto é criar um shell simplificado em C, replicando grande parte do comportamento do bash. Esta versão do minishell foi desenvolvida com atenção especial a cada detalhe e recebeu a **nota máxima de 125 pontos na avaliação oficial.**
+
+Apesar de enxuto em proposta, o projeto envolve conceitos avançados como gerenciamento de processos, manipulação de arquivos, tratamento de sinais, expansão de variáveis, pipes, redirecionamentos e a construção de um pipeline completo de tokenização, parsing e execução.
+
+Esse projeto foi desenvolvido em parceria com o colega [caide-so](https://github.com/Caio-de-Souza-Marinho), cuja contribuição foi fundamental em todo o processo. 🙌
 
 ## Objetivo Geral
 
