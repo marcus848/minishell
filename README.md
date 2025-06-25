@@ -1,82 +1,98 @@
 # Minishell
 
-A small Unix shell developed as part of the [42 School](https://www.42.fr/) curriculum. Minishell is written in C and mimics many features of `bash`, providing a great learning experience on how shells work under the hood.
+Minishell é um projeto desenvolvido na [42 School](https://www.42.fr/) com o objetivo de implementar um shell simplificado em C. Apesar de enxuto, ele replica grande parte do comportamento do `bash` e serve como um exercício avançado de gerenciamento de processos, manipulação de arquivos e criação de um pipeline completo de parsing e execução de comandos.
 
 ![screenshot](path/to/demo.png)
 
-## Features
+## Objetivo Geral
 
-- **Command execution** with absolute or relative paths
-- **Environment variables** with full expansion inside commands
-- **Wildcard expansion (`*`)** similar to `bash`
-- **Redirections**: `>`, `>>`, `<`, `<<` (heredoc)
-- **Pipelines** using `|`
-- **Logical operators**: `&&` and `||`
-- **Subshells** through parentheses `( )`
-- **Built‑ins**: `cd`, `echo`, `export`, `unset`, `exit`, `env`, `pwd`
-- **Heredoc** with optional variable expansion
-- **Signal handling** for `SIGINT`, `SIGQUIT` and others
-- **Abstract Syntax Tree (AST)** for parsing and execution
-- **Robust tokenizer** with single and double quote support
+O propósito principal é entender em detalhes como um shell funciona: ler a entrada do usuário, interpretar essa entrada respeitando regras de quoting e expansão, construir uma representação interna (AST) e executar os comandos, lidando corretamente com sinais e códigos de saída. O projeto foi avaliado com nota alta e é um dos mais desafiadores do Common Core.
 
-## Project Structure
+## Principais Funcionalidades
 
+- **Parsing de entrada** com suporte a aspas simples e duplas
+- **Expansão de variáveis de ambiente** (`$VAR`)
+- **Expansão de wildcards** (`*`)
+- **Redirecionamentos** `>`, `>>`, `<`, `<<` (heredoc)
+- **Pipes** (`|`)
+- **Operadores lógicos** `&&` e `||`
+- **Comandos builtin**: `cd`, `echo`, `pwd`, `exit`, `export`, `unset`, `env`
+- **Tratamento de sinais** para `SIGINT` e `SIGQUIT`
+- **Gestão de códigos de saída** seguindo o comportamento do bash
+- **Suporte a subshells** via parênteses `( )` *(bônus)*
+
+## Estrutura Interna
+
+1. **Tokenizer** – converte a linha digitada em uma lista de tokens, respeitando operadores, palavras e diferentes tipos de aspas.
+2. **Parser / AST** – organiza os tokens em uma árvore de sintaxe abstrata (AST). Essa árvore representa comandos simples, pipelines, operadores lógicos e subshells.
+3. **Executor** – percorre a AST realizando redirecionamentos, criando pipes e chamando os programas ou builtins apropriados.
+4. **Gerenciamento de variáveis de ambiente** – armazena as variáveis em uma lista ligada, permitindo consulta e modificação via `export`, `unset` e leitura durante a expansão.
+5. **Heredoc** – arquivos temporários são utilizados para armazenar o conteúdo de `<<`. Durante a leitura, sinais são tratados para cancelar o heredoc corretamente ao receber `CTRL+C`.
+
+### Fluxo de Execução
+
+1. **Leitura da linha** através de `readline`.
+2. **Tokenização** da string de entrada.
+3. **Parsing** dos tokens, construindo a AST.
+4. **Execução** de cada nó da árvore:
+   - Criação de processos e pipes quando necessário.
+   - Configuração de redirecionamentos.
+   - Chamada de comandos externos ou funções builtin.
+5. **Atualização do status de saída** para que comandos seguintes possam utilizar `$?`.
+
+Esse fluxo imita o comportamento de um shell real, permitindo combinações como:
+
+```bash
+ls -l | grep txt && echo "encontrado" || echo "nada"
 ```
-.
-├── Makefile       # build instructions
-├── include/       # header files
-├── libft/         # custom C library used by the project
-├── src/           # source code
-│   ├── ast/       # AST building and traversal
-│   ├── builtin/   # built‑in command implementations
-│   ├── env/       # environment variable utilities
-│   ├── executor/  # command execution engine
-│   ├── expansion/ # variable and wildcard expansion
-│   ├── heredoc/   # heredoc support
-│   ├── prompt/    # prompt generation
-│   └── ...        # other helpers
-└── README.md
-```
 
-## Compilation
+## Compilação
 
-Minishell requires the GNU readline library. Run:
+É necessário ter a biblioteca **readline** instalada. Compile com:
 
 ```bash
 make
 ```
 
-The resulting binary will be named `minishell`.
+O binário gerado será `minishell`.
 
-## Usage
+## Como Executar
 
-Launch the shell with:
+Inicie o shell executando:
 
 ```bash
 ./minishell
 ```
 
-Once running, you can execute commands as you would in `bash`, including pipelines, redirections and variable expansion.
+Alguns comandos de exemplo dentro do minishell:
 
-## Testing
+```bash
+export PATH=$PATH:/meus/bin
+mkdir teste && cd teste
+echo "arquivo" > file.txt
+cat *.txt | wc -l
+```
 
-- **Compare with bash**: run the same commands in `bash` and Minishell to verify identical behavior.
-- **Memory leaks**: use `valgrind` via `make leak` or `make leakfile`.
-- **42_minishell_tester**: you can use community test suites to run automated tests.
+## Limitações Conhecidas
 
-## Challenges
+- O comportamento de algumas expansões pode diferir em casos extremos do bash.
+- Não há suporte a recursos avançados como redirecionamentos de arquivo‑descritor (`2>&1`).
 
-During development we faced several tricky areas:
+## Testes e Valgrind
 
-1. **Parsing** – building an AST that supports subshells, logical operators and nested redirections required a carefully designed tokenizer and parser.
-2. **Signals** – reproducing `bash` signal behavior (especially in heredocs and pipelines) demanded fine‑grained signal handling and a global status variable.
-3. **Wildcards and variable expansion** – matching `bash` behavior while keeping the code maintainable took several iterations.
+O projeto foi desenvolvido com foco em ausência de memory leaks. Utilize:
 
-## Team
+```bash
+make leak
+```
 
-This project was created by **Marcus Gomes** and **Caio de Souza Marinho**.
+para rodar o `valgrind` diretamente no binário.
 
-## License
+## Contribuidores
 
-This project is released under the [MIT License](LICENSE).
+Projeto realizado por **Marcus Gomes** e **Caio de Souza Marinho**.
+
+## Licença
+
+Distribuído sob a [MIT License](LICENSE).
 
